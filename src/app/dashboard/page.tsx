@@ -22,7 +22,11 @@ export default async function DashboardPage() {
       <header className="bg-white border-b border-border">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
           <BrandLogo />
-          <LogoutButton />
+          <div className="flex items-center gap-4">
+            <Link href="/verify" className="text-sm font-medium text-muted hover:text-dark">Verify</Link>
+            <Link href="/wallet" className="text-sm font-medium text-muted hover:text-dark">Wallet</Link>
+            <LogoutButton />
+          </div>
         </div>
       </header>
 
@@ -33,10 +37,10 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-white border border-border rounded-2xl p-5">
+          <Link href="/wallet" className="bg-white border border-border rounded-2xl p-5 hover:border-primary transition">
             <p className="text-sm text-muted">Wallet Balance</p>
             <p className="text-2xl font-bold text-dark mt-1">₦{balance}</p>
-          </div>
+          </Link>
           <div className="bg-white border border-border rounded-2xl p-5">
             <p className="text-sm text-muted">Account Type</p>
             <p className="text-2xl font-bold text-primary mt-1 uppercase">{profile?.role ?? 'customer'}</p>
