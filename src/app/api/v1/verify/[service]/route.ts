@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { runVerification, ReverifyRequiredError } from '@/lib/services/verification';
 import { FastVerifyProvider } from '@/lib/providers/fastverify';
+import { HKVerifyProvider } from '@/lib/providers/hkverify';
 
 const SERVICES: Record<string, {
   serviceId: string;
@@ -18,8 +19,8 @@ const SERVICES: Record<string, {
   nin_regular: {
     serviceId: 'nin_regular',
     validate: (v) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
-    call: (v, s) => FastVerifyProvider.verifyNIN(v, s),
-    defaultSlip: 'regular',
+    call: (v, s) => HKVerifyProvider.verifyNIN(v, s),
+    defaultSlip: 'standard',
   },
   bvn_basic: {
     serviceId: 'bvn_basic',
