@@ -1,31 +1,43 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createClient as adminClient } from '@supabase/supabase-js';
 import { runVerification, ReverifyRequiredError } from '@/lib/services/verification';
 import { FastVerifyProvider } from '@/lib/providers/fastverify';
 import { HKVerifyProvider } from '@/lib/providers/hkverify';
 
+const supabaseAdmin = adminClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+type Call = (v: string, s: string) => Promise<any>;
+
 const SERVICES: Record<string, {
   serviceId: string;
   validate: (v: string) => string | null;
-  call: (v: string, s: string) => Promise<any>;
+  fv: Call;
+  hk: Call;
   defaultSlip: string;
 }> = {
   nin_verify: {
     serviceId: 'nin_verify',
     validate: (v) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
-    call: (v, s) => FastVerifyProvider.verifyNIN(v, s),
+    fv: (v, s) => FastVerifyProvider.verifyNIN(v, s),
+    hk: (v, s) => HKVerifyProvider.verifyNIN(v, s),
     defaultSlip: 'premium',
   },
   nin_regular: {
     serviceId: 'nin_regular',
     validate: (v) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
-    call: (v, s) => HKVerifyProvider.verifyNIN(v, s),
+    fv: (v, s) => FastVerifyProvider.verifyNIN(v, s),
+    hk: (v, s) => HKVerifyProvider.verifyNIN(v, s),
     defaultSlip: 'standard',
   },
   bvn_basic: {
     serviceId: 'bvn_basic',
     validate: (v) => (/^\d{11}$/.test(v) ? null : 'BVN must be exactly 11 digits.'),
-    call: (v, s) => HKVerifyProvider.verifyBVN(v, s),
+    fv: (v, s) => FastVerifyProvider.verifyBVN(v, s),
+    hk: (v, s) => HKVerifyProvider.verifyBVN(v, s),
     defaultSlip: 'basic',
   },
 };
@@ -53,6 +65,15 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   const validationError = config.validate(identifier);
   if (validationError) return NextResponse.json({ error: validationError }, { status: 422 });
 
+  // Provider switch lives in the database — no redeploy needed to flip
+  const { data: svcRow } = await supabaseAdmin
+    .from('verification_services')
+    .select('provider')
+    .eq('service_id', config.serviceId)
+    .single();
+
+  const call = svcRow?.provider === 'hkverify' ? config.hk : config.fv;
+
   try {
     const outcome = await runVerification({
       userId: user.id,
@@ -60,7 +81,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
       identifier,
       slipType,
       confirmReverify,
-      callProvider: config.call,
+      callProvider: call,
     });
     return NextResponse.json({ success: true, ...outcome });
   } catch (err) {
