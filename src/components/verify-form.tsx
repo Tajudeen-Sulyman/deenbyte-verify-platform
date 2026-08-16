@@ -10,17 +10,12 @@ type Service = {
   supports_pdf: boolean;
 };
 
-const SLUGS: Record<string, string> = { nin_verify: 'nin', bvn_basic: 'bvn' };
-
 export function VerifyForm({ service, walletBalance }: { service: Service; walletBalance: number }) {
-  const slug = SLUGS[service.service_id];
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [result, setResult] = useState<any>(null);
   const [reverify, setReverify] = useState<any>(null);
-
-  if (!slug) return null;
 
   const price = Number(service.selling_price);
   const insufficient = walletBalance < price;
@@ -28,7 +23,7 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
   const submit = async (confirm: boolean) => {
     setLoading(true); setError(''); setResult(null);
     try {
-      const res = await fetch('/api/v1/verify/' + slug, {
+      const res = await fetch('/api/v1/verify/' + service.service_id, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier: value, confirm_reverify: confirm }),

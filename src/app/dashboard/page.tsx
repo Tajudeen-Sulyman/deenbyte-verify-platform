@@ -16,17 +16,14 @@ export default async function DashboardPage() {
     .from('wallets').select('balance').eq('user_id', user.id).single();
 
   const balance = Number(wallet?.balance ?? 0).toLocaleString('en-NG', { minimumFractionDigits: 2 });
+  const isAdmin = (profile?.role ?? 'customer') === 'admin';
 
   return (
     <main className="min-h-screen">
       <header className="bg-white border-b border-border">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
           <BrandLogo />
-          <div className="flex items-center gap-4">
-            <Link href="/verify" className="text-sm font-medium text-muted hover:text-dark">Verify</Link>
-            <Link href="/wallet" className="text-sm font-medium text-muted hover:text-dark">Wallet</Link>
-            <LogoutButton />
-          </div>
+          <LogoutButton />
         </div>
       </header>
 
@@ -47,14 +44,16 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-border rounded-2xl p-5 flex items-center justify-between">
-          <div>
-            <p className="font-semibold text-dark">Quick Verification</p>
-            <p className="text-sm text-muted mt-1">NIN and BVN verification are live.</p>
-          </div>
-          <Link href="/verify" className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark">
-            Verify
-          </Link>
+        <div className="grid grid-cols-2 gap-3">
+          <Link href="/verify" className="bg-white border border-border rounded-2xl p-4 text-sm font-semibold text-dark hover:border-primary transition">Verify</Link>
+          <Link href="/wallet" className="bg-white border border-border rounded-2xl p-4 text-sm font-semibold text-dark hover:border-primary transition">Wallet</Link>
+          <Link href="/history" className="bg-white border border-border rounded-2xl p-4 text-sm font-semibold text-dark hover:border-primary transition">History</Link>
+          <Link href="/transactions" className="bg-white border border-border rounded-2xl p-4 text-sm font-semibold text-dark hover:border-primary transition">Transactions</Link>
+          {isAdmin && (
+            <Link href="/admin" className="col-span-2 bg-dark rounded-2xl p-4 text-sm font-semibold text-white text-center hover:bg-primary transition">
+              Admin Dashboard
+            </Link>
+          )}
         </div>
       </div>
     </main>

@@ -9,16 +9,22 @@ const SERVICES: Record<string, {
   call: (v: string, s: string) => Promise<any>;
   defaultSlip: string;
 }> = {
-  nin: {
+  nin_verify: {
     serviceId: 'nin_verify',
     validate: (v) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
-    call: FastVerifyProvider.verifyNIN,
+    call: (v, s) => FastVerifyProvider.verifyNIN(v, s),
     defaultSlip: 'premium',
   },
-  bvn: {
+  nin_regular: {
+    serviceId: 'nin_regular',
+    validate: (v) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
+    call: (v, s) => FastVerifyProvider.verifyNIN(v, s),
+    defaultSlip: 'regular',
+  },
+  bvn_basic: {
     serviceId: 'bvn_basic',
     validate: (v) => (/^\d{11}$/.test(v) ? null : 'BVN must be exactly 11 digits.'),
-    call: FastVerifyProvider.verifyBVN,
+    call: (v, s) => FastVerifyProvider.verifyBVN(v, s),
     defaultSlip: 'basic',
   },
 };
