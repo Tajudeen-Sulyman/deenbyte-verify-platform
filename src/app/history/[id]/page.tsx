@@ -74,7 +74,7 @@ export default async function HistoryDetailPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {row.slip_base64 && (
+        {row.status === 'successful' && (
           <a
             href={'/api/v1/slip/' + row.id}
             target="_blank"

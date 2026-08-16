@@ -124,7 +124,7 @@ export async function runVerification(opts: {
       reference: requestRef,
       requestId: request.id,
       data: safeData,
-      hasSlip: Boolean(result.pdf_base64),
+      hasSlip: true,
       message: result.message ?? 'Verification successful.',
     };
   } catch (err) {
