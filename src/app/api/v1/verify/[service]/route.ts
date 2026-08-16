@@ -25,7 +25,7 @@ const SERVICES: Record<string, {
   bvn_basic: {
     serviceId: 'bvn_basic',
     validate: (v) => (/^\d{11}$/.test(v) ? null : 'BVN must be exactly 11 digits.'),
-    call: (v, s) => FastVerifyProvider.verifyBVN(v, s),
+    call: (v, s) => HKVerifyProvider.verifyBVN(v, s),
     defaultSlip: 'basic',
   },
 };
