@@ -11,46 +11,47 @@ const supabaseAdmin = adminClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-type Call = (v: any, s: string) => Promise<any>;
-type DemoCall = (input: any, s: string) => Promise<any>;
+type Call = (v: any, s: any) => Promise<any>;
 
 const SERVICES: Record<string, {
   serviceId: string;
   validate?: (v: string) => string | null;
-  fv?: Call; hk?: Call; aj?: Call;
+  fv?: Call;
+  hk?: Call;
+  aj?: Call;
   defaultSlip: string;
   isDemographic?: boolean;
 }> = {
   nin_verify: {
     serviceId: 'nin_verify',
-    validate: (v) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
-    fv: (v, s) => FastVerifyProvider.verifyNIN(v, s),
-    aj: (v, s) => AijalonProvider.verifyNIN(v, s),
+    validate: (v: string) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
+    fv: (v: any, s: any) => FastVerifyProvider.verifyNIN(v, s),
+    aj: (v: any, s: any) => AijalonProvider.verifyNIN(v, s),
     defaultSlip: 'premium',
   },
   nin_regular: {
     serviceId: 'nin_regular',
-    validate: (v) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
-    hk: (v, s) => HKVerifyProvider.verifyNIN(v, s),
-    aj: (v, s) => AijalonProvider.verifyNIN(v, s),
+    validate: (v: string) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
+    hk: (v: any, s: any) => HKVerifyProvider.verifyNIN(v, s),
+    aj: (v: any, s: any) => AijalonProvider.verifyNIN(v, s),
     defaultSlip: 'standard',
   },
   bvn_basic: {
     serviceId: 'bvn_basic',
-    validate: (v) => (/^\d{11}$/.test(v) ? null : 'BVN must be exactly 11 digits.'),
-    hk: (v, s) => HKVerifyProvider.verifyBVN(v, s),
-    aj: (v, s) => AijalonProvider.verifyBVN(v, s),
+    validate: (v: string) => (/^\d{11}$/.test(v) ? null : 'BVN must be exactly 11 digits.'),
+    hk: (v: any, s: any) => HKVerifyProvider.verifyBVN(v, s),
+    aj: (v: any, s: any) => AijalonProvider.verifyBVN(v, s),
     defaultSlip: 'basic',
   },
   nin_by_phone: {
     serviceId: 'nin_by_phone',
-    validate: (v) => (/^(0\d{10}|\d{11})$/.test(v) ? null : 'Phone must be 11 digits.'),
-    aj: (v, s) => AijalonProvider.verifyNINByPhone(v, s),
+    validate: (v: string) => (/^(0\d{10}|\d{11})$/.test(v) ? null : 'Phone must be 11 digits.'),
+    aj: (v: any, s: any) => AijalonProvider.verifyNINByPhone(v, s),
     defaultSlip: 'standard',
   },
   nin_demographic: {
     serviceId: 'nin_demographic',
-    aj: (input: any, s) => AijalonProvider.demographicSearch(input, s),
+    aj: (input: any, s: any) => AijalonProvider.demographicSearch(input, s),
     defaultSlip: 'standard',
     isDemographic: true,
   },
@@ -76,10 +77,10 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   const { data: svcRow } = await supabaseAdmin
     .from('verification_services').select('provider')
     .eq('service_id', config.serviceId).single();
-  const provider = svcRow?.provider ?? 'fastverify';
+  const provider = String(svcRow?.provider ?? 'fastverify');
 
   let identifier: string;
-  let call: any;
+  let call: Call;
 
   if (config.isDemographic) {
     const input = body.identifier ?? {};
@@ -88,16 +89,16 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
     }
     identifier = `${input.firstname}|${input.lastname}|${input.gender}|${input.dob}`;
     const demoCall = config.aj as Call;
-    call = (_id: string, slip: string) => demoCall(input, slip);
+    call = (_id: any, slip: any) => demoCall(input, slip);
   } else {
     identifier = String(body.identifier ?? '').trim();
-    const validationError = config.validate?.(identifier);
+    const validationError = config.validate ? config.validate(identifier) : null;
     if (validationError) return NextResponse.json({ error: validationError }, { status: 422 });
 
     if (provider === 'aijalon' && config.aj) call = config.aj;
     else if (provider === 'hkverify' && config.hk) call = config.hk;
     else if (provider === 'fastverify' && config.fv) call = config.fv;
-    else call = config.aj ?? config.hk ?? config.fv;
+    else call = (config.aj ?? config.hk ?? config.fv) as Call;
   }
 
   try {

@@ -125,7 +125,7 @@ export const AijalonProvider = {
     };
   },
 
-  async verifyBVN(bvn: string) {
+  async verifyBVN(bvn: string, _slipType?: string) {
     const json = await call('/bvn', { number: bvn });
     return {
       success: true,
