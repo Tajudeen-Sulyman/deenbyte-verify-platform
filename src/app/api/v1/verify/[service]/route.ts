@@ -11,13 +11,13 @@ const supabaseAdmin = adminClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-type Call = (v: string, s: string) => Promise<any>;
+type Call = (v: any, s: string) => Promise<any>;
 type DemoCall = (input: any, s: string) => Promise<any>;
 
 const SERVICES: Record<string, {
   serviceId: string;
   validate?: (v: string) => string | null;
-  fv?: Call; hk?: Call; aj?: Call | DemoCall;
+  fv?: Call; hk?: Call; aj?: Call;
   defaultSlip: string;
   isDemographic?: boolean;
 }> = {
@@ -87,7 +87,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
       return NextResponse.json({ error: 'Please fill all required fields.' }, { status: 422 });
     }
     identifier = `${input.firstname}|${input.lastname}|${input.gender}|${input.dob}`;
-    const demoCall = config.aj as DemoCall;
+    const demoCall = config.aj as Call;
     call = (_id: string, slip: string) => demoCall(input, slip);
   } else {
     identifier = String(body.identifier ?? '').trim();
