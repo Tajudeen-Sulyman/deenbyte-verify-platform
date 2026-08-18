@@ -2,22 +2,34 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createClient as adminClient } from '@supabase/supabase-js';
 import { AijalonAsync, pollState, stripImages } from '@/lib/providers/aijalon-async';
+import { TechHubAsync, thPollState } from '@/lib/providers/techhub-async';
 
 const supabaseAdmin = adminClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-const STATUS_CALLS: Record<string, (n: string) => Promise<any>> = {
+const AIJALON_STATUS: Record<string, (n: string) => Promise<any>> = {
   ipe_clearance: AijalonAsync.ipeStatus,
   personalization: AijalonAsync.personalizationStatus,
   nin_validation: AijalonAsync.validationStatus,
 };
 
+function clean(obj: any) {
+  const out: any = {};
+  for (const [k, v] of Object.entries(obj ?? {})) {
+    if (v === null || v === undefined || v === '') continue;
+    if (typeof v === 'string' && v.startsWith('data:image')) continue;
+    out[k] = v;
+  }
+  return out;
+}
+
 export async function POST(req: Request, ctx: { params: Promise<{ service: string }> }) {
   const { service } = await ctx.params;
-  const statusCall = STATUS_CALLS[service];
-  if (!statusCall) return NextResponse.json({ error: 'Unknown service.' }, { status: 404 });
+  if (!TechHubAsync.paths[service] && !AIJALON_STATUS[service]) {
+    return NextResponse.json({ error: 'Unknown service.' }, { status: 404 });
+  }
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -27,37 +39,49 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   try { body = await req.json(); } catch {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
-  const requestId = String(body.request_id ?? '');
 
   const { data: row } = await supabaseAdmin
-    .from('verification_requests').select('*')
-    .eq('id', requestId).eq('user_id', user.id).single();
+    .from('verification_requests')
+    .select('*, verification_services(provider, service_id)')
+    .eq('id', String(body.request_id ?? '')).eq('user_id', user.id).single();
   if (!row) return NextResponse.json({ error: 'Request not found.' }, { status: 404 });
   if (row.status !== 'processing') {
     return NextResponse.json({ status: row.status, data: row.safe_response_data ?? null, reference: row.request_reference });
   }
-
-  const identifier = String(row.safe_request_data?.identifier ?? '');
-  if (!identifier) return NextResponse.json({ error: 'Stored request is missing its identifier.' }, { status: 500 });
+  const provider = String(row.verification_services?.provider ?? 'techhub');
 
   try {
-    const json = await statusCall(identifier);
-    const state = pollState(json);
+    let state: 'success' | 'pending' | 'failed';
+    let json: any;
+
+    if (provider === 'techhub') {
+      const ticket = String(row.provider_reference ?? '');
+      if (!ticket) return NextResponse.json({ error: 'Missing provider ticket for this request.' }, { status: 500 });
+      json = await TechHubAsync.getStatus(TechHubAsync.paths[service], ticket);
+      state = thPollState(json);
+    } else {
+      const fields = row.safe_request_data?.fields ?? {};
+      const main = String(fields.nin ?? fields.tracking_id ?? row.safe_request_data?.identifier ?? '');
+      json = await AIJALON_STATUS[service](main);
+      state = pollState(json);
+    }
 
     if (state === 'pending') {
-      return NextResponse.json({ status: 'processing', message: json?.message ?? 'Still processing. Check later.' });
+      return NextResponse.json({ status: 'processing', message: json?.message ?? json?.note ?? 'Still processing. Check later.' });
     }
 
     if (state === 'success') {
-      const raw = json?.data ?? {};
-      const safeData = stripImages({ ...raw, nin: raw.nin ?? json.nin, tracking_id: raw.trackingId ?? json.tracking_id });
+      const safeData = clean({
+        ...(json?.response && typeof json.response === 'object' ? json.response : {}),
+        nin: json?.nin, bvn: json?.bvn,
+        tracking_id: json?.tracking_id,
+        new_tracking_id: json?.new_tracking_id,
+        new_nin: json?.new_nin,
+        note: json?.note ?? json?.response,
+        ticket_id: json?.ticket_id,
+      });
       await supabaseAdmin.from('verification_requests')
-        .update({
-          status: 'successful',
-          provider_reference: json?.reportID ?? row.provider_reference,
-          safe_response_data: safeData,
-          completed_at: new Date().toISOString(),
-        })
+        .update({ status: 'successful', safe_response_data: safeData, completed_at: new Date().toISOString() })
         .eq('id', row.id);
       return NextResponse.json({ status: 'successful', data: safeData, reference: row.request_reference });
     }
@@ -74,11 +98,11 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
       .update({
         status: 'failed',
         error_code: 'provider_failed',
-        error_message: json?.message ?? 'Request failed at provider',
+        error_message: json?.response ?? json?.message ?? 'Request failed at provider',
         completed_at: new Date().toISOString(),
       })
       .eq('id', row.id);
-    return NextResponse.json({ status: 'failed', refunded: true, message: json?.message ?? 'Request failed. Wallet reversed.' });
+    return NextResponse.json({ status: 'failed', refunded: true, message: json?.response ?? json?.message ?? 'Request failed. Wallet reversed.' });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Status check failed.';
     return NextResponse.json({ error: message }, { status: 400 });

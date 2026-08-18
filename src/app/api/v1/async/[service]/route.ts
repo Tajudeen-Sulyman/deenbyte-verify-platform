@@ -3,26 +3,43 @@ import { createClient } from '@/lib/supabase/server';
 import { createClient as adminClient } from '@supabase/supabase-js';
 import { ProviderError } from '@/lib/providers/fastverify';
 import { AijalonAsync, pollState } from '@/lib/providers/aijalon-async';
+import { TechHubAsync } from '@/lib/providers/techhub-async';
 
 const supabaseAdmin = adminClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-const SERVICES: Record<string, {
-  serviceId: string;
-  input: 'tracking' | 'nin';
-  submit: (n: string) => Promise<any>;
-}> = {
-  ipe_clearance: { serviceId: 'ipe_clearance', input: 'tracking', submit: AijalonAsync.submitIPE },
-  personalization: { serviceId: 'personalization', input: 'tracking', submit: AijalonAsync.submitPersonalization },
-  nin_validation: { serviceId: 'nin_validation', input: 'nin', submit: AijalonAsync.submitValidation },
+type Field = { key: string; label: string; required: boolean; kind: 'nin' | 'phone' | 'email' | 'text' };
+
+const FIELDS: Record<string, Field[]> = {
+  ipe_clearance: [{ key: 'tracking_id', label: 'Tracking ID', required: true, kind: 'text' }],
+  personalization: [{ key: 'tracking_id', label: 'Tracking ID', required: true, kind: 'text' }],
+  nin_validation: [
+    { key: 'nin', label: 'NIN', required: true, kind: 'nin' },
+    { key: 'validation_type', label: 'Validation type', required: false, kind: 'text' },
+  ],
+  bvn_retrieval: [
+    { key: 'first_name', label: 'First name', required: true, kind: 'text' },
+    { key: 'last_name', label: 'Last name', required: true, kind: 'text' },
+    { key: 'phone_number', label: 'Phone number', required: true, kind: 'phone' },
+  ],
+  delink: [
+    { key: 'nin', label: 'NIN', required: true, kind: 'nin' },
+    { key: 'email', label: 'Email', required: true, kind: 'email' },
+  ],
+};
+
+const AIJALON_SUBMIT: Record<string, (n: string) => Promise<any>> = {
+  ipe_clearance: AijalonAsync.submitIPE,
+  personalization: AijalonAsync.submitPersonalization,
+  nin_validation: AijalonAsync.submitValidation,
 };
 
 export async function POST(req: Request, ctx: { params: Promise<{ service: string }> }) {
   const { service } = await ctx.params;
-  const config = SERVICES[service];
-  if (!config) return NextResponse.json({ error: 'Unknown service.' }, { status: 404 });
+  const fields = FIELDS[service];
+  if (!fields) return NextResponse.json({ error: 'Unknown service.' }, { status: 404 });
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -32,20 +49,33 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   try { body = await req.json(); } catch {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
-  const identifier = String(body.identifier ?? '').trim();
-  if (config.input === 'nin' && !/^\d{11}$/.test(identifier)) {
-    return NextResponse.json({ error: 'NIN must be exactly 11 digits.' }, { status: 422 });
+  const input = typeof body.identifier === 'object' && body.identifier ? body.identifier : {};
+
+  for (const f of fields) {
+    const v = String(input[f.key] ?? '').trim();
+    if (f.required && !v) {
+      return NextResponse.json({ error: f.label + ' is required.' }, { status: 422 });
+    }
+    if (v && f.kind === 'nin' && !/^\d{11}$/.test(v)) {
+      return NextResponse.json({ error: f.label + ' must be exactly 11 digits.' }, { status: 422 });
+    }
+    if (v && f.kind === 'phone' && !/^(0\d{10}|\d{11})$/.test(v)) {
+      return NextResponse.json({ error: f.label + ' must be 11 digits.' }, { status: 422 });
+    }
+    if (v && f.kind === 'email' && !v.includes('@')) {
+      return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 422 });
+    }
+    input[f.key] = v;
   }
-  if (config.input === 'tracking' && identifier.length < 5) {
-    return NextResponse.json({ error: 'Enter a valid tracking ID.' }, { status: 422 });
-  }
+  const display = fields.filter((f) => input[f.key]).map((f) => input[f.key]).join(' | ');
 
   const { data: serviceRow } = await supabaseAdmin
     .from('verification_services').select('*')
-    .eq('service_id', config.serviceId).single();
+    .eq('service_id', service).single();
   if (!serviceRow || serviceRow.status !== 'active' || !serviceRow.enabled) {
     return NextResponse.json({ error: 'Service is not available right now.' }, { status: 400 });
   }
+  const provider = String(serviceRow.provider ?? 'techhub');
   const price = Number(serviceRow.selling_price);
 
   const { data: wallet } = await supabaseAdmin
@@ -55,7 +85,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   }
 
   const requestRef = 'DBV-' + Date.now().toString().slice(-8);
-  const hash = Buffer.from(config.serviceId + ':' + identifier).toString('base64');
+  const hash = Buffer.from(service + ':' + display).toString('base64');
 
   const { data: request, error: reqErr } = await supabaseAdmin
     .from('verification_requests')
@@ -67,7 +97,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
       status: 'processing',
       selling_price: price,
       provider_cost: serviceRow.provider_cost,
-      safe_request_data: { identifier },
+      safe_request_data: { identifier: display, fields: input },
     })
     .select()
     .single();
@@ -93,12 +123,19 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   }
 
   try {
-    const json = await config.submit(identifier);
-    if (pollState(json) === 'failed') {
-      throw new ProviderError(400, json?.message ?? 'Submission failed.');
+    let ticket: string | null = null;
+    if (provider === 'techhub') {
+      const json = await TechHubAsync.post(TechHubAsync.paths[service], input);
+      ticket = json?.ticket_id ?? null;
+    } else {
+      const main = String(input.nin ?? input.tracking_id ?? display);
+      const submitFn = AIJALON_SUBMIT[service];
+      const json = await submitFn(main);
+      if (pollState(json) === 'failed') throw new ProviderError(400, json?.message ?? 'Submission failed.');
+      ticket = json?.reportID ?? null;
     }
     await supabaseAdmin.from('verification_requests')
-      .update({ provider_reference: json?.reportID ?? null })
+      .update({ provider_reference: ticket })
       .eq('id', request.id);
     return NextResponse.json({
       success: true,
