@@ -1,9 +1,7 @@
+import { AppShell } from '@/components/shell';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { createClient as adminClient } from '@supabase/supabase-js';
-import { BrandLogo } from '@/components/brand';
-import { LogoutButton } from '@/components/logout-button';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Analytics — DeenByte Admin' };
@@ -72,13 +70,7 @@ export default async function AdminAnalyticsPage() {
   const maxDay = Math.max(...days.map((d) => d.revenue), 1);
 
   return (
-    <main className="min-h-screen">
-      <header className="bg-white border-b border-border">
-        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/admin"><BrandLogo /></Link>
-          <LogoutButton />
-        </div>
-      </header>
+    <AppShell title="Analytics">
 
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-5">
         <div>
@@ -138,6 +130,6 @@ export default async function AdminAnalyticsPage() {
           ))}
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }

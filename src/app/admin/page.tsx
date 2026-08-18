@@ -1,8 +1,6 @@
+import { AppShell } from '@/components/shell';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { BrandLogo } from '@/components/brand';
-import { LogoutButton } from '@/components/logout-button';
 import { AdminServices } from '@/components/admin-services';
 
 export const dynamic = 'force-dynamic';
@@ -37,13 +35,7 @@ export default async function AdminPage() {
   ];
 
   return (
-    <main className="min-h-screen">
-      <header className="bg-white border-b border-border">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/dashboard"><BrandLogo /></Link>
-          <LogoutButton />
-        </div>
-      </header>
+    <AppShell title="Admin">
 
       <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
         <div>
@@ -65,6 +57,6 @@ export default async function AdminPage() {
           <AdminServices services={(services ?? []) as any} />
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }

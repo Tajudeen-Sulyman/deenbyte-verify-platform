@@ -8,15 +8,16 @@ export async function AppShell({ children, title }: { children: React.ReactNode;
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const { data: wallet } = await supabase
-    .from('wallets').select('balance').eq('user_id', user.id).single();
-  const { data: p1 } = await supabase.from('profiles').select('role').eq('id', user.id).maybeSingle();
-  const { data: p2 } = await supabase.from('users').select('role').eq('id', user.id).maybeSingle();
-  const isAdmin = String(p1?.role ?? p2?.role ?? '').toLowerCase() === 'admin';
+  const [walletRes, p1, p2] = await Promise.all([
+    supabase.from('wallets').select('balance').eq('user_id', user.id).single(),
+    supabase.from('profiles').select('role').eq('id', user.id).maybeSingle(),
+    supabase.from('users').select('role').eq('id', user.id).maybeSingle(),
+  ]);
+  const isAdmin = String(p1.data?.role ?? p2.data?.role ?? '').toLowerCase() === 'admin';
 
   return (
     <ShellChrome
-      balance={Number(wallet?.balance ?? 0)}
+      balance={Number(walletRes.data?.balance ?? 0)}
       isAdmin={isAdmin}
       title={title}
       logoutSlot={<LogoutButton />}

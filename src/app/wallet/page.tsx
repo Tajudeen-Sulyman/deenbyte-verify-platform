@@ -1,8 +1,6 @@
+import { AppShell } from '@/components/shell';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { BrandLogo } from '@/components/brand';
-import { LogoutButton } from '@/components/logout-button';
 import { FundForm } from '@/components/fund-form';
 
 export const dynamic = 'force-dynamic';
@@ -24,16 +22,7 @@ export default async function WalletPage() {
   const balance = Number(wallet?.balance ?? 0);
 
   return (
-    <main className="min-h-screen">
-      <header className="bg-white border-b border-border">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/dashboard"><BrandLogo /></Link>
-          <div className="flex items-center gap-4">
-            <Link href="/verify" className="text-sm font-medium text-muted hover:text-dark">Verify</Link>
-            <LogoutButton />
-          </div>
-        </div>
-      </header>
+    <AppShell title="Wallet">
 
       <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
         <div className="bg-white border border-border rounded-2xl p-5">
@@ -73,6 +62,6 @@ export default async function WalletPage() {
           )}
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }
