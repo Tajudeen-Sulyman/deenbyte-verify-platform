@@ -46,7 +46,8 @@ export default async function AdminAnalyticsPage() {
 
   const byService = new Map<string, { count: number; ok: number; revenue: number; cost: number }>();
   for (const r of all) {
-    const name = String(r.verification_services?.name ?? 'Other');
+    const svc = Array.isArray(r.verification_services) ? r.verification_services[0] : r.verification_services;
+    const name = String(svc?.name ?? 'Other');
     const e = byService.get(name) ?? { count: 0, ok: 0, revenue: 0, cost: 0 };
     e.count += 1;
     if (r.status === 'successful') {
