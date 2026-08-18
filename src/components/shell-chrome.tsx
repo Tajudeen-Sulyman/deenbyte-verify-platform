@@ -15,7 +15,7 @@ function Icon({ d }: { d: string }) {
 
 const MAIN = [
   { href: '/dashboard', label: 'Dashboard', d: 'M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10' },
-  { href: '/verify', label: 'Services', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z' },
+  { href: '/services', label: 'Services', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z' },
   { href: '/wallet', label: 'Wallet', d: 'M3 7h18v12H3zM3 7l3-4h12l3 4M15 12h4' },
   { href: '/history', label: 'History', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z' },
   { href: '/transactions', label: 'Transactions', d: 'M4 6h16M4 12h16M4 18h10' },
