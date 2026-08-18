@@ -5,6 +5,7 @@ import { BrandLogo } from '@/components/brand';
 import { LogoutButton } from '@/components/logout-button';
 import { VerifyForm } from '@/components/verify-form';
 import { DemographicForm } from '@/components/demographic-form';
+import { AsyncForm } from '@/components/async-form';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,9 +40,13 @@ export default async function VerifyPage() {
           <div className="bg-white border border-border rounded-2xl p-5 text-sm text-muted">No services available.</div>
         )}
         {services?.map((s: any) =>
-          s.service_id === 'nin_demographic'
-            ? <DemographicForm key={s.service_id} service={s} walletBalance={walletBalance} />
-            : <VerifyForm key={s.service_id} service={s} walletBalance={walletBalance} />
+          s.is_async ? (
+            <AsyncForm key={s.service_id} service={s} walletBalance={walletBalance} />
+          ) : s.service_id === 'nin_demographic' ? (
+            <DemographicForm key={s.service_id} service={s} walletBalance={walletBalance} />
+          ) : (
+            <VerifyForm key={s.service_id} service={s} walletBalance={walletBalance} />
+          )
         )}
       </div>
     </main>
