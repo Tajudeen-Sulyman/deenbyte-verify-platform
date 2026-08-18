@@ -3,7 +3,11 @@ import { ProviderError } from './fastverify';
 const BASE_URL = 'https://techhubltd.co/api/verification';
 const API_KEY = process.env.TECHHUB_API_KEY!;
 
-// If any tier 404s during testing, fix its endpoint here.
+function smallPdf(j: any) {
+  const p = j && j.pdf_base64;
+  return typeof p === 'string' && p.length < 300000 ? p : null;
+}
+
 const NIN_EP: Record<string, string> = {
   premium: '/nin_premium_slip.php',
   standard: '/nin_standard_slip.php',
@@ -105,7 +109,7 @@ export const TechHubProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapUser(json.user_data ?? {}),
-      pdf_base64: json.pdf_base64 ?? null,
+      pdf_base64: smallPdf(json),
     };
   },
 
@@ -116,7 +120,7 @@ export const TechHubProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapUser(json.user_data ?? {}),
-      pdf_base64: json.pdf_base64 ?? null,
+      pdf_base64: smallPdf(json),
     };
   },
 
@@ -132,7 +136,7 @@ export const TechHubProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapUser(json.user_data ?? {}),
-      pdf_base64: json.pdf_base64 ?? null,
+      pdf_base64: smallPdf(json),
     };
   },
 
@@ -143,7 +147,7 @@ export const TechHubProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapUser(json.user_data ?? {}),
-      pdf_base64: json.pdf_base64 ?? null,
+      pdf_base64: smallPdf(json),
     };
   },
 };
