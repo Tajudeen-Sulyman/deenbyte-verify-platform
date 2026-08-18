@@ -4,8 +4,16 @@ const BASE_URL = 'https://techhubltd.co/api/verification';
 const API_KEY = process.env.TECHHUB_API_KEY!;
 
 function smallPdf(j: any) {
-  const p = j && j.pdf_base64;
-  return typeof p === 'string' && p.length < 2000000 ? p : null;
+  const candidates = [
+    j?.pdf_base64,
+    j?.user_data?.pdf_base64,
+    j?.user_data?.user_data?.pdf_base64,
+    j?.data?.pdf_base64,
+  ];
+  for (const p of candidates) {
+    if (typeof p === 'string' && p.length > 1000 && p.length < 2000000) return p;
+  }
+  return null;
 }
 
 function srcOf(json: any) {
