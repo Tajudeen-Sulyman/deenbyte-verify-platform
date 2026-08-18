@@ -5,7 +5,11 @@ const API_KEY = process.env.TECHHUB_API_KEY!;
 
 function smallPdf(j: any) {
   const p = j && j.pdf_base64;
-  return typeof p === 'string' && p.length < 300000 ? p : null;
+  return typeof p === 'string' && p.length < 2000000 ? p : null;
+}
+
+function srcOf(json: any) {
+  return json?.user_data ?? json?.data ?? json ?? {};
 }
 
 function isOk(json: any): boolean {
@@ -118,7 +122,7 @@ export const TechHubProvider = {
     return {
       success: true,
       message: json.message ?? 'Verification successful.',
-      data: mapUser(json.user_data ?? {}),
+      data: mapUser(srcOf(json)),
       pdf_base64: smallPdf(json),
     };
   },
@@ -129,7 +133,7 @@ export const TechHubProvider = {
     return {
       success: true,
       message: json.message ?? 'Verification successful.',
-      data: mapUser(json.user_data ?? {}),
+      data: mapUser(srcOf(json)),
       pdf_base64: smallPdf(json),
     };
   },
@@ -145,7 +149,7 @@ export const TechHubProvider = {
     return {
       success: true,
       message: json.message ?? 'Verification successful.',
-      data: mapUser(json.user_data ?? {}),
+      data: mapUser(srcOf(json)),
       pdf_base64: smallPdf(json),
     };
   },
@@ -156,7 +160,7 @@ export const TechHubProvider = {
     return {
       success: true,
       message: json.message ?? 'Verification successful.',
-      data: mapUser(json.user_data ?? {}),
+      data: mapUser(srcOf(json)),
       pdf_base64: smallPdf(json),
     };
   },
