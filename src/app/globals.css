@@ -1,15 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #22C55E;
-    --color-primary-dark: #16A34A;
-      --color-dark: #0F172A;
-        --color-light: #F8FAFC;
-          --color-muted: #64748B;
-            --color-border: #E2E8F0;
-              --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-              }
+  --color-primary: #0B7285;
+  --color-primary-dark: #095C6B;
+  --color-accent: #14B8A6;
+  --color-dark: #0F172A;
+  --color-light: #F7F9FC;
+  --color-muted: #64748B;
+  --color-border: #E2E8F0;
+  --color-success: #16A34A;
+  --color-warning: #D97706;
+  --color-danger: #DC2626;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.06), 0 8px 24px -12px rgb(15 23 42 / 0.12);
+}
 
-              body {
-                @apply bg-light text-dark antialiased;
-                }
+body {
+  @apply bg-light text-dark antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgb(11 114 133 / 0.15);
+}
