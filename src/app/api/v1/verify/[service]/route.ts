@@ -5,6 +5,7 @@ import { runVerification, ReverifyRequiredError } from '@/lib/services/verificat
 import { FastVerifyProvider } from '@/lib/providers/fastverify';
 import { HKVerifyProvider } from '@/lib/providers/hkverify';
 import { AijalonProvider } from '@/lib/providers/aijalon';
+import { TechHubProvider } from '@/lib/providers/techhub';
 
 const supabaseAdmin = adminClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,9 +17,7 @@ type Call = (v: any, s: any) => Promise<any>;
 const SERVICES: Record<string, {
   serviceId: string;
   validate?: (v: string) => string | null;
-  fv?: Call;
-  hk?: Call;
-  aj?: Call;
+  fv?: Call; hk?: Call; aj?: Call; th?: Call;
   defaultSlip: string;
   isDemographic?: boolean;
 }> = {
@@ -27,32 +26,35 @@ const SERVICES: Record<string, {
     validate: (v: string) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
     fv: (v: any, s: any) => FastVerifyProvider.verifyNIN(v, s),
     aj: (v: any, s: any) => AijalonProvider.verifyNIN(v, s),
+    th: (v: any, s: any) => TechHubProvider.verifyNIN(v, s),
     defaultSlip: 'premium',
   },
   nin_regular: {
     serviceId: 'nin_regular',
     validate: (v: string) => (/^\d{11}$/.test(v) ? null : 'NIN must be exactly 11 digits.'),
-    hk: (v: any, s: any) => HKVerifyProvider.verifyNIN(v, s),
     aj: (v: any, s: any) => AijalonProvider.verifyNIN(v, s),
+    th: (v: any, s: any) => TechHubProvider.verifyNIN(v, s),
     defaultSlip: 'standard',
   },
   bvn_basic: {
     serviceId: 'bvn_basic',
     validate: (v: string) => (/^\d{11}$/.test(v) ? null : 'BVN must be exactly 11 digits.'),
-    hk: (v: any, s: any) => HKVerifyProvider.verifyBVN(v, s),
     aj: (v: any, s: any) => AijalonProvider.verifyBVN(v, s),
-    defaultSlip: 'basic',
+    th: (v: any, s: any) => TechHubProvider.verifyBVN(v, s),
+    defaultSlip: 'premium',
   },
   nin_by_phone: {
     serviceId: 'nin_by_phone',
     validate: (v: string) => (/^(0\d{10}|\d{11})$/.test(v) ? null : 'Phone must be 11 digits.'),
     aj: (v: any, s: any) => AijalonProvider.verifyNINByPhone(v, s),
-    defaultSlip: 'standard',
+    th: (v: any, s: any) => TechHubProvider.verifyNINByPhone(v, s),
+    defaultSlip: 'premium',
   },
   nin_demographic: {
     serviceId: 'nin_demographic',
-    aj: (input: any, s: any) => AijalonProvider.demographicSearch(input, s),
-    defaultSlip: 'standard',
+    aj: (i: any, s: any) => AijalonProvider.demographicSearch(i, s),
+    th: (i: any, s: any) => TechHubProvider.demographicSearch(i, s),
+    defaultSlip: 'premium',
     isDemographic: true,
   },
 };
@@ -88,17 +90,19 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
       return NextResponse.json({ error: 'Please fill all required fields.' }, { status: 422 });
     }
     identifier = `${input.firstname}|${input.lastname}|${input.gender}|${input.dob}`;
-    const demoCall = config.aj as Call;
+    call = (provider === 'techhub' ? config.th : config.aj) as Call;
+    const demoCall = call;
     call = (_id: any, slip: any) => demoCall(input, slip);
   } else {
     identifier = String(body.identifier ?? '').trim();
     const validationError = config.validate ? config.validate(identifier) : null;
     if (validationError) return NextResponse.json({ error: validationError }, { status: 422 });
 
-    if (provider === 'aijalon' && config.aj) call = config.aj;
+    if (provider === 'techhub' && config.th) call = config.th;
+    else if (provider === 'aijalon' && config.aj) call = config.aj;
     else if (provider === 'hkverify' && config.hk) call = config.hk;
     else if (provider === 'fastverify' && config.fv) call = config.fv;
-    else call = (config.aj ?? config.hk ?? config.fv) as Call;
+    else call = (config.th ?? config.aj ?? config.hk ?? config.fv) as Call;
   }
 
   try {
