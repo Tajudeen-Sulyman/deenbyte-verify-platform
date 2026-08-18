@@ -137,7 +137,7 @@ export const TechHubProvider = {
 
   async verifyNINByPhone(phone: string, slipType: string) {
     const tier = PHONE_EP[slipType] ? slipType : 'premium';
-    const json = await callWithFallback([PHONE_EP[tier], '/nin_by_phone.php', FALLBACK.phone], { phone });
+    const json = await callWithFallback([PHONE_EP[tier], '/nin_by_phone.php', FALLBACK.phone], { phone, nin: phone });
     return {
       success: true,
       message: json.message ?? 'Verification successful.',
