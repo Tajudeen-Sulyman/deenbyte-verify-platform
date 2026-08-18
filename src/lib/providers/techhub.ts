@@ -8,6 +8,16 @@ function smallPdf(j: any) {
   return typeof p === 'string' && p.length < 300000 ? p : null;
 }
 
+function isOk(json: any): boolean {
+  const st = json?.status;
+  return (
+    st === true ||
+    String(st ?? '').toLowerCase() === 'success' ||
+    json?.response_code === '00' ||
+    json?.success === true
+  );
+}
+
 const NIN_EP: Record<string, string> = {
   premium: '/nin_premium_slip.php',
   standard: '/nin_standard_slip.php',
@@ -61,7 +71,7 @@ async function call(path: string, body: any) {
     if (res.status === 401) throw new ProviderError(503, 'Provider authentication error. Contact support.');
     throw new ProviderError(res.status, msg);
   }
-  if (json.status !== 'success') {
+  if (!isOk(json)) {
     throw new ProviderError(400, json.message ?? 'Verification failed.');
   }
   return json;
