@@ -9,7 +9,7 @@ function smallPdf(j: any) {
 }
 
 function srcOf(json: any) {
-  return json?.user_data ?? json?.data ?? json ?? {};
+  return json?.user_data?.user_data ?? json?.user_data ?? json?.data ?? json ?? {};
 }
 
 function isOk(json: any): boolean {
@@ -103,12 +103,12 @@ function normGender(g: any): string {
 
 function mapUser(d: any) {
   return {
-    first_name: d.first_name ?? '',
-    middle_name: d.middle_name ?? '',
-    last_name: d.last_name ?? '',
-    date_of_birth: d.date_of_birth ?? '',
+    first_name: d.first_name ?? d.firstName ?? '',
+    middle_name: d.middle_name ?? d.middleName ?? '',
+    last_name: d.last_name ?? d.surname ?? d.lastName ?? '',
+    date_of_birth: d.date_of_birth ?? d.birthDate ?? '',
     gender: normGender(d.gender),
-    phone: d.phone_number ?? '',
+    phone: d.phone_number ?? d.phone ?? d.phoneNo ?? '',
     nin: d.nin ?? '',
     bvn: d.bvn ?? '',
     address: d.address ?? '',
