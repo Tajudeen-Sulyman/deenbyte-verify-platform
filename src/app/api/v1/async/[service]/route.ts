@@ -68,7 +68,6 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
       selling_price: price,
       provider_cost: serviceRow.provider_cost,
       safe_request_data: { identifier },
-      slip_type: 'standard',
     })
     .select()
     .single();
