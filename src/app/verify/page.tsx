@@ -1,54 +1,80 @@
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { BrandLogo } from '@/components/brand';
-import { LogoutButton } from '@/components/logout-button';
+import { AppShell } from '@/components/shell';
 import { VerifyForm } from '@/components/verify-form';
-import { DemographicForm } from '@/components/demographic-form';
 import { AsyncForm } from '@/components/async-form';
+import { DemographicForm } from '@/components/demographic-form';
 
 export const dynamic = 'force-dynamic';
+export const metadata = { title: 'Verify — DeenByte Verify' };
+
+function renderForm(s: any, walletBalance: number) {
+  if (s.is_async) return <AsyncForm key={s.service_id} service={s} walletBalance={walletBalance} />;
+  if (s.service_id === 'nin_demographic') return <DemographicForm key={s.service_id} service={s} walletBalance={walletBalance} />;
+  return <VerifyForm key={s.service_id} service={s} walletBalance={walletBalance} />;
+}
+
+function Section({ title, sub, children }: { title: string; sub: string; children: React.ReactNode }) {
+  return (
+    <section className="space-y-3">
+      <div>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-muted">{title}</h3>
+        <p className="text-xs text-muted mt-0.5">{sub}</p>
+      </div>
+      {children}
+    </section>
+  );
+}
 
 export default async function VerifyPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
+  const { data: wallet } = await supabase
+    .from('wallets').select('balance').eq('user_id', user.id).single();
+  const walletBalance = Number(wallet?.balance ?? 0);
+
   const { data: services } = await supabase
     .from('verification_services').select('*')
     .eq('enabled', true).eq('status', 'active')
     .order('category').order('name');
 
-  const { data: wallet } = await supabase
-    .from('wallets').select('balance').eq('user_id', user.id).single();
-  const walletBalance = Number(wallet?.balance ?? 0);
+  const all = services ?? [];
+  const nin = all.filter((s: any) => !s.is_async && s.category === 'NIN');
+  const bvn = all.filter((s: any) => !s.is_async && s.category === 'BVN');
+  const corrections = all.filter((s: any) => s.is_async);
 
   return (
-    <main className="min-h-screen">
-      <header className="bg-white border-b border-border">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/dashboard"><BrandLogo /></Link>
-          <LogoutButton />
-        </div>
-      </header>
-      <div className="max-w-3xl mx-auto px-4 py-6 space-y-4">
+    <AppShell title="Verify">
+      <div className="space-y-6">
         <div>
-          <h1 className="text-xl font-bold text-dark">Verify Identity</h1>
-          <p className="text-sm text-muted">Choose a service below</p>
+          <h2 className="text-lg font-bold text-dark">Verify identity</h2>
+          <p className="text-sm text-muted mt-1">Choose a service. Charges apply only from your wallet balance.</p>
         </div>
-        {(!services || services.length === 0) && (
+
+        {all.length === 0 && (
           <div className="bg-white border border-border rounded-2xl p-5 text-sm text-muted">No services available.</div>
         )}
-        {services?.map((s: any) =>
-          s.is_async ? (
-            <AsyncForm key={s.service_id} service={s} walletBalance={walletBalance} />
-          ) : s.service_id === 'nin_demographic' ? (
-            <DemographicForm key={s.service_id} service={s} walletBalance={walletBalance} />
-          ) : (
-            <VerifyForm key={s.service_id} service={s} walletBalance={walletBalance} />
-          )
+
+        {nin.length > 0 && (
+          <Section title="NIN services" sub="NIMC-sourced slips and searches">
+            <div className="space-y-4">{nin.map((s: any) => renderForm(s, walletBalance))}</div>
+          </Section>
+        )}
+
+        {bvn.length > 0 && (
+          <Section title="BVN services" sub="NIBSS-sourced slips">
+            <div className="space-y-4">{bvn.map((s: any) => renderForm(s, walletBalance))}</div>
+          </Section>
+        )}
+
+        {corrections.length > 0 && (
+          <Section title="Corrections & async requests" sub="Processed in 10 minutes to 24 hours — auto-refund on failure">
+            <div className="space-y-4">{corrections.map((s: any) => renderForm(s, walletBalance))}</div>
+          </Section>
         )}
       </div>
-    </main>
+    </AppShell>
   );
 }
