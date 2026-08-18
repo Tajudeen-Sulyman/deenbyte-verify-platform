@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { AppShell } from '@/components/shell';
 import { VerifyForm } from '@/components/verify-form';
@@ -26,7 +27,8 @@ function Section({ title, sub, children }: { title: string; sub: string; childre
   );
 }
 
-export default async function VerifyPage() {
+export default async function VerifyPage(props: { searchParams: Promise<Record<string, string>> }) {
+  const sp = await props.searchParams;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
@@ -38,43 +40,46 @@ export default async function VerifyPage() {
       .order('category').order('name'),
   ]);
   const walletBalance = Number(walletRes.data?.balance ?? 0);
-  const services = servicesRes.data;
+  const all = servicesRes.data ?? [];
 
-  const all = services ?? [];
+  const single = sp.s ? all.find((s: any) => s.service_id === sp.s) : null;
   const nin = all.filter((s: any) => !s.is_async && s.category === 'NIN');
   const bvn = all.filter((s: any) => !s.is_async && s.category === 'BVN');
   const corrections = all.filter((s: any) => s.is_async);
 
   return (
-    <AppShell title="Verify">
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-lg font-bold text-dark">Verify identity</h2>
-          <p className="text-sm text-muted mt-1">Choose a service. Charges apply only from your wallet balance.</p>
+    <AppShell title={single ? String(single.name) : 'Verify'}>
+      {single ? (
+        <div className="space-y-4">
+          <Link href="/services" className="inline-block text-sm font-semibold text-primary">← All services</Link>
+          {renderForm(single, walletBalance)}
         </div>
-
-        {all.length === 0 && (
-          <div className="bg-white border border-border rounded-2xl p-5 text-sm text-muted">No services available.</div>
-        )}
-
-        {nin.length > 0 && (
-          <Section title="NIN services" sub="NIMC-sourced slips and searches">
-            <div className="space-y-4">{nin.map((s: any) => renderForm(s, walletBalance))}</div>
-          </Section>
-        )}
-
-        {bvn.length > 0 && (
-          <Section title="BVN services" sub="NIBSS-sourced slips">
-            <div className="space-y-4">{bvn.map((s: any) => renderForm(s, walletBalance))}</div>
-          </Section>
-        )}
-
-        {corrections.length > 0 && (
-          <Section title="Corrections & async requests" sub="Processed in 10 minutes to 24 hours — auto-refund on failure">
-            <div className="space-y-4">{corrections.map((s: any) => renderForm(s, walletBalance))}</div>
-          </Section>
-        )}
-      </div>
+      ) : (
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-lg font-bold text-dark">Verify identity</h2>
+            <p className="text-sm text-muted mt-1">Choose a service. Charges apply only from your wallet balance.</p>
+          </div>
+          {all.length === 0 && (
+            <div className="bg-white border border-border rounded-2xl p-5 text-sm text-muted">No services available.</div>
+          )}
+          {nin.length > 0 && (
+            <Section title="NIN services" sub="NIMC-sourced slips and searches">
+              <div className="space-y-4">{nin.map((s: any) => renderForm(s, walletBalance))}</div>
+            </Section>
+          )}
+          {bvn.length > 0 && (
+            <Section title="BVN services" sub="NIBSS-sourced slips">
+              <div className="space-y-4">{bvn.map((s: any) => renderForm(s, walletBalance))}</div>
+            </Section>
+          )}
+          {corrections.length > 0 && (
+            <Section title="Corrections & async requests" sub="Processed in 10 minutes to 24 hours — auto-refund on failure">
+              <div className="space-y-4">{corrections.map((s: any) => renderForm(s, walletBalance))}</div>
+            </Section>
+          )}
+        </div>
+      )}
     </AppShell>
   );
 }
