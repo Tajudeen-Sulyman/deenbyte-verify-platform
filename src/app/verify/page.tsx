@@ -31,14 +31,14 @@ export default async function VerifyPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const { data: wallet } = await supabase
-    .from('wallets').select('balance').eq('user_id', user.id).single();
-  const walletBalance = Number(wallet?.balance ?? 0);
-
-  const { data: services } = await supabase
-    .from('verification_services').select('*')
-    .eq('enabled', true).eq('status', 'active')
-    .order('category').order('name');
+  const [walletRes, servicesRes] = await Promise.all([
+    supabase.from('wallets').select('balance').eq('user_id', user.id).single(),
+    supabase.from('verification_services').select('*')
+      .eq('enabled', true).eq('status', 'active')
+      .order('category').order('name'),
+  ]);
+  const walletBalance = Number(walletRes.data?.balance ?? 0);
+  const services = servicesRes.data;
 
   const all = services ?? [];
   const nin = all.filter((s: any) => !s.is_async && s.category === 'NIN');
