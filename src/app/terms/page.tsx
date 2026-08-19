@@ -14,7 +14,7 @@ export default function TermsPage() {
         <h1 className="text-xl font-bold text-dark">Terms of Service</h1>
         <p className="text-xs text-muted mt-1">Effective date: 18 August 2026</p>
 
-        <div className="mt-4 space-y-4 text-sm text-dark bg-white border border-border rounded-2xl p-5">
+        <div className="mt-4 space-y-4 text-sm text-dark card3d p-5">
           <section>
             <h2 className="font-semibold">1. The service</h2>
             <p className="mt-1 text-muted">DeenByte Verify provides paid identity verification lookups (NIN, BVN, phone, demographic search) and async correction requests (IPE clearance, validation, personalization, BVN retrieval) sourced from licensed third-party providers.</p>

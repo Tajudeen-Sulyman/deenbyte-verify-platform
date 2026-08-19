@@ -61,7 +61,7 @@ export default async function HistoryPage(props: { searchParams: Promise<Record<
         </div>
 
         {list.length === 0 && (
-          <div className="bg-white border border-border rounded-2xl p-6 text-center">
+          <div className="card3d p-6 text-center">
             <p className="text-sm text-muted">No verifications here yet.</p>
             <p className="text-xs text-muted mt-1">Run your first verification and it will appear here with its slip.</p>
             <Link href="/verify" className="mt-3 inline-block rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-white">Explore Services</Link>
@@ -70,7 +70,7 @@ export default async function HistoryPage(props: { searchParams: Promise<Record<
 
         <div className="space-y-3">
           {list.map((r: any) => (
-            <div key={r.id} className="bg-white border border-border rounded-2xl p-4 shadow-card">
+            <div key={r.id} className="card3d p-4 shadow-card">
               <div className="flex items-center justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-dark truncate">{r.serviceName}</p>

@@ -25,20 +25,20 @@ export default async function WalletPage() {
     <AppShell title="Wallet">
 
       <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
-        <div className="bg-white border border-border rounded-2xl p-5">
+        <div className="card3d p-5">
           <p className="text-sm text-muted">Wallet Balance</p>
           <p className="text-3xl font-bold text-dark mt-1">
             ₦{balance.toLocaleString('en-NG', { minimumFractionDigits: 2 })}
           </p>
         </div>
 
-        <div className="bg-white border border-border rounded-2xl p-5">
+        <div className="card3d p-5">
           <h2 className="font-semibold text-dark">Fund Wallet</h2>
           <p className="text-sm text-muted mt-1">Payments are processed securely by Paystack.</p>
           <FundForm />
         </div>
 
-        <div className="bg-white border border-border rounded-2xl p-5">
+        <div className="card3d p-5">
           <h2 className="font-semibold text-dark">Recent Transactions</h2>
           {!txns || txns.length === 0 ? (
             <p className="text-sm text-muted mt-3">No transactions yet.</p>

@@ -61,7 +61,7 @@ export default async function VerifyPage(props: { searchParams: Promise<Record<s
             <p className="text-sm text-muted mt-1">Choose a service. Charges apply only from your wallet balance.</p>
           </div>
           {all.length === 0 && (
-            <div className="bg-white border border-border rounded-2xl p-5 text-sm text-muted">No services available.</div>
+            <div className="card3d p-5 text-sm text-muted">No services available.</div>
           )}
           {nin.length > 0 && (
             <Section title="NIN services" sub="NIMC-sourced slips and searches">

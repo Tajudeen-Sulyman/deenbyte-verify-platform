@@ -48,7 +48,7 @@ export default async function HomePage() {
           <Link href="/register" className="px-5 py-3 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary-dark">
             Start verifying
           </Link>
-          <Link href="#pricing" className="px-5 py-3 text-sm font-semibold text-dark bg-white border border-border rounded-lg">
+          <Link href="#pricing" className="px-5 py-3 text-sm font-semibold text-dark card3d rounded-lg">
             See prices
           </Link>
         </div>
@@ -58,7 +58,7 @@ export default async function HomePage() {
         <h2 className="text-lg font-bold text-dark mb-3">Service prices</h2>
         <div className="grid grid-cols-2 gap-3">
           {services?.map((s: any) => (
-            <div key={s.name} className="bg-white border border-border rounded-2xl p-4">
+            <div key={s.name} className="card3d p-4">
               <p className="text-sm font-semibold text-dark">{s.name}</p>
               <p className="text-xs text-muted mt-0.5">
                 {s.is_async ? '10 min – 24 hrs' : 'Instant'} · {s.category}
@@ -74,17 +74,17 @@ export default async function HomePage() {
       <section className="max-w-4xl mx-auto px-4 pb-8">
         <h2 className="text-lg font-bold text-dark mb-3">How it works</h2>
         <div className="grid gap-3 sm:grid-cols-3">
-          <div className="bg-white border border-border rounded-2xl p-4">
+          <div className="card3d p-4">
             <p className="text-sm font-bold text-primary">1</p>
             <p className="text-sm font-semibold text-dark mt-1">Create &amp; fund</p>
             <p className="text-xs text-muted mt-1">Open a free account and fund your wallet securely with Paystack.</p>
           </div>
-          <div className="bg-white border border-border rounded-2xl p-4">
+          <div className="card3d p-4">
             <p className="text-sm font-bold text-primary">2</p>
             <p className="text-sm font-semibold text-dark mt-1">Verify</p>
             <p className="text-xs text-muted mt-1">Enter the NIN, BVN or tracking ID. We run it against the official database.</p>
           </div>
-          <div className="bg-white border border-border rounded-2xl p-4">
+          <div className="card3d p-4">
             <p className="text-sm font-bold text-primary">3</p>
             <p className="text-sm font-semibold text-dark mt-1">Download slip</p>
             <p className="text-xs text-muted mt-1">Get the official PDF slip instantly, saved forever in your history.</p>
@@ -93,7 +93,7 @@ export default async function HomePage() {
       </section>
 
       <section className="max-w-4xl mx-auto px-4 pb-10">
-        <div className="bg-white border border-border rounded-2xl p-5 grid gap-2 sm:grid-cols-3 text-center">
+        <div className="card3d p-5 grid gap-2 sm:grid-cols-3 text-center">
           <p className="text-xs text-muted">✓ Official NIMC / NIBSS data</p>
           <p className="text-xs text-muted">✓ Auto-refund on any failure</p>
           <p className="text-xs text-muted">✓ Slips stored in your history</p>

@@ -38,7 +38,7 @@ export default function RegisterPage() {
                                                                           <div className="w-full max-w-sm">
                                                                                   <BrandLogo />
 
-                                                                                          <div className="bg-white border border-border rounded-2xl p-6 mt-8 shadow-sm">
+                                                                                          <div className="card3d p-6 mt-8 shadow-sm">
                                                                                                     <h1 className="text-lg font-semibold text-dark">Create your account</h1>
                                                                                                               <p className="text-sm text-muted mt-1">Start verifying identities in minutes</p>
 

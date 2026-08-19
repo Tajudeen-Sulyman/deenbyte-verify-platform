@@ -39,7 +39,7 @@ export function HistoryList({ initialRows }: { initialRows: any[] }) {
   };
 
   if (!rows || rows.length === 0) {
-    return <div className="bg-white border border-border rounded-2xl p-5 text-sm text-muted">No verifications yet.</div>;
+    return <div className="card3d p-5 text-sm text-muted">No verifications yet.</div>;
   }
 
   return (
@@ -48,7 +48,7 @@ export function HistoryList({ initialRows }: { initialRows: any[] }) {
         const serviceId = r.verification_services?.service_id;
         const isAsync = ASYNC_SERVICES.includes(serviceId);
         return (
-          <div key={r.id} className="bg-white border border-border rounded-2xl p-4">
+          <div key={r.id} className="card3d p-4">
             <div className="flex items-center justify-between gap-3">
               <Link href={'/history/' + r.id} className="min-w-0 flex-1">
                 <p className="text-sm font-semibold text-dark truncate">

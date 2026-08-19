@@ -79,27 +79,27 @@ export default async function AdminAnalyticsPage() {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white border border-border rounded-2xl p-4">
+          <div className="card3d p-4">
             <p className="text-xs text-muted">Revenue</p>
             <p className="text-lg font-bold text-primary">{ngn(revenue)}</p>
           </div>
-          <div className="bg-white border border-border rounded-2xl p-4">
+          <div className="card3d p-4">
             <p className="text-xs text-muted">Margin</p>
             <p className="text-lg font-bold text-dark">{ngn(margin)}</p>
             <p className="text-xs text-muted">cost {ngn(cost)}</p>
           </div>
-          <div className="bg-white border border-border rounded-2xl p-4">
+          <div className="card3d p-4">
             <p className="text-xs text-muted">Requests</p>
             <p className="text-lg font-bold text-dark">{all.length}</p>
             <p className="text-xs text-muted">{successful.length} ok · {failed.length} failed · {open} open</p>
           </div>
-          <div className="bg-white border border-border rounded-2xl p-4">
+          <div className="card3d p-4">
             <p className="text-xs text-muted">Success rate</p>
             <p className="text-lg font-bold text-dark">{rate}%</p>
           </div>
         </div>
 
-        <div className="bg-white border border-border rounded-2xl p-4">
+        <div className="card3d p-4">
           <p className="text-xs text-muted mb-3">Revenue — last 14 days</p>
           <div className="flex items-end gap-1 h-28">
             {days.map((d) => (
@@ -114,7 +114,7 @@ export default async function AdminAnalyticsPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-border rounded-2xl p-4 space-y-3">
+        <div className="card3d p-4 space-y-3">
           <p className="text-xs text-muted">By service (30 days)</p>
           {serviceRows.map(([name, e]) => (
             <div key={name} className="flex items-center justify-between gap-3 border-b border-border last:border-0 pb-2 last:pb-0">

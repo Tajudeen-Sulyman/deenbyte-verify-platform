@@ -68,7 +68,7 @@ export default async function AdminHealthPage() {
           </div>
         )}
 
-        <div className="bg-white border border-border rounded-2xl p-5">
+        <div className="card3d p-5">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="font-semibold text-dark">Aijalon Float</h2>

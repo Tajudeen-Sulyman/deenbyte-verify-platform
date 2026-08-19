@@ -34,7 +34,7 @@ function V() {
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-sm bg-white border border-border rounded-2xl p-6 text-center">
+      <div className="w-full max-w-sm card3d p-6 text-center">
         <p className={'text-lg font-bold ' + (ok === false ? 'text-red-600' : 'text-primary')}>
           {ok === true ? '✓ Wallet funded' : ok === false ? 'Payment not completed' : 'Please wait'}
         </p>

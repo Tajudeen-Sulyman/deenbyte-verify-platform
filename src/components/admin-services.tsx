@@ -45,7 +45,7 @@ export function AdminServices({ services }: { services: Service[] }) {
       {rows.map((s) => {
         const margin = Number(s.selling_price) - Number(s.provider_cost ?? 0);
         return (
-          <div key={s.id} className="bg-white border border-border rounded-2xl p-5">
+          <div key={s.id} className="card3d p-5">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="font-semibold text-dark">{s.name}</p>

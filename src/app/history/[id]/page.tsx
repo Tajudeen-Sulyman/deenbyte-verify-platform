@@ -48,14 +48,14 @@ export default async function HistoryDetailPage({ params }: { params: Promise<{ 
       </header>
 
       <div className="max-w-3xl mx-auto px-4 py-6 space-y-4">
-        <div className="bg-white border border-border rounded-2xl p-5">
+        <div className="card3d p-5">
           <p className="text-sm text-muted">{row.verification_services?.name ?? 'Verification'}</p>
           <p className="text-lg font-bold text-dark mt-1">{row.request_reference}</p>
           <p className="text-xs text-muted mt-1">{new Date(row.created_at).toLocaleString()} · {row.status}</p>
         </div>
 
         {row.status === 'successful' && entries.length > 0 && (
-          <div className="bg-white border border-border rounded-2xl p-5">
+          <div className="card3d p-5">
             <h2 className="font-semibold text-dark">Result</h2>
             <div className="mt-3 space-y-2">
               {entries.map(([key, label]) => (

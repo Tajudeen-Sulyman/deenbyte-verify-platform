@@ -45,7 +45,7 @@ export default async function AdminPage() {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {stats.map((s) => (
-            <div key={s.label} className="bg-white border border-border rounded-2xl p-4">
+            <div key={s.label} className="card3d p-4">
               <p className="text-xs text-muted">{s.label}</p>
               <p className="text-lg font-bold text-dark mt-1">{s.value}</p>
             </div>

@@ -14,7 +14,7 @@ export default function PrivacyPage() {
         <h1 className="text-xl font-bold text-dark">Privacy Policy</h1>
         <p className="text-xs text-muted mt-1">Effective date: 18 August 2026</p>
 
-        <div className="mt-4 space-y-4 text-sm text-dark bg-white border border-border rounded-2xl p-5">
+        <div className="mt-4 space-y-4 text-sm text-dark card3d p-5">
           <section>
             <h2 className="font-semibold">1. What we collect</h2>
             <p className="mt-1 text-muted">When you use DeenByte Verify we process: your account email; wallet and transaction records; and the identifiers you submit for verification (NIN, BVN, phone number, name, date of birth, gender, or enrollment tracking ID), together with the verification result returned by the data provider.</p>

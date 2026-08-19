@@ -59,12 +59,12 @@ export default async function DashboardPage() {
   return (
     <AppShell title="Dashboard">
       <div className="space-y-5">
-        <section className="rounded-2xl bg-white border border-border shadow-card p-5">
+        <section className="card3d p-5">
           <h2 className="text-lg font-bold text-dark">Welcome back 👋</h2>
           <p className="text-sm text-muted mt-1">Manage verifications, wallet and transactions from one place.</p>
         </section>
 
-        <section className="rounded-2xl bg-white border border-border shadow-card p-5">
+        <section className="card3d p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs text-muted">Wallet Balance</p>
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {services.map((s: any) => (
               <Link key={s.service_id} href={'/verify?s=' + s.service_id}
-                className="relative rounded-2xl bg-white border border-border shadow-card p-4 pt-6 flex flex-col items-center text-center gap-2 hover:border-primary">
+                className="relative card3d p-4 pt-6 flex flex-col items-center text-center gap-2 hover:border-primary hover:-translate-y-0.5">
                 <span className={'absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full ' + badgeCls(String(s.category), !!s.is_async)}>
                   {s.is_async ? 'ASYNC' : String(s.category)}
                 </span>
@@ -108,7 +108,7 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        <section className="rounded-2xl bg-white border border-border shadow-card p-5">
+        <section className="card3d p-5">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-dark">Recent activity</h3>
             <Link href="/history" className="text-xs font-semibold text-primary">View all</Link>

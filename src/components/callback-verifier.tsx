@@ -39,7 +39,7 @@ export function CallbackVerifier({ reference }: { reference: string }) {
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-sm bg-white border border-border rounded-2xl p-6 text-center">
+      <div className="w-full max-w-sm card3d p-6 text-center">
         {state === 'checking' && <p className="text-sm text-muted">Confirming your payment…</p>}
         {state === 'success' && (
           <>

@@ -41,7 +41,7 @@ export default function LoginPage() {
                                                                                                 <BrandLogo />
                                                                                                         <p className="text-center text-muted text-sm mt-2">Fast, secure and reliable identity verification.</p>
 
-                                                                                                                <div className="bg-white border border-border rounded-2xl p-6 mt-8 shadow-sm">
+                                                                                                                <div className="card3d p-6 mt-8 shadow-sm">
                                                                                                                           <h1 className="text-lg font-semibold text-dark">Welcome back</h1>
                                                                                                                                     <p className="text-sm text-muted mt-1">Log in to your account</p>
 
