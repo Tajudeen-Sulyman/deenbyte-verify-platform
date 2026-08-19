@@ -30,8 +30,8 @@ body {
 }
 
 @utility card3d {
-  background: linear-gradient(180deg, #ffffff 0%, #e9f2fc 100%);
-  border: 1px solid rgb(191 219 254 / 0.9);
+  background: linear-gradient(180deg, #ffffff 0%, #d8e9fa 100%);
+  border: 1px solid rgb(147 197 253 / 0.9);
   border-radius: 1.25rem;
   box-shadow:
     0 1px 2px rgb(15 23 42 / 0.04),
