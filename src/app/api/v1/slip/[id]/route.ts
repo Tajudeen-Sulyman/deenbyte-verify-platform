@@ -75,3 +75,4 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
     headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'private, no-store' },
   });
 }
+

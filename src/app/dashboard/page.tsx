@@ -13,19 +13,45 @@ const BADGE: Record<string, string> = {
   pending: 'bg-amber-50 text-amber-700 border-amber-200',
 };
 
+const ICONS: Record<string, string> = {
+  nin_regular: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z',
+  nin_by_phone: 'M7 3h10v18H7zM11 18h2',
+  nin_demographic: 'M8 10a3 3 0 106 0 3 3 0 00-6 0zM4 20c0-3 3-5 8-5s8 2 8 5',
+  bvn_basic: 'M3 6h18v12H3zM7 10h4M7 14h7',
+  bvn_retrieval: 'M4 12a8 8 0 0114-5M20 12a8 8 0 01-14 5M18 3v4h-4M6 21v-4h4',
+  ipe_clearance: 'M6 3h9l4 4v14H6zM9 11h7M9 15h7',
+  personalization: 'M8 10a3 3 0 106 0 3 3 0 00-6 0zM4 20c0-3 3-5 8-5h2M17 14l2 2 4-4',
+  nin_validation: 'M9 3h6v3H9zM9 3H7v18h10V3h-2M9 12l2 2 4-4',
+};
+const FALLBACK = 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z';
+
+function badgeCls(cat: string, isAsync: boolean) {
+  if (isAsync) return 'bg-amber-50 text-amber-700';
+  if (cat === 'BVN') return 'bg-blue-50 text-blue-700';
+  return 'bg-primary/10 text-primary';
+}
+
 export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const { data: recent } = await supabase
-    .from('verification_requests')
-    .select('id, status, created_at, verification_services(name)')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(5);
+  const [walletRes, servicesRes, recentRes] = await Promise.all([
+    supabase.from('wallets').select('balance').eq('user_id', user.id).single(),
+    supabase.from('verification_services')
+      .select('service_id, name, category, selling_price, is_async')
+      .eq('enabled', true).eq('status', 'active')
+      .order('category').order('name'),
+    supabase.from('verification_requests')
+      .select('id, status, created_at, verification_services(name)')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(5),
+  ]);
 
-  const rows = (recent ?? []).map((r: any) => {
+  const balance = Number(walletRes.data?.balance ?? 0);
+  const services = servicesRes.data ?? [];
+  const rows = (recentRes.data ?? []).map((r: any) => {
     const svc = Array.isArray(r.verification_services) ? r.verification_services[0] : r.verification_services;
     return { ...r, serviceName: svc?.name ?? 'Verification' };
   });
@@ -33,38 +59,53 @@ export default async function DashboardPage() {
   return (
     <AppShell title="Dashboard">
       <div className="space-y-5">
-        <section className="rounded-2xl bg-white border border-border shadow-card p-5 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h2 className="text-lg font-bold text-dark">Welcome back 👋</h2>
-            <p className="text-sm text-muted mt-1">Manage verifications, wallet and transactions from one place.</p>
-          </div>
-          <div className="flex gap-2">
-            <Link href="/wallet" className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark">
-              Fund Wallet
-            </Link>
-            <Link href="/verify" className="rounded-lg border border-border bg-white px-4 py-2.5 text-sm font-semibold text-dark">
-              New Verification
-            </Link>
+        <section className="rounded-2xl bg-white border border-border shadow-card p-5">
+          <h2 className="text-lg font-bold text-dark">Welcome back 👋</h2>
+          <p className="text-sm text-muted mt-1">Manage verifications, wallet and transactions from one place.</p>
+        </section>
+
+        <section className="rounded-2xl bg-white border border-border shadow-card p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-xs text-muted">Wallet Balance</p>
+              <p className="text-2xl font-bold text-dark">
+                ₦{balance.toLocaleString('en-NG', { minimumFractionDigits: 2 })}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Link href="/wallet" className="rounded-lg bg-primary px-4 py-2.5 text-xs font-semibold text-white hover:bg-primary-dark">
+                Fund Wallet
+              </Link>
+              <Link href="/transactions" className="rounded-lg border border-border bg-white px-4 py-2.5 text-xs font-semibold text-dark">
+                Transactions
+              </Link>
+            </div>
           </div>
         </section>
 
-        <section className="grid grid-cols-2 gap-3">
-          <Link href="/verify" className="rounded-2xl bg-white border border-border shadow-card p-4 hover:border-primary">
-            <p className="text-sm font-semibold text-dark">Verify NIN / BVN</p>
-            <p className="text-xs text-muted mt-1">Instant official slips</p>
-          </Link>
-          <Link href="/history" className="rounded-2xl bg-white border border-border shadow-card p-4 hover:border-primary">
-            <p className="text-sm font-semibold text-dark">History</p>
-            <p className="text-xs text-muted mt-1">Slips &amp; statuses</p>
-          </Link>
-          <Link href="/transactions" className="rounded-2xl bg-white border border-border shadow-card p-4 hover:border-primary">
-            <p className="text-sm font-semibold text-dark">Transactions</p>
-            <p className="text-xs text-muted mt-1">Wallet activity</p>
-          </Link>
-          <Link href="/wallet" className="rounded-2xl bg-white border border-border shadow-card p-4 hover:border-primary">
-            <p className="text-sm font-semibold text-dark">Wallet</p>
-            <p className="text-xs text-muted mt-1">Fund &amp; manage</p>
-          </Link>
+        <section>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-bold text-dark">All services</h3>
+            <Link href="/services" className="text-xs font-semibold text-primary">View all</Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {services.map((s: any) => (
+              <Link key={s.service_id} href={'/verify?s=' + s.service_id}
+                className="relative rounded-2xl bg-white border border-border shadow-card p-4 pt-6 flex flex-col items-center text-center gap-2 hover:border-primary">
+                <span className={'absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full ' + badgeCls(String(s.category), !!s.is_async)}>
+                  {s.is_async ? 'ASYNC' : String(s.category)}
+                </span>
+                <span className="h-12 w-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+                    strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden="true">
+                    <path d={ICONS[s.service_id] ?? FALLBACK} />
+                  </svg>
+                </span>
+                <p className="text-sm font-semibold text-dark leading-tight">{s.name}</p>
+                <p className="text-xs font-bold text-primary">₦{Number(s.selling_price).toLocaleString('en-NG')}</p>
+              </Link>
+            ))}
+          </div>
         </section>
 
         <section className="rounded-2xl bg-white border border-border shadow-card p-5">
@@ -76,9 +117,6 @@ export default async function DashboardPage() {
             <div className="mt-4 text-center py-6">
               <p className="text-sm text-muted">No verifications yet.</p>
               <p className="text-xs text-muted mt-1">Run your first verification to see it here.</p>
-              <Link href="/verify" className="mt-3 inline-block rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-white">
-                Explore Services
-              </Link>
             </div>
           ) : (
             <div className="mt-3 space-y-2">
