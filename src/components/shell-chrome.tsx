@@ -19,7 +19,6 @@ const MAIN = [
   { href: '/wallet', label: 'Wallet', d: 'M3 7h18v12H3zM3 7l3-4h12l3 4M15 12h4' },
   { href: '/history', label: 'History', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z' },
   { href: '/transactions', label: 'Transactions', d: 'M4 6h16M4 12h16M4 18h10' },
-  { href: '/developer', label: 'Developer', d: 'M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14' },
 ];
 
 const ACCOUNT = [
