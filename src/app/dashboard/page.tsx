@@ -26,9 +26,9 @@ const ICONS: Record<string, string> = {
 const FALLBACK = 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z';
 
 function badgeCls(cat: string, isAsync: boolean) {
-  if (isAsync) return 'bg-amber-50 text-amber-700';
-  if (cat === 'BVN') return 'bg-blue-50 text-blue-700';
-  return 'bg-primary/10 text-primary';
+  if (isAsync) return 'bg-white/70 text-amber-700';
+  if (cat === 'BVN') return 'bg-white/70 text-blue-700';
+  return 'bg-white/70 text-primary';
 }
 
 export default async function DashboardPage() {
@@ -95,7 +95,7 @@ export default async function DashboardPage() {
                 <span className={'absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full ' + badgeCls(String(s.category), !!s.is_async)}>
                   {s.is_async ? 'ASYNC' : String(s.category)}
                 </span>
-                <span className="h-12 w-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <span className="h-12 w-12 rounded-xl bg-white/70 text-primary flex items-center justify-center">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
                     strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden="true">
                     <path d={ICONS[s.service_id] ?? FALLBACK} />
