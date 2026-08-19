@@ -83,7 +83,8 @@ export function ShellChrome({ balance, isAdmin, title, logoutSlot, children }: {
     <div className="min-h-screen bg-light">
       <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col bg-dark border-r border-white/10">
         <div className="px-5 py-5 border-b border-white/10">
-          <Link href="/dashboard" className="text-lg font-bold text-white">
+          <Link href="/dashboard" className="flex items-center gap-2 text-lg font-bold text-white">
+            <img src="/logo.jpg" alt="" className="h-9 w-9 rounded-xl object-cover shadow-md" />
             DeenByte <span className="text-emerald-400">Verify</span>
           </Link>
         </div>
@@ -95,7 +96,10 @@ export function ShellChrome({ balance, isAdmin, title, logoutSlot, children }: {
           <div className="absolute inset-0 bg-dark/60" onClick={() => setOpen(false)} />
           <div className="absolute inset-y-0 left-0 w-72 max-w-[85%] bg-dark shadow-card flex flex-col">
             <div className="px-5 py-5 border-b border-white/10 flex items-center justify-between">
-              <span className="text-lg font-bold text-white">DeenByte <span className="text-emerald-400">Verify</span></span>
+              <span className="flex items-center gap-2 text-lg font-bold text-white">
+                <img src="/logo.jpg" alt="" className="h-9 w-9 rounded-xl object-cover shadow-md" />
+                DeenByte <span className="text-emerald-400">Verify</span>
+              </span>
               <button onClick={() => setOpen(false)} aria-label="Close menu"
                 className="p-2 rounded-lg text-slate-300 hover:bg-white/10">✕</button>
             </div>
