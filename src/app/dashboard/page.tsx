@@ -31,6 +31,12 @@ function badgeCls(cat: string, isAsync: boolean) {
   return 'bg-white/70 text-primary';
 }
 
+function tileCls(cat: string, isAsync: boolean) {
+  if (isAsync) return 'from-amber-500 to-orange-600';
+  if (cat === 'BVN') return 'from-violet-500 to-purple-600';
+  return 'from-emerald-500 to-teal-600';
+}
+
 export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -64,19 +70,21 @@ export default async function DashboardPage() {
           <p className="text-sm text-muted mt-1">Manage verifications, wallet and transactions from one place.</p>
         </section>
 
-        <section className="card3d p-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+        <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-emerald-600 to-teal-700 shadow-card">
+          <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-white/10" />
+          <div className="absolute -right-2 -top-2 h-20 w-20 rounded-full bg-white/10" />
+          <div className="relative flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs text-muted">Wallet Balance</p>
-              <p className="text-2xl font-bold text-dark">
+              <p className="text-xs text-emerald-100">Wallet Balance</p>
+              <p className="text-2xl font-bold text-white">
                 ₦{balance.toLocaleString('en-NG', { minimumFractionDigits: 2 })}
               </p>
             </div>
             <div className="flex gap-2">
-              <Link href="/wallet" className="rounded-lg bg-primary px-4 py-2.5 text-xs font-semibold text-white hover:bg-primary-dark">
+              <Link href="/wallet" className="rounded-lg bg-white px-4 py-2.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50">
                 Fund Wallet
               </Link>
-              <Link href="/transactions" className="rounded-lg border border-border bg-white px-4 py-2.5 text-xs font-semibold text-dark">
+              <Link href="/transactions" className="rounded-lg border border-white/40 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white hover:bg-white/20">
                 Transactions
               </Link>
             </div>
@@ -95,7 +103,7 @@ export default async function DashboardPage() {
                 <span className={'absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full ' + badgeCls(String(s.category), !!s.is_async)}>
                   {s.is_async ? 'ASYNC' : String(s.category)}
                 </span>
-                <span className="h-12 w-12 rounded-xl bg-white/70 text-primary flex items-center justify-center">
+                <span className={'h-12 w-12 rounded-2xl bg-gradient-to-br text-white flex items-center justify-center shadow-md ' + tileCls(String(s.category), !!s.is_async)}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
                     strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden="true">
                     <path d={ICONS[s.service_id] ?? FALLBACK} />

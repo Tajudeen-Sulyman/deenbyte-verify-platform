@@ -24,6 +24,12 @@ function badgeCls(cat: string, isAsync: boolean) {
   return 'bg-white/70 text-primary';
 }
 
+function tileCls(cat: string, isAsync: boolean) {
+  if (isAsync) return 'from-amber-500 to-orange-600';
+  if (cat === 'BVN') return 'from-violet-500 to-purple-600';
+  return 'from-emerald-500 to-teal-600';
+}
+
 export default async function ServicesPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -49,7 +55,7 @@ export default async function ServicesPage() {
               <span className={'absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full ' + badgeCls(String(s.category), !!s.is_async)}>
                 {s.is_async ? 'ASYNC' : String(s.category)}
               </span>
-              <span className="h-12 w-12 rounded-xl bg-white/70 text-primary flex items-center justify-center">
+              <span className={'h-12 w-12 rounded-2xl bg-gradient-to-br text-white flex items-center justify-center shadow-md ' + tileCls(String(s.category), !!s.is_async)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
                   strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden="true">
                   <path d={ICONS[s.service_id] ?? FALLBACK} />
