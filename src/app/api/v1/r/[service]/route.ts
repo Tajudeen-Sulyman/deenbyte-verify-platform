@@ -93,7 +93,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
     }
     return NextResponse.json({
       success: true,
-      reference: outcome.requestReference ?? null,
+      reference: (outcome as any).requestReference ?? (outcome as any).reference ?? null,
       status: 'successful',
       data: outcome.data ?? null,
       slip_url: outcome.requestId ? origin + '/api/v1/slip/' + outcome.requestId : null,
