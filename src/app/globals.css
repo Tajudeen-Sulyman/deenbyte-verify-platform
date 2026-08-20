@@ -48,5 +48,6 @@ body {
 .card3d .text-red-700 { color: #F87171; }
 .card3d .text-amber-700 { color: #FBBF24; }
 .card3d .border-border { border-color: rgb(255 255 255 / 0.08); }
-.card3d input, .card3d select { color: #0F172A; }
+.card3d input, .card3d select { color: #0F172A; background: #ffffff; }
+.card3d input::placeholder { color: #94A3B8; }
 .card3d input.text-dark, .card3d select.text-dark { color: #0F172A; }
