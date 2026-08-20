@@ -22,6 +22,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
 
   if (!row) return new NextResponse('Not found', { status: 404 });
 
+  // Use safe_response_data which contains the actual verification result
   const d = row.safe_response_data || {};
   const ref = row.request_reference || `DBV-${id.slice(0, 8).toUpperCase()}`;
   const svc = Array.isArray(row.verification_services) ? row.verification_services[0]?.name : row.verification_services?.name;
