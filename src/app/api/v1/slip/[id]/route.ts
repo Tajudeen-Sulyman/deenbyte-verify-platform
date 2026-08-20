@@ -8,71 +8,91 @@ const supabaseAdmin = adminClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-function esc(v: any): string {
-  return String(v ?? '')
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function esc(s: any) {
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
-
   const { data: row } = await supabaseAdmin
     .from('verification_requests')
-    .select('*, verification_services(name)')
+    .select('*, verification_services(name), safe_request_data')
     .eq('id', id)
     .single();
 
-  if (!row || row.status !== 'successful') {
-    return new NextResponse('Slip not found.', { status: 404 });
-  }
+  if (!row) return new NextResponse('Not found', { status: 404 });
 
-  if (row.slip_base64) {
-    const buf = Buffer.from(String(row.slip_base64), 'base64');
-    return new NextResponse(new Uint8Array(buf), {
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'inline; filename="' + row.request_reference + '.pdf"',
-        'Cache-Control': 'private, no-store',
-      },
-    });
-  }
+  const d = row.safe_request_data || {};
+  const ref = row.request_reference || `DBV-${id.slice(0, 8).toUpperCase()}`;
+  const svc = Array.isArray(row.verification_services) ? row.verification_services[0]?.name : row.verification_services?.name;
+  const status = row.status?.toUpperCase() || 'VERIFIED';
+  const date = new Date(row.created_at).toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
 
-  const d = row.safe_response_data ?? {};
-  const rows: [string, string][] = [
-    ['First name', d.first_name], ['Middle name', d.middle_name], ['Last name', d.last_name],
-    ['Date of birth', d.date_of_birth], ['Gender', d.gender], ['Phone', d.phone],
-    ['NIN', d.nin], ['BVN', d.bvn], ['Address', d.address],
-    ['Tracking ID', d.tracking_id], ['New NIN', d.new_nin],
-    ['New Tracking ID', d.new_tracking_id], ['Note', d.note],
-  ];
-  const body = rows
-    .filter(([, v]) => v)
-    .map(([k, v]) =>
-      '<tr><td style="padding:8px 0;color:#555;width:40%">' + esc(k) +
-      '</td><td style="padding:8px 0;font-weight:600">' + esc(v) + '</td></tr>'
-    ).join('');
-
-  const html = '<!doctype html><html><head><meta charset="utf-8">' +
-    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-    '<title>Verification Slip ' + esc(row.request_reference) + '</title></head>' +
-    '<body style="margin:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif">' +
-    '<div style="max-width:640px;margin:24px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">' +
-    '<div style="padding:20px 24px;border-bottom:1px solid #e5e7eb">' +
-    '<h1 style="margin:0;font-size:18px">Verification Slip</h1>' +
-    '<p style="margin:4px 0 0;color:#6b7280;font-size:12px">Official provider data at time of request</p></div>' +
-    '<div style="padding:20px 24px">' +
-    '<p style="font-size:13px;color:#374151">Ref: <b>' + esc(row.request_reference) + '</b>' +
-    ' &nbsp; Service: <b>' + esc(row.verification_services?.name ?? 'Verification') + '</b>' +
-    ' &nbsp; Date: <b>' + esc(new Date(row.created_at).toLocaleString()) + '</b>' +
-    ' &nbsp; <span style="color:#047857;border:1px solid #a7f3d0;background:#ecfdf5;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:700">VERIFIED</span></p>' +
-    '<table style="width:100%;border-collapse:collapse;font-size:14px">' + body + '</table></div>' +
-    '<div style="padding:14px 24px;background:#f9fafb;color:#6b7280;font-size:11px">' +
-    'This slip was generated from data returned by the official verification provider at the time of request.</div>' +
-    '</div></body></html>';
+  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NIN Verification Slip - ${esc(ref)}</title><style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;padding:20px}
+    .slip{max-width:600px;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+    .header{background:linear-gradient(135deg,#059669 0%,#047857 100%);color:#fff;padding:24px;text-align:center}
+    .logo{width:60px;height:60px;background:#fff;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:bold;color:#059669}
+    .header h1{font-size:20px;margin-bottom:4px}
+    .header p{font-size:12px;opacity:0.9}
+    .meta{background:#f8fafc;padding:16px 24px;border-bottom:2px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .meta-item{font-size:13px}
+    .meta-item b{color:#0f172a}
+    .status{background:#10b981;color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+    .content{padding:24px}
+    .photo-section{display:flex;gap:20px;margin-bottom:24px;align-items:flex-start}
+    .photo-box{width:140px;height:170px;border:2px dashed #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#f8fafc;flex-shrink:0}
+    .photo-box span{color:#94a3b8;font-size:12px;text-align:center;padding:8px}
+    .fields{flex:1}
+    .field{margin-bottom:16px}
+    .field label{display:block;font-size:12px;color:#64748b;margin-bottom:4px;font-weight:600}
+    .field-value{font-size:15px;color:#0f172a;font-weight:600;padding:8px 12px;background:#f8fafc;border-radius:6px;border-left:3px solid #059669}
+    .barcode{background:#f8fafc;padding:20px;text-align:center;border-radius:6px;margin-top:20px}
+    .barcode-text{font-family:'Courier New',monospace;font-size:14px;color:#475569;letter-spacing:2px}
+    .footer{background:#f8fafc;padding:16px 24px;text-align:center;border-top:1px solid #e2e8f0}
+    .footer p{font-size:11px;color:#64748b;line-height:1.5}
+    .footer .disclaimer{margin-top:8px;font-size:10px;color:#94a3b8}
+    @media print{body{background:#fff}.slip{box-shadow:none}}
+  </style></head><body>
+  <div class="slip">
+    <div class="header">
+      <div class="logo">DB</div>
+      <h1>NATIONAL IDENTITY MANAGEMENT COMMISSION</h1>
+      <p>VERIFICATION SLIP</p>
+    </div>
+    <div class="meta">
+      <div class="meta-item">Ref: <b>${esc(ref)}</b></div>
+      <div class="meta-item">Service: <b>${esc(svc || 'NIN Verification')}</b></div>
+      <div class="meta-item">Date: <b>${esc(date)}</b></div>
+      <span class="status">${esc(status)}</span>
+    </div>
+    <div class="content">
+      <div class="photo-section">
+        <div class="photo-box"><span>Passport<br>Photograph</span></div>
+        <div class="fields">
+          <div class="field"><label>First Name</label><div class="field-value">${esc(d.first_name || d.firstName || '')}</div></div>
+          <div class="field"><label>Middle Name</label><div class="field-value">${esc(d.middle_name || d.middleName || '')}</div></div>
+          <div class="field"><label>Last Name</label><div class="field-value">${esc(d.last_name || d.lastName || '')}</div></div>
+        </div>
+      </div>
+      <div class="field"><label>Date of Birth</label><div class="field-value">${esc(d.date_of_birth || d.dob || '')}</div></div>
+      <div class="field"><label>Gender</label><div class="field-value">${esc(d.gender || '')}</div></div>
+      <div class="field"><label>National Identification Number (NIN)</label><div class="field-value" style="font-size:18px;letter-spacing:1px">${esc(d.nin || '')}</div></div>
+      <div class="barcode">
+        <div class="barcode-text">${esc(ref.replace(/-/g, ''))}</div>
+      </div>
+    </div>
+    <div class="footer">
+      <p><b>This slip was generated from data returned by the official verification provider at the time of request.</b></p>
+      <p class="disclaimer">For verification of this slip, visit deenbyte.com.ng/verify or contact NIMC.</p>
+    </div>
+  </div></body></html>`;
 
   return new NextResponse(html, {
-    headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'private, no-store' },
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'private, no-store',
+    },
   });
 }
-
