@@ -8,7 +8,7 @@ export function GoogleButton() {
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: origin + '/dashboard' },
+      options: { redirectTo: origin + '/auth/callback' },
     });
     if (error) alert('Google sign-in failed: ' + error.message);
   }
