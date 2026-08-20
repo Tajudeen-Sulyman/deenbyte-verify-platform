@@ -27,12 +27,11 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
   const status = row.status?.toUpperCase() || 'VERIFIED';
   const date = new Date(row.created_at).toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
 
-  // Try multiple possible data sources
-  const d = row.safe_request_data || row.provider_response || row.response_data || row.result || row.data || {};
+  // Use safe_response_data (actual verification result)
+  const d = row.safe_response_data || row.safe_request_data || {};
   
-  // Debug: show all columns
-  const allCols = Object.keys(row).filter(k => !['verification_services'].includes(k));
-  const debugHtml = allCols.map(k => `<tr><td style="padding:4px 8px;border-bottom:1px solid #e2e8f0;font-size:11px"><b>${esc(k)}</b></td><td style="padding:4px 8px;border-bottom:1px solid #e2e8f0;font-size:11px">${esc(JSON.stringify(row[k]))}</td></tr>`).join('');
+  // Debug: show full response data
+  const debugHtml = `<pre style="background:#f8fafc;padding:12px;border-radius:6px;font-size:11px;overflow-x:auto">${esc(JSON.stringify(d, null, 2))}</pre>`;
 
   const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NIN Verification Slip - ${esc(ref)}</title><style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -49,7 +48,6 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
     .content{padding:24px}
     .debug{background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:16px;margin-bottom:20px;max-height:300px;overflow-y:auto}
     .debug h3{font-size:14px;color:#92400e;margin-bottom:8px}
-    table{width:100%;border-collapse:collapse}
     .photo-section{display:flex;gap:20px;margin-bottom:24px;align-items:flex-start}
     .photo-box{width:140px;height:170px;border:2px dashed #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#f8fafc;flex-shrink:0}
     .photo-box span{color:#94a3b8;font-size:12px;text-align:center;padding:8px}
@@ -77,8 +75,8 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
     </div>
     <div class="content">
       <div class="debug">
-        <h3>🔍 All Database Columns (Debug)</h3>
-        <table>${debugHtml}</table>
+        <h3>🔍 Full Response Data (Debug)</h3>
+        ${debugHtml}
       </div>
       <div class="photo-section">
         <div class="photo-box"><span>Passport<br>Photograph</span></div>
