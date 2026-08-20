@@ -16,20 +16,23 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
   const { id } = await ctx.params;
   const { data: row } = await supabaseAdmin
     .from('verification_requests')
-    .select('*, verification_services(name), safe_request_data')
+    .select('*, verification_services(name)')
     .eq('id', id)
     .single();
 
   if (!row) return new NextResponse('Not found', { status: 404 });
 
-  const d = row.safe_request_data || {};
   const ref = row.request_reference || `DBV-${id.slice(0, 8).toUpperCase()}`;
   const svc = Array.isArray(row.verification_services) ? row.verification_services[0]?.name : row.verification_services?.name;
   const status = row.status?.toUpperCase() || 'VERIFIED';
   const date = new Date(row.created_at).toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
 
-  // DEBUG: Show all available fields
-  const debugFields = Object.keys(d).map(k => `<tr><td style="padding:4px 8px;border-bottom:1px solid #e2e8f0"><b>${esc(k)}</b></td><td style="padding:4px 8px;border-bottom:1px solid #e2e8f0">${esc(d[k])}</td></tr>`).join('');
+  // Try multiple possible data sources
+  const d = row.safe_request_data || row.provider_response || row.response_data || row.result || row.data || {};
+  
+  // Debug: show all columns
+  const allCols = Object.keys(row).filter(k => !['verification_services'].includes(k));
+  const debugHtml = allCols.map(k => `<tr><td style="padding:4px 8px;border-bottom:1px solid #e2e8f0;font-size:11px"><b>${esc(k)}</b></td><td style="padding:4px 8px;border-bottom:1px solid #e2e8f0;font-size:11px">${esc(JSON.stringify(row[k]))}</td></tr>`).join('');
 
   const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NIN Verification Slip - ${esc(ref)}</title><style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -44,7 +47,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
     .meta-item b{color:#0f172a}
     .status{background:#10b981;color:#fff;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.5px}
     .content{padding:24px}
-    .debug{background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:16px;margin-bottom:20px}
+    .debug{background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:16px;margin-bottom:20px;max-height:300px;overflow-y:auto}
     .debug h3{font-size:14px;color:#92400e;margin-bottom:8px}
     table{width:100%;border-collapse:collapse}
     .photo-section{display:flex;gap:20px;margin-bottom:24px;align-items:flex-start}
@@ -74,18 +77,18 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
     </div>
     <div class="content">
       <div class="debug">
-        <h3>🔍 Available Data Fields (will be removed once mapped)</h3>
-        <table>${debugFields}</table>
+        <h3>🔍 All Database Columns (Debug)</h3>
+        <table>${debugHtml}</table>
       </div>
       <div class="photo-section">
         <div class="photo-box"><span>Passport<br>Photograph</span></div>
         <div class="fields">
-          <div class="field"><label>First Name</label><div class="field-value">${esc(d.first_name || d.firstName || d.surname || '')}</div></div>
+          <div class="field"><label>First Name</label><div class="field-value">${esc(d.first_name || d.firstName || d.surname || d.Surname || '')}</div></div>
           <div class="field"><label>Middle Name</label><div class="field-value">${esc(d.middle_name || d.middleName || '')}</div></div>
           <div class="field"><label>Last Name</label><div class="field-value">${esc(d.last_name || d.lastName || '')}</div></div>
-          <div class="field"><label>Date of Birth</label><div class="field-value">${esc(d.date_of_birth || d.dob || '')}</div></div>
-          <div class="field"><label>Gender</label><div class="field-value">${esc(d.gender || d.sex || '')}</div></div>
-          <div class="field"><label>National Identification Number (NIN)</label><div class="field-value" style="font-size:18px;letter-spacing:1px">${esc(d.nin || '')}</div></div>
+          <div class="field"><label>Date of Birth</label><div class="field-value">${esc(d.date_of_birth || d.dob || d.DOB || '')}</div></div>
+          <div class="field"><label>Gender</label><div class="field-value">${esc(d.gender || d.sex || d.Sex || '')}</div></div>
+          <div class="field"><label>National Identification Number (NIN)</label><div class="field-value" style="font-size:18px;letter-spacing:1px">${esc(d.nin || d.NIN || '')}</div></div>
         </div>
       </div>
       <div class="barcode">
