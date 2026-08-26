@@ -22,6 +22,18 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
 
   if (!row) return new NextResponse('Not found', { status: 404 });
 
+  // Serve the original provider PDF if available
+  if (row.slip_base64) {
+    const buf = Buffer.from(row.slip_base64, 'base64');
+    return new NextResponse(new Uint8Array(buf), {
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'inline; filename="nin-slip.pdf"',
+        'Cache-Control': 'private, no-store',
+      },
+    });
+  }
+
   const d = row.safe_response_data || {};
   const ref = row.request_reference || `DBV-${id.slice(0, 8).toUpperCase()}`;
   const svc = Array.isArray(row.verification_services) ? row.verification_services[0]?.name : row.verification_services?.name;

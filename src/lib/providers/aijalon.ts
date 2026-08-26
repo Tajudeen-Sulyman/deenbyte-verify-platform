@@ -42,6 +42,22 @@ async function call(path: string, body: any) {
   return json;
 }
 
+
+function smallPdf(j: any) {
+  const candidates = [
+    j?.pdf_base64,
+    j?.slip_base64,
+    j?.data?.pdf_base64,
+    j?.data?.slip_base64,
+    j?.data?.slip,
+    j?.user_data?.pdf_base64,
+  ];
+  for (const c of candidates) {
+    if (typeof c === 'string' && c.length > 1000) return c;
+  }
+  return null;
+}
+
 function normalizeGender(g: any): string {
   const v = String(g ?? '').toLowerCase();
   if (v === 'm' || v === 'male') return 'Male';
@@ -51,6 +67,7 @@ function normalizeGender(g: any): string {
 
 function mapNIN(d: any) {
   return {
+    ...d,
     first_name: d.firstname ?? d.firstName ?? '',
     middle_name: d.middlename ?? d.middleName ?? '',
     last_name: d.surname ?? d.lastName ?? '',
@@ -95,6 +112,7 @@ export const AijalonProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapNIN(json.data),
+        pdf_base64: smallPdf(json),
       tracking_id: json.reportID ?? json.data?.trackingId,
     };
   },
@@ -106,6 +124,7 @@ export const AijalonProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapNIN(json.data),
+        pdf_base64: smallPdf(json),
       tracking_id: json.reportID ?? json.data?.trackingId,
     };
   },
@@ -121,6 +140,7 @@ export const AijalonProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapNIN(json.data),
+        pdf_base64: smallPdf(json),
       tracking_id: json.reportID ?? json.data?.trackingId,
     };
   },
@@ -131,6 +151,7 @@ export const AijalonProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapBVN(json.data),
+        pdf_base64: smallPdf(json),
       tracking_id: json.reportID,
     };
   },
