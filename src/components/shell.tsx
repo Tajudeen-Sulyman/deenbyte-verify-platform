@@ -19,6 +19,7 @@ export async function AppShell({ children, title }: { children: React.ReactNode;
     <ShellChrome
       balance={Number(walletRes.data?.balance ?? 0)}
       isAdmin={isAdmin}
+      email={String(user.email ?? '')}
       title={title}
       logoutSlot={<LogoutButton />}
     >
