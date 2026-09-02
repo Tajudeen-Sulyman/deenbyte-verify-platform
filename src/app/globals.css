@@ -30,14 +30,10 @@ body {
 }
 
 @utility card3d {
-  background: linear-gradient(180deg, #13203a 0%, #0F172A 100%);
-  border: 1px solid rgb(255 255 255 / 0.08);
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 1.25rem;
-  box-shadow:
-    0 1px 2px rgb(15 23 42 / 0.04),
-    0 16px 32px -12px rgb(2 8 20 / 0.55),
-    0 16px 32px -12px rgb(2 8 20 / 0.55),
-    inset 0 1px 0 rgb(255 255 255 / 0.07);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.05), 0 8px 24px -12px rgb(15 23 42 / 0.15);
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
@@ -48,6 +44,6 @@ body {
 .card3d .text-red-700 { color: #F87171; }
 .card3d .text-amber-700 { color: #FBBF24; }
 .card3d .border-border { border-color: rgb(255 255 255 / 0.08); }
-.card3d input, .card3d select { color: #0F172A; background: #ffffff; }
+.card3d input, .card3d select { color: #0F172A; background: #f8fafc; border: 1px solid #e2e8f0; }
 .card3d input::placeholder { color: #94A3B8; }
 .card3d input.text-dark, .card3d select.text-dark { color: #0F172A; }
