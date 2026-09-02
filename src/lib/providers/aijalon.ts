@@ -41,7 +41,8 @@ async function call(path: string, body: any) {
     const __okMsg = /success/i.test(String(json.message ?? ''));
     const __hasPayload = Boolean(json.data || json.pdf_base64 || json.user_data);
     if (!(__st === 'success' || __st === 'true' || __st === '200' || (__okMsg && __hasPayload))) {
-    throw new ProviderError(400, json.message ?? 'Verification failed.');
+      throw new ProviderError(400, json.message ?? 'Verification failed.');
+    }
   }
   return json;
 }
