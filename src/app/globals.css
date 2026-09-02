@@ -37,13 +37,13 @@ body {
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
-.card3d .text-dark { color: #F1F5F9; }
-.card3d .text-muted { color: #94A3B8; }
-.card3d .text-primary { color: #34D399; }
-.card3d .text-green-700 { color: #4ADE80; }
-.card3d .text-red-700 { color: #F87171; }
-.card3d .text-amber-700 { color: #FBBF24; }
-.card3d .border-border { border-color: rgb(255 255 255 / 0.08); }
+.card3d .text-dark { color: #0f172a; }
+.card3d .text-muted { color: #64748b; }
+.card3d .text-primary { color: #047857; }
+.card3d .text-green-700 { color: #15803d; }
+.card3d .text-red-700 { color: #b91c1c; }
+.card3d .text-amber-700 { color: #b45309; }
+.card3d .border-border { border-color: #e5e7eb; }
 .card3d input, .card3d select { color: #0F172A; background: #f8fafc; border: 1px solid #e2e8f0; }
 .card3d input::placeholder { color: #94A3B8; }
 .card3d input.text-dark, .card3d select.text-dark { color: #0F172A; }
