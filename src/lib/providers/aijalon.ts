@@ -34,6 +34,7 @@ async function call(path: string, body: any) {
     }
     if (res.status === 401) throw new ProviderError(503, 'Provider authentication error. Contact support.');
     if (res.status === 404) throw new ProviderError(404, 'Record not found. Check the details and try again.');
+    if (/success/i.test(msg) && (json.data || json.pdf_base64 || json.user_data)) return json; // __resOkGuard
     throw new ProviderError(res.status, msg);
   }
   {
