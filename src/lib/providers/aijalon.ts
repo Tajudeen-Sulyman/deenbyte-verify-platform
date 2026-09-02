@@ -43,19 +43,24 @@ async function call(path: string, body: any) {
 }
 
 
-function smallPdf(j: any) {
-  const candidates = [
-    j?.pdf_base64,
-    j?.slip_base64,
-    j?.data?.pdf_base64,
-    j?.data?.slip_base64,
-    j?.data?.slip,
-    j?.user_data?.pdf_base64,
-  ];
-  for (const c of candidates) {
-    if (typeof c === 'string' && c.length > 1000) return c;
+function findPdfDeep(obj: any, depth = 0): string | null {
+  if (!obj || depth > 6) return null;
+  if (typeof obj === 'string') {
+    if (obj.startsWith('JVBERi') && obj.length > 1000) return obj;
+    return null;
+  }
+  if (Array.isArray(obj)) {
+    for (const v of obj) { const r = findPdfDeep(v, depth + 1); if (r) return r; }
+    return null;
+  }
+  if (typeof obj === 'object') {
+    for (const k of Object.keys(obj)) { const r = findPdfDeep((obj as any)[k], depth + 1); if (r) return r; }
   }
   return null;
+}
+
+function smallPdf(j: any) {
+  return findPdfDeep(j);
 }
 
 function normalizeGender(g: any): string {
