@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  icons: { icon: "/logo.jpg?v=2", apple: "/logo.jpg?v=2" },
+  icons: { icon: "/logo.svg?v=3", apple: "/logo.svg?v=3" },
   title: "DeenByte Verify",
     description: "Fast, secure and reliable identity verification.",
     };
