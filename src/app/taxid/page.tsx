@@ -12,7 +12,7 @@ export default function TaxIdPage() {
   const [busy, setBusy] = useState(false);
   const [rec, setRec] = useState('');
   const set = (k: keyof typeof f) => (e: any) => setF({ ...f, [k]: e.target.value });
-  const price = tier === 'premium' ? 700 : 300;
+  const price = 50; // TEST PRICE
 
   async function pay() {
     setErr(''); setBusy(true);
@@ -46,13 +46,13 @@ export default function TaxIdPage() {
             <button onClick={() => setTier('standard')} className={'relative rounded-xl border-2 p-4 text-center ' + (tier === 'standard' ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
               <p className="text-base font-extrabold text-dark">STANDARD</p>
               <p className="text-xs text-muted mt-1">Validation summary slip</p>
-              <p className="text-lg font-extrabold text-emerald-800 mt-2">₦300</p>
+              <p className="text-lg font-extrabold text-emerald-800 mt-2">₦50</p>
             </button>
             <button onClick={() => setTier('premium')} className={'relative rounded-xl border-2 p-4 text-center ' + (tier === 'premium' ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
               <span className="absolute -top-3 right-3 rounded-full bg-red-700 text-white text-[10px] font-bold px-2 py-0.5">POPULAR</span>
               <p className="text-base font-extrabold text-dark">PREMIUM</p>
               <p className="text-xs text-muted mt-1">Certificate-style slip with seal &amp; QR</p>
-              <p className="text-lg font-extrabold text-red-700 mt-2">₦700</p>
+              <p className="text-lg font-extrabold text-red-700 mt-2">₦50</p>
             </button>
           </div>
         </section>

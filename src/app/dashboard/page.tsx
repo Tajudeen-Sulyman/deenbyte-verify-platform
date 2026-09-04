@@ -94,7 +94,7 @@ export default async function DashboardPage() {
         <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-emerald-800 to-emerald-950 shadow-card">
           <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">New — no account needed</p>
           <h3 className="mt-1 text-lg font-extrabold">TIN Verification Slip</h3>
-          <p className="mt-1 text-xs text-emerald-100">Pay once, get your slip in under 90 seconds. From ₦300.</p>
+          <p className="mt-1 text-xs text-emerald-100">Pay once, get your slip in under 90 seconds. From ₦50.</p>
           <Link href="/taxid" className="mt-3 inline-block rounded-lg bg-primary px-4 py-2 text-xs font-extrabold text-white">Get yours →</Link>
         </section>
 

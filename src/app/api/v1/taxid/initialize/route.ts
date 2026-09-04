@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     if (!/^\d{10,15}$/.test(tin))
       return NextResponse.json({ error: 'Enter a valid TIN (10-15 digits).' }, { status: 400 });
 
-    const amount = tier === 'premium' ? 700 : 300;
+    const amount = 50; // TEST PRICE (revert: tier === 'premium' ? 700 : 300)
     const reference = 'TAXID-' + Date.now() + Math.floor(1000 + Math.random() * 9000);
 
     const { error } = await admin.from('taxid_slips').insert({
