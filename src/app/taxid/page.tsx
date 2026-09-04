@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const input = 'w-full rounded-xl border border-border bg-light px-4 py-3 text-sm text-dark placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary';
 const label = 'block text-[11px] font-bold uppercase tracking-wider text-muted mb-1.5';
@@ -10,9 +10,24 @@ export default function TaxIdPage() {
   const [f, setF] = useState({ firstName: '', lastName: '', middleName: '', address: '', tin: '', fullName: '', email: '', phone: '' });
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+  const [wallet, setWallet] = useState<{ loggedIn: boolean; balance: number }>({ loggedIn: false, balance: 0 });
   const [rec, setRec] = useState('');
   const set = (k: keyof typeof f) => (e: any) => setF({ ...f, [k]: e.target.value });
   const price = 50; // TEST PRICE
+
+  useEffect(() => {
+    fetch('/api/v1/taxid/me').then((r) => r.json()).then((j) => setWallet(j)).catch(() => {});
+  }, []);
+
+  async function payWallet() {
+    setErr(''); setBusy(true);
+    try {
+      const res = await fetch('/api/v1/taxid/wallet-pay', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...f, tier, slipType }) });
+      const json = await res.json();
+      if (!res.ok) { setErr(json.error ?? 'Wallet payment failed.'); return; }
+      window.location.href = '/taxid/success?reference=' + encodeURIComponent(json.reference);
+    } catch { setErr('Network error. Try again.'); } finally { setBusy(false); }
+  }
 
   async function pay() {
     setErr(''); setBusy(true);
@@ -100,6 +115,14 @@ export default function TaxIdPage() {
             <span className="text-sm font-semibold">{tier === 'premium' ? 'Premium' : 'Standard'} {slipType === 'corporate' ? 'Corporate' : 'Individual'} TIN Slip</span>
             <span className="text-xl font-extrabold text-white">₦{price}</span>
           </div>
+          {wallet.loggedIn && wallet.balance >= price && (
+            <button onClick={payWallet} disabled={busy} className="mt-3 w-full rounded-xl bg-primary text-white font-extrabold py-4 text-sm disabled:opacity-60">
+              PAY ₦{price} FROM WALLET (BALANCE: ₦{wallet.balance.toLocaleString('en-NG')})
+            </button>
+          )}
+          {wallet.loggedIn && wallet.balance < price && (
+            <p className="mt-3 text-[11px] text-muted">Wallet balance ₦{wallet.balance.toLocaleString('en-NG')} — insufficient. Fund your wallet in the app or pay below.</p>
+          )}
           {err && <p className="mt-3 text-xs font-bold text-red-700">{err}</p>}
           <button onClick={pay} disabled={busy} className="mt-4 w-full rounded-xl bg-primary text-white font-extrabold py-4 text-sm disabled:opacity-60">
             {busy ? 'Redirecting…' : '🔒 PAY ₦' + price + ' & GET MY TIN SLIP'}
