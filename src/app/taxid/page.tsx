@@ -45,13 +45,13 @@ export default function TaxIdPage() {
           <div className="grid grid-cols-2 gap-3 mt-4">
             <button onClick={() => setTier('standard')} className={'relative rounded-xl border-2 p-4 text-center ' + (tier === 'standard' ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
               <p className="text-base font-extrabold text-dark">STANDARD</p>
-              <p className="text-xs text-muted mt-1">Clean, verified slip</p>
+              <p className="text-xs text-muted mt-1">Validation summary slip</p>
               <p className="text-lg font-extrabold text-emerald-800 mt-2">₦300</p>
             </button>
             <button onClick={() => setTier('premium')} className={'relative rounded-xl border-2 p-4 text-center ' + (tier === 'premium' ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
               <span className="absolute -top-3 right-3 rounded-full bg-red-700 text-white text-[10px] font-bold px-2 py-0.5">POPULAR</span>
               <p className="text-base font-extrabold text-dark">PREMIUM</p>
-              <p className="text-xs text-muted mt-1">Certified seal &amp; premium finish</p>
+              <p className="text-xs text-muted mt-1">Certificate-style slip with seal &amp; QR</p>
               <p className="text-lg font-extrabold text-red-700 mt-2">₦700</p>
             </button>
           </div>

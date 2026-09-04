@@ -12,56 +12,80 @@ async function downloadPdf(slip: any) {
   const { jsPDF } = await import('jspdf');
   const doc = new jsPDF({ unit: 'pt', format: 'a4' });
   const W = doc.internal.pageSize.getWidth();
-  doc.setFillColor(6, 78, 59); doc.rect(0, 0, W, 90, 'F');
-  doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(17);
-  doc.text((slip.slipType === 'corporate' ? 'CORPORATE' : 'INDIVIDUAL') + ' TAXID SLIP', W / 2, 42, { align: 'center' });
-  doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
-  doc.text('Tax Record Summary', W / 2, 62, { align: 'center' });
+  const H = doc.internal.pageSize.getHeight();
+  const dateStr = new Date(slip.prepared).toLocaleDateString('en-NG', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  let qr: string | null = null;
+  try { qr = await qrDataUrl('https://deenbyte.com.ng/taxid/verify?reference=' + slip.reference); } catch {}
+  const name = ((slip.firstName ?? '') + ' ' + (slip.middleName ?? '') + ' ' + (slip.lastName ?? '')).trim().toUpperCase();
 
-  let y = 120;
-  const block = (title: string, lines: string[]) => {
-    const h = 30 + lines.length * 15;
-    doc.setFillColor(31, 41, 55); doc.roundedRect(40, y, W - 80, h, 8, 8, 'F');
-    doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
-    doc.text(title, 56, y + 20);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
-    lines.forEach((l, i) => doc.text(l, 56, y + 37 + i * 15));
-    y += h + 14;
-  };
-  block('PERSONAL INFORMATION', [
-    'FIRST NAME: ' + slip.firstName,
-    ...(slip.middleName ? ['MIDDLE NAME: ' + slip.middleName] : []),
-    'LAST NAME: ' + slip.lastName,
-  ]);
-  if (slip.address) block('RESIDENTIAL ADDRESS', String(slip.address).split('\n'));
-  block('TAX IDENTIFICATION NUMBER', [slip.tin]);
-
-  doc.setTextColor(154, 52, 18); doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
-  doc.text('DOCUMENT DETAILS', W / 2, y + 10, { align: 'center' });
-  doc.setTextColor(31, 41, 55); doc.setFontSize(9);
-  doc.text('DOCUMENT ID', 56, y + 30); doc.text('PREPARED DATE', W - 56, y + 30, { align: 'right' });
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
-  doc.text(slip.reference, 56, y + 45);
-  doc.text(new Date(slip.prepared).toLocaleDateString('en-NG', { day: '2-digit', month: 'long', year: 'numeric' }).toUpperCase(), W - 56, y + 45, { align: 'right' });
-  y += 70;
-
-  try {
-    const qr = await qrDataUrl('https://deenbyte.com.ng/taxid/verify?reference=' + slip.reference);
-    doc.addImage(qr, 'PNG', W / 2 - 45, y, 90, 90);
-    doc.setFontSize(8); doc.setTextColor(107, 114, 128);
-    doc.text('SCAN TO VERIFY', W / 2, y + 102, { align: 'center' });
-  } catch {}
   if (slip.tier === 'premium') {
-    doc.setDrawColor(154, 52, 18); doc.setLineWidth(3); doc.circle(W / 2 + 90, y + 45, 26, 'S');
-    doc.setFillColor(154, 52, 18); doc.circle(W / 2 + 90, y + 45, 19, 'F');
-    doc.setTextColor(255, 255, 255); doc.setFontSize(16); doc.text('✓', W / 2 + 90, y + 51, { align: 'center' });
-    doc.setTextColor(154, 52, 18); doc.setFontSize(8); doc.text('CERTIFIED', W / 2 + 90, y + 82, { align: 'center' });
+    doc.setFillColor(154, 52, 18); doc.rect(0, 0, W, 14, 'F'); doc.rect(0, H - 14, W, 14, 'F');
+    doc.setDrawColor(202, 168, 66); doc.setLineWidth(2.5); doc.roundedRect(34, 34, W - 68, H - 68, 4, 4, 'S');
+    doc.setLineWidth(0.8); doc.roundedRect(42, 42, W - 84, H - 84, 3, 3, 'S');
+    doc.setTextColor(154, 52, 18); doc.setFont('helvetica', 'bold'); doc.setFontSize(20);
+    doc.text('DEENBYTE VERIFY', W / 2, 92, { align: 'center' });
+    doc.setTextColor(107, 114, 128); doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+    doc.text('PRIVATE TAX RECORD VERIFICATION', W / 2, 108, { align: 'center' });
+    doc.setDrawColor(202, 168, 66); doc.setLineWidth(1.2);
+    doc.line(W / 2 - 150, 132, W / 2 + 150, 132);
+    doc.setTextColor(31, 41, 55); doc.setFont('times', 'bold'); doc.setFontSize(26);
+    doc.text('Certificate of Registration', W / 2, 168, { align: 'center' });
+    doc.line(W / 2 - 150, 186, W / 2 + 150, 186);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(75, 85, 99);
+    doc.text(doc.splitTextToSize('This is to certify that the taxpayer named below has been duly registered in the DeenByte Verify registry, and that the Tax Identification Number shown is consistent with the details provided by the client at registration.', W - 160), W / 2, 216, { align: 'center' });
+    doc.setFont('times', 'bold'); doc.setFontSize(24); doc.setTextColor(31, 41, 55);
+    doc.text(name, W / 2, 286, { align: 'center' });
+    doc.setFillColor(250, 235, 235); doc.setDrawColor(220, 180, 180);
+    doc.roundedRect(W / 2 - 110, 306, 220, 26, 5, 5, 'FD');
+    doc.setTextColor(154, 52, 18); doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+    doc.text('Tax ID: ' + slip.tin, W / 2, 323, { align: 'center' });
+    const ty = 366;
+    doc.setDrawColor(229, 231, 235); doc.setLineWidth(0.8);
+    doc.rect(60, ty, W - 120, 46, 'S'); doc.line(W / 2, ty, W / 2, ty + 46);
+    doc.rect(60, ty + 50, W - 120, 46, 'S');
+    doc.setTextColor(107, 114, 128); doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+    doc.text('TAXPAYER CLASSIFICATION', W * 0.25, ty + 18, { align: 'center' });
+    doc.text('DATE OF REGISTRATION', W * 0.75, ty + 18, { align: 'center' });
+    doc.setTextColor(31, 41, 55); doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+    doc.text(String(slip.slipType).toUpperCase(), W * 0.25, ty + 36, { align: 'center' });
+    doc.text(dateStr, W * 0.75, ty + 36, { align: 'center' });
+    doc.setTextColor(107, 114, 128); doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+    doc.text('ASSIGNED REFERENCE', W / 2, ty + 68, { align: 'center' });
+    doc.setTextColor(31, 41, 55); doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+    doc.text(slip.reference, W / 2, ty + 86, { align: 'center' });
+    const qy = ty + 130;
+    if (qr) { doc.addImage(qr, 'PNG', 70, qy, 80, 80); doc.setTextColor(107, 114, 128); doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.text('Scan to Verify', 70, qy + 92); }
+    doc.setDrawColor(202, 168, 66); doc.setLineWidth(2); doc.circle(W / 2, qy + 40, 26, 'S');
+    doc.setFillColor(222, 190, 90); doc.circle(W / 2, qy + 40, 21, 'F');
+    doc.setTextColor(120, 84, 10); doc.setFontSize(7); doc.setFont('helvetica', 'bold');
+    doc.text('CERTIFIED', W / 2, qy + 43, { align: 'center' });
+    doc.setDrawColor(31, 41, 55); doc.setLineWidth(1); doc.line(W - 190, qy + 66, W - 70, qy + 66);
+    doc.setTextColor(31, 41, 55); doc.setFontSize(10); doc.setFont('helvetica', 'bold');
+    doc.text('Founder, DeenByte Verify', W - 130, qy + 80, { align: 'center' });
+    doc.setTextColor(107, 114, 128); doc.setFontSize(7.5); doc.setFont('helvetica', 'normal');
+    doc.text('Certificate No: ' + slip.reference + ' | Issued: ' + dateStr, W / 2, H - 78, { align: 'center' });
+    doc.text(doc.splitTextToSize('This certificate is a private verification summary produced by DeenByte Verify from client-provided data. It is not issued by, endorsed by, or affiliated with the Nigeria Revenue Service or any government agency. TIN can be independently confirmed at taxid.nrs.gov.ng.', W - 120), W / 2, H - 64, { align: 'center' });
+    doc.save(slip.reference + '-certificate.pdf');
+    return;
   }
-  y += 130;
-  doc.setFillColor(254, 243, 199); doc.roundedRect(40, y, W - 80, 70, 6, 6, 'F');
-  doc.setTextColor(120, 53, 15); doc.setFontSize(8);
-  doc.text(doc.splitTextToSize('Important: This document reflects the Tax Identification Number and details as provided by the client. It is not issued by, endorsed by, or affiliated with any government agency. This TIN can be independently confirmed at taxid.nrs.gov.ng.', W - 100), 50, y + 18);
-  doc.save(slip.reference + '.pdf');
+
+  doc.setFillColor(6, 78, 59); doc.rect(0, 0, W, 64, 'F');
+  doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+  doc.text('DEENBYTE VERIFY - TIN VALIDATION RESULT', W / 2, 38, { align: 'center' });
+  doc.setFillColor(5, 150, 105); doc.circle(70, 120, 16, 'F');
+  doc.setDrawColor(255, 255, 255); doc.setLineWidth(2.5);
+  doc.line(62, 120, 67, 126); doc.line(67, 126, 79, 112);
+  doc.setTextColor(31, 41, 55); doc.setFontSize(16); doc.setFont('helvetica', 'bold');
+  doc.text('Hello, ' + String(slip.fullName ?? '').toUpperCase(), 96, 124);
+  doc.setTextColor(30, 64, 175); doc.setFontSize(11); doc.setFont('helvetica', 'normal');
+  doc.text(doc.splitTextToSize('Your Tax Identification Number has been successfully validated and matches the details provided at registration.', W - 120), 60, 170);
+  doc.text('Your Tax ID is ' + slip.tin + '.', 60, 210);
+  doc.setTextColor(107, 114, 128); doc.setFontSize(8);
+  doc.text('Reference: ' + slip.reference + '  |  ' + dateStr, 60, 240);
+  if (qr) { doc.addImage(qr, 'PNG', W - 140, 280, 80, 80); doc.text('Scan to Verify', W - 100, 372, { align: 'center' }); }
+  doc.setTextColor(107, 114, 128); doc.setFontSize(7.5);
+  doc.text(doc.splitTextToSize('This document is a private validation summary produced by DeenByte Verify from client-provided data. It is not issued by, endorsed by, or affiliated with any government agency. TIN can be independently confirmed at taxid.nrs.gov.ng.', W - 80), 60, H - 60);
+  doc.save(slip.reference + '-validation.pdf');
 }
 
 export default function TaxIdSuccessPage() {
