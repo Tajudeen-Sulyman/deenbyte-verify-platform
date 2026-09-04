@@ -13,7 +13,7 @@ async function downloadPdf(slip: any) {
   const doc = new jsPDF({ unit: 'pt', format: 'a4' });
   const W = doc.internal.pageSize.getWidth();
   doc.setFillColor(6, 78, 59); doc.rect(0, 0, W, 90, 'F');
-  doc.setTextColor(253, 224, 71); doc.setFont('helvetica', 'bold'); doc.setFontSize(17);
+  doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(17);
   doc.text((slip.slipType === 'corporate' ? 'CORPORATE' : 'INDIVIDUAL') + ' TAXID SLIP', W / 2, 42, { align: 'center' });
   doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
   doc.text('Tax Record Summary', W / 2, 62, { align: 'center' });
@@ -101,7 +101,7 @@ export default function TaxIdSuccessPage() {
             </div>
             <h1 className="mt-4 text-xl font-extrabold text-emerald-950">Payment Successful!</h1>
             <p className="mt-2 text-sm text-muted">Your TIN Slip for <span className="font-bold text-dark">{slip.email}</span> is ready.</p>
-            <button onClick={() => downloadPdf(slip)} className="mt-5 w-full rounded-xl bg-emerald-950 text-yellow-300 font-extrabold py-4 text-sm">↓ DOWNLOAD PDF</button>
+            <button onClick={() => downloadPdf(slip)} className="mt-5 w-full rounded-xl bg-primary text-white font-extrabold py-4 text-sm">↓ DOWNLOAD PDF</button>
             <div className="mt-4 rounded-xl border-2 border-dashed border-border p-3 flex items-center justify-between gap-2">
               <div className="text-left">
                 <p className="text-[10px] font-bold uppercase text-muted">Your reference (save this)</p>

@@ -30,18 +30,18 @@ export default function TaxIdPage() {
   return (
     <div className="min-h-screen bg-light pb-16">
       <header className="bg-emerald-950 text-white text-center px-4 py-12">
-        <div className="mx-auto h-16 w-16 rounded-full border-4 border-yellow-400 flex items-center justify-center">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-yellow-300"><path d="M5 13l4 4L19 7" /></svg>
+        <div className="mx-auto h-16 w-16 rounded-full border-4 border-emerald-400 flex items-center justify-center">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-emerald-300"><path d="M5 13l4 4L19 7" /></svg>
         </div>
-        <p className="mt-4 text-xs font-bold tracking-[0.25em] text-yellow-300">DEENBYTE VERIFY</p>
+        <p className="mt-4 text-xs font-bold tracking-[0.25em] text-emerald-300">DEENBYTE VERIFY</p>
         <h1 className="mt-2 text-2xl sm:text-3xl font-extrabold">Get Your TIN Verification Slip</h1>
         <p className="mt-3 text-sm text-emerald-100 max-w-md mx-auto">No account. No wallet funding. Pay once, and your slip is ready in under 90 seconds.</p>
-        <span className="inline-flex items-center gap-2 mt-5 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold"><span className="h-2 w-2 rounded-full bg-yellow-300" />Verified &amp; instant</span>
+        <span className="inline-flex items-center gap-2 mt-5 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold"><span className="h-2 w-2 rounded-full bg-emerald-400" />Verified &amp; instant</span>
       </header>
 
       <main className="max-w-2xl mx-auto p-4 space-y-5 mt-5">
         <section className="rounded-2xl border border-border bg-white p-5">
-          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-yellow-300 text-sm font-bold flex items-center justify-center">1</span>CHOOSE YOUR SLIP</h2>
+          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-white text-sm font-bold flex items-center justify-center">1</span>CHOOSE YOUR SLIP</h2>
           <div className="grid grid-cols-2 gap-3 mt-4">
             <button onClick={() => setTier('standard')} className={'relative rounded-xl border-2 p-4 text-center ' + (tier === 'standard' ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
               <p className="text-base font-extrabold text-dark">STANDARD</p>
@@ -58,7 +58,7 @@ export default function TaxIdPage() {
         </section>
 
         <section className="rounded-2xl border border-border bg-white p-5">
-          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-yellow-300 text-sm font-bold flex items-center justify-center">2</span>SELECT SLIP TYPE</h2>
+          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-white text-sm font-bold flex items-center justify-center">2</span>SELECT SLIP TYPE</h2>
           <div className="grid grid-cols-2 gap-3 mt-4">
             <button onClick={() => setSlipType('corporate')} className={'rounded-xl border-2 p-4 text-center ' + (slipType === 'corporate' ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
               <p className="text-2xl">🏢</p>
@@ -74,7 +74,7 @@ export default function TaxIdPage() {
         </section>
 
         <section className="rounded-2xl border border-border bg-white p-5">
-          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-yellow-300 text-sm font-bold flex items-center justify-center">3</span>ENTER YOUR DETAILS</h2>
+          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-white text-sm font-bold flex items-center justify-center">3</span>ENTER YOUR DETAILS</h2>
           <div className="grid sm:grid-cols-2 gap-4 mt-4">
             <div><label className={label}>First name *</label><input className={input} value={f.firstName} onChange={set('firstName')} placeholder="e.g. JENNIFER" /></div>
             <div><label className={label}>Last name *</label><input className={input} value={f.lastName} onChange={set('lastName')} placeholder="e.g. OKAFOR" /></div>
@@ -86,7 +86,7 @@ export default function TaxIdPage() {
         </section>
 
         <section className="rounded-2xl border border-border bg-white p-5">
-          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-yellow-300 text-sm font-bold flex items-center justify-center">4</span>DELIVERY DETAILS</h2>
+          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-white text-sm font-bold flex items-center justify-center">4</span>DELIVERY DETAILS</h2>
           <div className="space-y-4 mt-4">
             <div><label className={label}>Your full name *</label><input className={input} value={f.fullName} onChange={set('fullName')} placeholder="Name for slip greeting" /></div>
             <div><label className={label}>Email address * (slip reference sent here)</label><input className={input} type="email" value={f.email} onChange={set('email')} placeholder="your@email.com" /></div>
@@ -95,13 +95,13 @@ export default function TaxIdPage() {
         </section>
 
         <section className="rounded-2xl border border-border bg-white p-5">
-          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-yellow-300 text-sm font-bold flex items-center justify-center">5</span>PAYMENT</h2>
+          <h2 className="flex items-center gap-3 text-sm font-extrabold tracking-widest text-emerald-950"><span className="h-8 w-8 rounded-full bg-emerald-950 text-white text-sm font-bold flex items-center justify-center">5</span>PAYMENT</h2>
           <div className="mt-4 rounded-xl bg-emerald-950 text-white px-4 py-4 flex items-center justify-between">
             <span className="text-sm font-semibold">{tier === 'premium' ? 'Premium' : 'Standard'} {slipType === 'corporate' ? 'Corporate' : 'Individual'} TIN Slip</span>
-            <span className="text-xl font-extrabold text-yellow-300">₦{price}</span>
+            <span className="text-xl font-extrabold text-white">₦{price}</span>
           </div>
           {err && <p className="mt-3 text-xs font-bold text-red-700">{err}</p>}
-          <button onClick={pay} disabled={busy} className="mt-4 w-full rounded-xl bg-yellow-300 text-emerald-950 font-extrabold py-4 text-sm disabled:opacity-60">
+          <button onClick={pay} disabled={busy} className="mt-4 w-full rounded-xl bg-primary text-white font-extrabold py-4 text-sm disabled:opacity-60">
             {busy ? 'Redirecting…' : '🔒 PAY ₦' + price + ' & GET MY TIN SLIP'}
           </button>
           <div className="flex flex-wrap justify-center gap-4 mt-4 text-[11px] text-muted">
