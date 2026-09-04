@@ -44,7 +44,7 @@ export async function POST(req: Request) {
       Authorization: 'Bearer ' + process.env.PAYSTACK_SECRET_KEY,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
+    body: JSON.stringify({ channels: ["card","bank_transfer","ussd","bank"],
       email: user.email,
       amount: Math.round(amount * 100),
       reference,

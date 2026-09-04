@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
         Authorization: 'Bearer ' + process.env.PAYSTACK_SECRET_KEY,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      body: JSON.stringify({ channels: ["card","bank_transfer","ussd","bank"],
         email, amount: amount * 100, reference,
         callback_url: req.nextUrl.origin + '/taxid/success',
       }),
