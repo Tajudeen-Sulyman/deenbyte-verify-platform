@@ -19,5 +19,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ status: st.state });
     }
   }
-  return NextResponse.json({ status: row.status });
+  const { data: fresh } = await admin.from('nin_mod_requests').select('status, completed_document, admin_note').eq('reference', reference).maybeSingle();
+  return NextResponse.json({ status: fresh?.status ?? row.status, completed_document: fresh?.completed_document ?? null, admin_note: fresh?.admin_note ?? null });
 }
