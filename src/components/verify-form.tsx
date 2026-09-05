@@ -24,12 +24,18 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
   const [error, setError] = useState('');
   const [reverify, setReverify] = useState<any>(null);
   const [result, setResult] = useState<any>(null);
+  const [consent1, setConsent1] = useState(false);
+  const [consent2, setConsent2] = useState(false);
+  const [timeline, setTimeline] = useState(false);
+  const [specimen, setSpecimen] = useState(false);
+  const [ack, setAck] = useState(false);
+  const isAsync = /validation|ipe|personalization/.test(service.service_id);
 
   const price = Number(service.selling_price);
   const insufficient = walletBalance < price;
   const isBvn = service.category === 'BVN';
   const valid = /^\d{11}$/.test(value);
-  const canSubmit = valid && !insufficient && !loading;
+  const canSubmit = valid && !insufficient && !loading && consent1 && consent2;
 
   const doSubmit = async (confirm = false) => {
     setLoading(true); setError(''); setResult(null); setReverify(null);
@@ -71,8 +77,17 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
             {slips.map((s) => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)} Slip</option>)}
           </select>
         )}
+        <button type="button" onClick={() => setSpecimen(true)} className="text-xs font-semibold text-primary underline">👁 View Example Slip</button>
+        <label className="flex items-start gap-2 text-xs text-muted">
+          <input type="checkbox" checked={consent1} onChange={(e) => setConsent1(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
+          <span>I confirm that I am the owner of this {isBvn ? 'BVN' : 'NIN'} or have lawful authorization to retrieve this record in accordance with the <b className="text-dark">Nigeria Data Protection Act (NDPA) 2023</b>.</span>
+        </label>
+        <label className="flex items-start gap-2 text-xs text-muted">
+          <input type="checkbox" checked={consent2} onChange={(e) => setConsent2(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
+          <span>I authorize the fee of <b className="text-dark">₦{price.toLocaleString('en-NG')}</b> to be debited from my wallet.</span>
+        </label>
         {insufficient && <p className="text-xs text-red-600">Insufficient wallet balance.</p>}
-        <button onClick={() => doSubmit(false)} disabled={!canSubmit}
+        <button onClick={() => (isAsync && !ack ? setTimeline(true) : doSubmit(false))} disabled={!canSubmit}
           className="w-full rounded-lg bg-primary py-2.5 text-sm font-semibold text-white hover:bg-primary-dark disabled:opacity-60">
           {loading ? 'Verifying…' : (isBvn ? 'Verify BVN' : 'Verify NIN')}
         </button>
@@ -110,6 +125,37 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
             className="mt-2 inline-block text-sm font-semibold text-primary underline">View / Download Slip</a>
         </div>
       )}
+    {timeline && (
+      <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+        <div className="w-full max-w-md rounded-2xl bg-white p-6">
+          <h3 className="text-lg font-extrabold text-dark">Processing Timeline</h3>
+          <p className="mt-3 text-sm text-muted">This service will be processed within <b className="text-dark">24–48 hours</b> (official portal reflection may take up to 72 hours).</p>
+          <p className="mt-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-xs font-bold text-amber-700">No Refund Policy: This service is non-refundable once queued, as provider fulfillment costs are billed 100% upfront.</p>
+          <button onClick={() => { setAck(true); setTimeline(false); doSubmit(false); }} className="mt-4 w-full rounded-xl bg-primary text-white font-extrabold py-3.5 text-sm">I Understand — Proceed</button>
+        </div>
+      </div>
+    )}
+    {specimen && (
+      <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setSpecimen(false)}>
+        <div className="w-full max-w-md rounded-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-extrabold text-dark">{service.name} — Example Specimen</h3>
+            <button onClick={() => setSpecimen(false)} className="font-bold text-muted">✕</button>
+          </div>
+          <div className="mt-4 rounded-xl border-2 border-emerald-700 bg-emerald-50 p-4">
+            <p className="text-center text-xs font-extrabold text-emerald-900">DEENBYTE VERIFY — {isBvn ? 'BVN' : 'NIN'} VERIFICATION SLIP</p>
+            <div className="mt-3 space-y-1 text-[11px] text-dark">
+              <p>First Name: <b>JOHN</b> • Last Name: <b>DOE</b></p>
+              <p>DOB: <b>01 JAN 1990</b> • Gender: <b>M</b></p>
+              <p>{isBvn ? 'BVN' : 'NIN'}: <b>{isBvn ? '22***8901' : '12***78901'}</b></p>
+              <p>Phone: <b>0800-000-0000</b></p>
+            </div>
+            <p className="mt-3 text-center text-[10px] font-bold text-green-700">✓ Verified (sample — placeholder data)</p>
+          </div>
+          <p className="mt-3 text-[10px] text-muted">Specimen uses placeholder data. Your slip is generated live from the official database at purchase.</p>
+        </div>
+      </div>
+    )}
     </div>
   );
 }
