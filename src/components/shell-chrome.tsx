@@ -35,6 +35,7 @@ const BVN: Item[] = [
 const ADMIN: Item[] = [
   { href: '/admin', label: 'Admin', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-rose-500 to-red-600' },
   { href: '/admin/analytics', label: 'Analytics', d: 'M4 20V10M10 20V4M16 20v-8M22 20H2', g: 'from-blue-500 to-indigo-600' },
+  { href: '/admin/tin', label: 'TIN Queue', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z', g: 'from-pink-500 to-rose-600' },
 ];
 const ACCOUNT: Item[] = [
   { href: '/history', label: 'History', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z', g: 'from-blue-500 to-indigo-600' },
