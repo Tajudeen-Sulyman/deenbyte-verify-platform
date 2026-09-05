@@ -139,19 +139,26 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
       <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setSpecimen(false)}>
         <div className="w-full max-w-md rounded-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-extrabold text-dark">{service.name} — Example Specimen</h3>
+            <h3 className="text-sm font-extrabold text-dark">{(!isBvn && ['regular', 'standard', 'premium'].includes(slipType)) ? slipType.charAt(0).toUpperCase() + slipType.slice(1) + ' Slip Example Specimen' : service.name + ' — Example Specimen'}</h3>
             <button onClick={() => setSpecimen(false)} className="font-bold text-muted">✕</button>
           </div>
-          <div className="mt-4 rounded-xl border-2 border-emerald-700 bg-emerald-50 p-4">
-            <p className="text-center text-xs font-extrabold text-emerald-900">DEENBYTE VERIFY — {isBvn ? 'BVN' : 'NIN'} VERIFICATION SLIP</p>
-            <div className="mt-3 space-y-1 text-[11px] text-dark">
-              <p>First Name: <b>JOHN</b> • Last Name: <b>DOE</b></p>
-              <p>DOB: <b>01 JAN 1990</b> • Gender: <b>M</b></p>
-              <p>{isBvn ? 'BVN' : 'NIN'}: <b>{isBvn ? '22***8901' : '12***78901'}</b></p>
-              <p>Phone: <b>0800-000-0000</b></p>
+          {(!isBvn && ['regular', 'standard', 'premium'].includes(slipType)) ? (
+            <>
+              <img src={'/specimens/' + slipType + '.jpg'} alt={slipType + ' slip example specimen'} className="mt-4 w-full rounded-lg border border-border bg-white" />
+              <p className="mt-2 text-center text-[10px] text-muted">Official NIMC {slipType} slip format — specimen with placeholder data.</p>
+            </>
+          ) : (
+            <div className="mt-4 rounded-xl border-2 border-emerald-700 bg-emerald-50 p-4">
+              <p className="text-center text-xs font-extrabold text-emerald-900">DEENBYTE VERIFY — {isBvn ? 'BVN' : 'NIN'} VERIFICATION SLIP</p>
+              <div className="mt-3 space-y-1 text-[11px] text-dark">
+                <p>First Name: <b>JOHN</b> • Last Name: <b>DOE</b></p>
+                <p>DOB: <b>01 JAN 1990</b> • Gender: <b>M</b></p>
+                <p>{isBvn ? 'BVN' : 'NIN'}: <b>{isBvn ? '22***8901' : '12***78901'}</b></p>
+                <p>Phone: <b>0800-000-0000</b></p>
+              </div>
+              <p className="mt-3 text-center text-[10px] font-bold text-green-700">✓ Verified (sample — placeholder data)</p>
             </div>
-            <p className="mt-3 text-center text-[10px] font-bold text-green-700">✓ Verified (sample — placeholder data)</p>
-          </div>
+          )}
           <p className="mt-3 text-[10px] text-muted">Specimen uses placeholder data. Your slip is generated live from the official database at purchase.</p>
         </div>
       </div>
