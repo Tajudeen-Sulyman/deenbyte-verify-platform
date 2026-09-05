@@ -91,6 +91,13 @@ export default async function DashboardPage() {
           </div>
         </section>
 
+        <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-teal-700 to-cyan-900 shadow-card">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-200">New — 1–48 hours processing</p>
+          <h3 className="mt-1 text-lg font-extrabold">NIN Modification</h3>
+          <p className="mt-1 text-xs text-emerald-100">Change of Name, Phone, or Address on your NIN record. ₦5,800.</p>
+          <Link href="/nin/modification" className="mt-3 inline-block rounded-lg bg-primary px-4 py-2 text-xs font-extrabold text-white">Apply now →</Link>
+        </section>
+
         <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-emerald-800 to-emerald-950 shadow-card">
           <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">New — no account needed</p>
           <h3 className="mt-1 text-lg font-extrabold">TIN Verification Slip</h3>
