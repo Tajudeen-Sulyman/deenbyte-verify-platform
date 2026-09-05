@@ -20,6 +20,22 @@ export async function POST(req: NextRequest) {
       }).eq('provider_ref', ref);
     }
   }
-  // ipe.* / nin_validation.* handled when those services go live; always ack 200
+  if (event === 'nin_validation.completed' || event === 'nin_validation.failed') {
+    const nin = String(data.nin ?? '');
+    const completed = event === 'nin_validation.completed';
+    if (nin) {
+      const { data: rows } = await admin.from('nin_val_requests')
+        .select('id').eq('nin', nin).in('status', ['awaiting_payment', 'pending', 'processing'])
+        .order('created_at', { ascending: false }).limit(1);
+      if (rows && rows[0]) {
+        await admin.from('nin_val_requests').update({
+          status: completed ? 'completed' : 'failed',
+          result_text: completed ? String(data.result ?? '').slice(0, 1000) || 'Validation completed.' : null,
+          error_message: completed ? null : String(data.result ?? data.admin_note ?? 'Validation failed.').slice(0, 500),
+        }).eq('id', rows[0].id);
+      }
+    }
+  }
+  // ipe.* handled when IPE service goes live; always ack 200
   return NextResponse.json({ received: true });
 }
