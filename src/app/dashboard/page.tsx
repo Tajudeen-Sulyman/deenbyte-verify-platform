@@ -122,30 +122,6 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        <section>
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-bold text-dark">All services</h3>
-            <Link href="/services" className="text-xs font-semibold text-primary">View all</Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {services.map((s: any) => (
-              <Link key={s.service_id} href={'/verify?s=' + s.service_id}
-                className="relative card3d p-4 pt-6 flex flex-col items-center text-center gap-2 hover:border-primary hover:-translate-y-0.5">
-                <span className={'absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full ' + badgeCls(String(s.category), !!s.is_async)}>
-                  {s.is_async ? 'ASYNC' : String(s.category)}
-                </span>
-                <span className={'h-12 w-12 rounded-2xl bg-gradient-to-br text-white flex items-center justify-center shadow-md ' + tileCls(String(s.category), !!s.is_async)}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-                    strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden="true">
-                    <path d={ICONS[s.service_id] ?? FALLBACK} />
-                  </svg>
-                </span>
-                <p className="text-sm font-semibold text-dark leading-tight">{s.name}</p>
-                <p className="text-xs font-bold text-primary">₦{Number(s.selling_price).toLocaleString('en-NG')}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
 
         <section className="card3d p-5">
           <div className="flex items-center justify-between">
