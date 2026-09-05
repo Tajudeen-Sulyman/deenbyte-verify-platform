@@ -6,14 +6,6 @@ import { shPost } from '@/lib/seamleshub';
 const admin = adminClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 const FEES: Record<string, number> = { no_record: 1100, sim_vnin: 1100, modification: 1600, photographic: 1600 };
 
-async function submit(row: any) {
-  const json = await shPost('/api/v1/nin/validate.php', { nin: row.nin });
-  if (json?.status === 'success') {
-    return { ok: true as const, provider_ref: String(json?.data?.transaction_ref ?? json?.data?.reference ?? '') };
-  }
-  return { ok: false as const, error: String(json?.message ?? 'SeamlesHub validation submission failed.') };
-}
-
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -39,13 +31,13 @@ export async function POST(req: NextRequest) {
     if (error) return NextResponse.json({ error: 'Could not create request.' }, { status: 500 });
     await admin.from('wallets').update({ balance: bal - fee }).eq('user_id', user.id);
     await admin.from('wallet_transactions').insert({ user_id: user.id, amount: fee, type: 'nin_validation', status: 'successful', description: 'NIN validation ' + reference });
-    const sub = await submit(row);
-    if (sub.ok) {
-      await admin.from('nin_val_requests').update({ status: 'processing', provider_ref: sub.provider_ref || null }).eq('reference', reference);
+    const json = await shPost('/api/v1/nin/validate.php', { nin });
+    if (json?.status === 'success') {
+      await admin.from('nin_val_requests').update({ status: 'processing', provider_ref: String(json?.data?.transaction_ref ?? json?.data?.reference ?? '') || null }).eq('reference', reference);
       return NextResponse.json({ ok: true, reference });
     }
-    await admin.from('nin_val_requests').update({ status: 'failed', error_message: sub.error }).eq('reference', reference);
-    return NextResponse.json({ error: sub.error }, { status: 400 });
+    await admin.from('nin_val_requests').update({ status: 'failed', error_message: String(json?.message ?? 'Provider error') }).eq('reference', reference);
+    return NextResponse.json({ error: String(json?.message ?? 'Provider error') }, { status: 400 });
   }
 
   const { error } = await admin.from('nin_val_requests').insert(row);

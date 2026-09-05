@@ -27,7 +27,6 @@ export default function NinValidationPage() {
   const load = () => fetch('/api/v1/ninval/history').then((r) => r.json()).then((j) => setRows(j.rows ?? [])).catch(() => {});
   useEffect(() => { fetch('/api/v1/taxid/me').then((r) => r.json()).then(setWallet).catch(() => {}); load(); }, []);
   const set = (k: string) => (e: any) => setF({ ...f, [k]: e.target.value });
-
   function pick(c: any) { setCat(c); if (!ack[c.id]) setModal(true); }
 
   async function submit(payMethod: 'wallet' | 'paystack') {
