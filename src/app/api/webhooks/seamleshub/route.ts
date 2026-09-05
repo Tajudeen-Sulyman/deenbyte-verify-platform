@@ -36,6 +36,27 @@ export async function POST(req: NextRequest) {
       }
     }
   }
-  // ipe.* handled when IPE service goes live; always ack 200
+  if (event === 'ipe.completed' || event === 'ipe.failed') {
+    const trk = String(data.tracking_id ?? '');
+    const completed = event === 'ipe.completed';
+    if (trk) {
+      const { data: rows } = await admin.from('ipe_requests').select('*').eq('tracking_id', trk)
+        .in('status', ['awaiting_payment', 'pending', 'processing']).order('created_at', { ascending: false }).limit(1);
+      const row = rows?.[0];
+      if (row) {
+        await admin.from('ipe_requests').update({
+          status: completed ? 'completed' : 'failed',
+          result_text: completed ? ('NIN: ' + String(data.nin ?? '') + ' • Name: ' + String(data.full_name ?? '')) : null,
+          error_message: completed ? null : ('IPE clearance failed. ' + (data.refunded ? 'Provider auto-refunded — wallet credited.' : 'Contact support.')),
+        }).eq('id', row.id);
+        if (!completed && data.refunded) {
+          const { data: wallet } = await admin.from('wallets').select('balance').eq('user_id', row.user_id).maybeSingle();
+          await admin.from('wallets').update({ balance: Number(wallet?.balance ?? 0) + Number(row.fee) }).eq('user_id', row.user_id);
+          await admin.from('wallet_transactions').insert({ user_id: row.user_id, amount: Number(row.fee), type: 'reversal', status: 'successful', description: 'IPE refund ' + row.reference });
+        }
+      }
+    }
+  }
+  // always ack 200
   return NextResponse.json({ received: true });
 }

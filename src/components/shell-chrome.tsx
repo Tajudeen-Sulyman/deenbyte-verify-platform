@@ -28,6 +28,7 @@ const NIN: Item[] = [
   { href: '/verify?s=nin_demographic', label: 'Demographic Search', d: 'M8 10a3 3 0 106 0 3 3 0 00-6 0zM4 20c0-3 3-5 8-5s8 2 8 5', g: 'from-emerald-500 to-teal-600' },
   { href: '/nin/validation', label: 'NIN Validation', d: 'M9 3h6v3H9zM9 5H7v16h10V5h-2M9 12l2 2 4-4', g: 'from-emerald-500 to-teal-600' },
   { href: '/nin/modification', label: 'NIN Modification', d: 'M4 4h16v16H4zM8 10h8M8 14h5', g: 'from-teal-500 to-cyan-600' },
+  { href: '/nin/ipe', label: 'IPE Clearance', d: 'M12 9v4m0 4h.01M10 3h4l1 2h5v14H4V5h5l1-2z', g: 'from-rose-500 to-red-600' },
 ];
 const BVN: Item[] = [
   { href: '/verify?s=bvn_basic', label: 'BVN Verification', d: 'M12 3a9 9 0 019 9v9h-4v-9a5 5 0 00-10 0v9H3v-9a9 9 0 019-9z', g: 'from-violet-500 to-purple-600' },

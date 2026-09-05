@@ -68,6 +68,7 @@ export default async function DashboardPage() {
     { href: '/verify?s=nin_demographic', t: 'Demographic Search', d: 'Search NIN records by demographics.', time: 'Instant', g: 'from-cyan-600 to-sky-800' },
     { href: '/nin/validation', t: 'NIN Validation', d: 'Resolve No-Record, VNIN sync & modification issues.', time: '24–48 hrs', g: 'from-sky-700 to-blue-900' },
     { href: '/nin/modification', t: 'NIN Modification', d: 'Change of Name, Phone, or Address. ₦5,800.', time: '1–48 hrs', g: 'from-teal-700 to-cyan-900' },
+    { href: '/nin/ipe', t: 'IPE Clearance', d: 'Clear In-Processing Errors on your NIN.', time: '~24 hrs', g: 'from-rose-600 to-red-900' },
     { href: '/verify?s=bvn_basic', t: 'BVN Verification', d: 'Official BVN slip in seconds.', time: 'Instant', g: 'from-violet-600 to-purple-900' },
     { href: '/verify?s=bvn_retrieval', t: 'BVN Retrieval', d: 'Get BVN from phone or NIN.', time: 'Instant', g: 'from-fuchsia-600 to-pink-900' },
   ];
