@@ -139,10 +139,10 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
       <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setSpecimen(false)}>
         <div className="w-full max-w-md rounded-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-extrabold text-dark">{(!isBvn && ['regular', 'standard', 'premium'].includes(slipType)) ? slipType.charAt(0).toUpperCase() + slipType.slice(1) + ' Slip Example Specimen' : service.name + ' — Example Specimen'}</h3>
+            <h3 className="text-sm font-extrabold text-dark">{(!isBvn && ['regular', 'standard', 'premium', 'vnin'].includes(slipType)) ? slipType.charAt(0).toUpperCase() + slipType.slice(1) + ' Slip Example Specimen' : service.name + ' — Example Specimen'}</h3>
             <button onClick={() => setSpecimen(false)} className="font-bold text-muted">✕</button>
           </div>
-          {(!isBvn && ['regular', 'standard', 'premium'].includes(slipType)) ? (
+          {(!isBvn && ['regular', 'standard', 'premium', 'vnin'].includes(slipType)) ? (
             <>
               <img src={'/specimens/' + slipType + '.jpg'} alt={slipType + ' slip example specimen'} className="mt-4 w-full rounded-lg border border-border bg-white" />
               <p className="mt-2 text-center text-[10px] text-muted">Official NIMC {slipType} slip format — specimen with placeholder data.</p>
