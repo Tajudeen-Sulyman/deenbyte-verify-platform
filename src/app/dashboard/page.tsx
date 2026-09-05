@@ -62,6 +62,16 @@ export default async function DashboardPage() {
     return { ...r, serviceName: svc?.name ?? 'Verification' };
   });
 
+  const hubs = [
+    { href: '/verify?s=nin_regular', t: 'NIN Verification', d: 'Official NIMC slips with instant database lookup.', time: 'Instant', g: 'from-emerald-600 to-teal-800' },
+    { href: '/verify?s=nin_by_phone', t: 'NIN by Phone', d: 'Retrieve an NIN record using a phone number.', time: 'Instant', g: 'from-teal-600 to-cyan-800' },
+    { href: '/verify?s=nin_demographic', t: 'Demographic Search', d: 'Search NIN records by demographics.', time: 'Instant', g: 'from-cyan-600 to-sky-800' },
+    { href: '/verify?s=nin_validation', t: 'NIN Validation', d: 'Resolve No-Record, VNIN sync & modification issues.', time: '24–48 hrs', g: 'from-sky-700 to-blue-900' },
+    { href: '/nin/modification', t: 'NIN Modification', d: 'Change of Name, Phone, or Address. ₦5,800.', time: '1–48 hrs', g: 'from-teal-700 to-cyan-900' },
+    { href: '/verify?s=bvn_basic', t: 'BVN Verification', d: 'Official BVN slip in seconds.', time: 'Instant', g: 'from-violet-600 to-purple-900' },
+    { href: '/verify?s=bvn_retrieval', t: 'BVN Retrieval', d: 'Get BVN from phone or NIN.', time: 'Instant', g: 'from-fuchsia-600 to-pink-900' },
+  ];
+
   return (
     <AppShell title="Dashboard">
       <div className="space-y-5">
@@ -91,18 +101,25 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-teal-700 to-cyan-900 shadow-card">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-200">New — 1–48 hours processing</p>
-          <h3 className="mt-1 text-lg font-extrabold">NIN Modification</h3>
-          <p className="mt-1 text-xs text-emerald-100">Change of Name, Phone, or Address on your NIN record. ₦5,800.</p>
-          <Link href="/nin/modification" className="mt-3 inline-block rounded-lg bg-primary px-4 py-2 text-xs font-extrabold text-white">Apply now →</Link>
-        </section>
-
         <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-emerald-800 to-emerald-950 shadow-card">
           <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">New — no account needed</p>
           <h3 className="mt-1 text-lg font-extrabold">TIN Verification Slip</h3>
           <p className="mt-1 text-xs text-emerald-100">Pay once, get your slip in under 90 seconds. From ₦50.</p>
           <Link href="/taxid" className="mt-3 inline-block rounded-lg bg-primary px-4 py-2 text-xs font-extrabold text-white">Get yours →</Link>
+        </section>
+
+        <section>
+          <h3 className="text-sm font-bold text-dark mb-2">Service Hub</h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {hubs.map((h) => (
+              <Link key={h.t} href={h.href} className={'relative overflow-hidden rounded-2xl p-4 text-white bg-gradient-to-br shadow-card ' + h.g}>
+                <p className="text-sm font-extrabold">{h.t}</p>
+                <p className="mt-1 text-[11px] text-white/80">{h.d}</p>
+                <span className="mt-3 inline-block rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold">🕐 {h.time}</span>
+                <span className="ml-2 inline-block rounded-full bg-green-400/20 text-green-200 px-2.5 py-1 text-[10px] font-bold">● ACTIVE</span>
+              </Link>
+            ))}
+          </div>
         </section>
 
         <section>
