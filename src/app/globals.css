@@ -56,3 +56,6 @@ body {
 [data-theme='dark'] .border-border { border-color: #263352 !important; }
 [data-theme='dark'] .card3d { background-color: #151f38 !important; border-color: #263352 !important; }
 [data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea { background-color: #0d1526 !important; color: #e5e9f2 !important; border-color: #263352 !important; }
+
+[data-theme='dark'] header { background-color: #0f172a !important; border-color: #263352 !important; }
+[data-theme='dark'] nav { background-color: #0f172a !important; border-color: #263352 !important; }
