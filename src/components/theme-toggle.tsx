@@ -15,7 +15,7 @@ export function ThemeToggle() {
     document.documentElement.dataset.theme = n ? 'dark' : 'light';
   }
   return (
-    <button onClick={flip} className="fixed bottom-20 right-4 z-40 rounded-full bg-primary px-4 py-3 text-xs font-bold text-white shadow-lg">
+    <button onClick={flip} className="rounded-full bg-primary px-3 py-1.5 text-[10px] font-bold text-white shadow">
       {dark ? '☀ Light' : '🌙 Dark'}
     </button>
   );

@@ -24,8 +24,8 @@ export async function AppShell({ children, title }: { children: React.ReactNode;
       title={title}
       logoutSlot={<LogoutButton />}
     >
+      <div className="flex justify-end px-4 pt-3"><ThemeToggle /></div>
       {children}
-      <ThemeToggle />
     </ShellChrome>
   );
 }
