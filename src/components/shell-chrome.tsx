@@ -108,8 +108,8 @@ function SideNav({ email, balance, isAdmin, active, onNav }: {
   );
 }
 
-export function ShellChrome({ balance, isAdmin, title, email, logoutSlot, children }: {
-  balance: number; isAdmin: boolean; title: string; email?: string; logoutSlot: ReactNode; children: ReactNode;
+export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutSlot, children }: {
+  isAdmin: boolean; title: string; email?: string; avatarUrl?: string; balance: number; logoutSlot: ReactNode; children: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const path = usePathname();
@@ -153,8 +153,8 @@ export function ShellChrome({ balance, isAdmin, title, email, logoutSlot, childr
               </button>
               <h1 className="text-sm lg:text-base font-semibold text-dark truncate">{title}</h1>
             </div>
-            <Link href="/wallet" className="shrink-0 rounded-full bg-primary/10 text-primary px-3 py-1.5 text-xs lg:text-sm font-bold">
-              ₦{balance.toLocaleString('en-NG', { minimumFractionDigits: 2 })}
+            <Link href="/profile" aria-label="Profile" className="shrink-0">
+              {avatarUrl ? <img src={avatarUrl} alt="profile" className="h-9 w-9 rounded-full object-cover border-2 border-primary" /> : <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-extrabold text-white">{(email ?? 'D')[0].toUpperCase()}</span>}
             </Link>
           </div>
         </header>

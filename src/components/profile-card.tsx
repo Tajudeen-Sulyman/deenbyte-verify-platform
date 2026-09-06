@@ -9,12 +9,14 @@ export function ProfileCard() {
   const [f, setF] = useState({ full_name: '', phone: '' });
   const [msg, setMsg] = useState('');
   const [bal, setBal] = useState(0);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   useEffect(() => {
     supabase.auth.getUser().then(({ data }: any) => {
       setUser(data.user);
       setF({ full_name: data.user?.user_metadata?.full_name ?? '', phone: data.user?.user_metadata?.phone ?? '' });
     });
     fetch('/api/v1/taxid/me').then((r) => r.json()).then((j) => setBal(j.balance ?? 0)).catch(() => {});
+    fetch('/api/v1/profile').then((r) => r.json()).then((j) => setAvatarUrl(j.avatarUrl ?? null)).catch(() => {});
   }, []);
   async function save() {
     const { error } = await supabase.auth.updateUser({ data: { full_name: f.full_name, phone: f.phone } });
@@ -22,13 +24,30 @@ export function ProfileCard() {
     if (!error) { const { data } = await supabase.auth.getUser(); setUser(data.user); }
     setEdit(false);
   }
+  async function onPhoto(e: any) {
+    const file = e.target.files?.[0]; if (!file) return;
+    if (file.size > 1500000) { setMsg('Max 1.5MB for photo.'); return; }
+    const r = new FileReader();
+    r.onload = async () => {
+      const res = await fetch('/api/v1/profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ base64: String(r.result ?? '').split(',')[1] ?? '', ext: (file.name.split('.').pop() ?? 'jpg').toLowerCase() }) });
+      const j = await res.json();
+      if (j.avatarUrl) { setAvatarUrl(j.avatarUrl); setMsg('Photo updated ✅'); } else setMsg(j.error ?? 'Upload failed');
+    };
+    r.readAsDataURL(file);
+  }
   async function logout() { await supabase.auth.signOut(); window.location.href = '/login'; }
   const name = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Customer';
   const initial = (name[0] ?? 'D').toUpperCase();
   return (
     <div className="space-y-4">
       <div className="card3d rounded-2xl bg-white p-6 text-center">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary text-3xl font-extrabold text-white">{initial}</div>
+        <div className="relative mx-auto h-24 w-24">
+          {avatarUrl ? <img src={avatarUrl} alt="profile" className="h-24 w-24 rounded-full object-cover border-4 border-primary" />
+            : <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary text-3xl font-extrabold text-white">{initial}</div>}
+          <label className="absolute -bottom-1 -right-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-primary text-white text-sm shadow">📷
+            <input type="file" accept="image/*" onChange={onPhoto} className="hidden" />
+          </label>
+        </div>
         <p className="mt-3 text-lg font-extrabold text-dark">{name}</p>
         <p className="text-xs text-muted">{user?.email}</p>
         <p className="mt-1 text-[10px] text-muted">Member since {user?.created_at ? new Date(user.created_at).toLocaleDateString() : '—'}</p>

@@ -16,9 +16,14 @@ export async function AppShell({ children, title }: { children: React.ReactNode;
   ]);
   const isAdmin = String(p1.data?.role ?? p2.data?.role ?? '').toLowerCase() === 'admin';
 
+  let avatarUrl: string | undefined;
+  if (user) {
+    const lst = await supabase.storage.from('avatars').list(user.id, { limit: 1 });
+    if (lst.data && lst.data.length > 0) avatarUrl = supabase.storage.from('avatars').getPublicUrl(user.id + '/' + lst.data[0].name).data.publicUrl;
+  }
   return (
     <ShellChrome
-      balance={Number(walletRes.data?.balance ?? 0)}
+      balance={Number(walletRes.data?.balance ?? 0)} avatarUrl={avatarUrl}
       isAdmin={isAdmin}
       email={String(user.email ?? '')}
       title={title}
