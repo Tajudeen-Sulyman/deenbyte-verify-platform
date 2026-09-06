@@ -10,14 +10,20 @@ export async function POST(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Login required.' }, { status: 401 });
   const b = await req.json();
-  const entity = b.entity === 'ltd' ? 'ltd' : 'bn';
-  const fee = entity === 'ltd' ? CAC_FEES.ltd : CAC_FEES.bn;
+  const entity = ['bn', 'ltd', 'annual_returns'].includes(b.entity) ? b.entity : 'bn';
+  const fee = entity === 'ltd' ? CAC_FEES.ltd : entity === 'annual_returns' ? (b.structure === 'ltd' ? CAC_FEES.ar_ltd : CAC_FEES.ar_bn) : CAC_FEES.bn;
   const name = b.name ?? {}; const company = b.company ?? {}; const persons = Array.isArray(b.persons) ? b.persons : [];
   const docs = b.docs ?? {};
-  if (!name.proposed || !name.category || !name.nature) return NextResponse.json({ error: 'Name, category and nature are required.' }, { status: 400 });
-  if (!company.email || !company.state || !company.city || !company.street) return NextResponse.json({ error: 'Company details incomplete.' }, { status: 400 });
-  if (persons.length === 0) return NextResponse.json({ error: 'At least one proprietor/director required.' }, { status: 400 });
-  for (const p of persons) if (!p.surname || !p.first || !p.email || !p.phone) return NextResponse.json({ error: 'Person details incomplete.' }, { status: 400 });
+  if (entity === 'annual_returns') {
+    if (!company.officialName || !company.regNumber || !company.filingYear) return NextResponse.json({ error: 'Registered name, CAC number and filing year are required.' }, { status: 400 });
+    if (!docs['0_cert']) return NextResponse.json({ error: 'Upload the CAC certificate or status report.' }, { status: 400 });
+    if (!company.officerName || !company.officerRole) return NextResponse.json({ error: 'Authorizing officer details are required.' }, { status: 400 });
+  } else {
+    if (!name.proposed || !name.category || !name.nature) return NextResponse.json({ error: 'Name, category and nature are required.' }, { status: 400 });
+    if (!company.email || !company.state || !company.city || !company.street) return NextResponse.json({ error: 'Company details incomplete.' }, { status: 400 });
+    if (persons.length === 0) return NextResponse.json({ error: 'At least one proprietor/director required.' }, { status: 400 });
+    for (const p of persons) if (!p.surname || !p.first || !p.email || !p.phone) return NextResponse.json({ error: 'Person details incomplete.' }, { status: 400 });
+  }
   if (b.consent !== true) return NextResponse.json({ error: 'Consent is required.' }, { status: 400 });
 
   const reference = 'CAC-' + Date.now() + Math.floor(1000 + Math.random() * 9000);
@@ -34,7 +40,7 @@ export async function POST(req: NextRequest) {
   const row = {
     user_id: user.id, reference, entity_type: entity, fee,
     payload: { name, ownership: b.ownership, company, persons, docPaths },
-    email: company.email, phone: persons[0]?.phone ?? '', status: 'awaiting_payment',
+    email: company.email || b.email || '', phone: persons[0]?.phone ?? b.phone ?? '', status: 'awaiting_payment',
   };
 
   if (b.payMethod === 'wallet') {
