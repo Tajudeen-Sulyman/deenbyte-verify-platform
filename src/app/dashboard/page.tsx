@@ -34,7 +34,7 @@ function badgeCls(cat: string, isAsync: boolean) {
 function tileCls(cat: string, isAsync: boolean) {
   if (isAsync) return 'from-amber-500 to-orange-600';
   if (cat === 'BVN') return 'from-violet-500 to-purple-600';
-  return 'from-emerald-500 to-teal-600';
+  return 'from-violet-500 to-fuchsia-600';
 }
 
 export default async function DashboardPage() {
@@ -63,11 +63,11 @@ export default async function DashboardPage() {
   });
 
   const hubs = [
-    { href: '/verify?s=nin_regular', t: 'NIN Verification', d: 'Official NIMC slips with instant database lookup.', time: 'Instant', g: 'from-emerald-600 to-teal-800' },
-    { href: '/verify?s=nin_by_phone', t: 'NIN by Phone', d: 'Retrieve an NIN record using a phone number.', time: 'Instant', g: 'from-teal-600 to-cyan-800' },
+    { href: '/verify?s=nin_regular', t: 'NIN Verification', d: 'Official NIMC slips with instant database lookup.', time: 'Instant', g: 'from-violet-600 to-fuchsia-800' },
+    { href: '/verify?s=nin_by_phone', t: 'NIN by Phone', d: 'Retrieve an NIN record using a phone number.', time: 'Instant', g: 'from-fuchsia-600 to-cyan-800' },
     { href: '/verify?s=nin_demographic', t: 'Demographic Search', d: 'Search NIN records by demographics.', time: 'Instant', g: 'from-cyan-600 to-sky-800' },
     { href: '/nin/validation', t: 'NIN Validation', d: 'Resolve No-Record, VNIN sync & modification issues.', time: '24–48 hrs', g: 'from-sky-700 to-blue-900' },
-    { href: '/nin/modification', t: 'NIN Modification', d: 'Change of Name, Phone, or Address. ₦5,800.', time: '1–48 hrs', g: 'from-teal-700 to-cyan-900' },
+    { href: '/nin/modification', t: 'NIN Modification', d: 'Change of Name, Phone, or Address. ₦5,800.', time: '1–48 hrs', g: 'from-fuchsia-700 to-cyan-900' },
     { href: '/nin/ipe', t: 'IPE Clearance', d: 'Clear In-Processing Errors on your NIN.', time: '~24 hrs', g: 'from-rose-600 to-red-900' },
     { href: '/verify?s=bvn_basic', t: 'BVN Verification', d: 'Official BVN slip in seconds.', time: 'Instant', g: 'from-violet-600 to-purple-900' },
     { href: '/verify?s=bvn_retrieval', t: 'BVN Retrieval', d: 'Get BVN from phone or NIN.', time: 'Instant', g: 'from-fuchsia-600 to-pink-900' },
@@ -81,18 +81,18 @@ export default async function DashboardPage() {
           <p className="text-sm text-muted mt-1">Manage verifications, wallet and transactions from one place.</p>
         </section>
 
-        <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-emerald-600 to-teal-700 shadow-card">
+        <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-violet-600 to-fuchsia-700 shadow-card">
           <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-white/10" />
           <div className="absolute -right-2 -top-2 h-20 w-20 rounded-full bg-white/10" />
           <div className="relative flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs text-emerald-100">Wallet Balance</p>
+              <p className="text-xs text-violet-100">Wallet Balance</p>
               <p className="text-2xl font-bold text-white">
                 ₦{balance.toLocaleString('en-NG', { minimumFractionDigits: 2 })}
               </p>
             </div>
             <div className="flex gap-2">
-              <Link href="/wallet" className="rounded-lg bg-white px-4 py-2.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50">
+              <Link href="/wallet" className="rounded-lg bg-white px-4 py-2.5 text-xs font-semibold text-violet-700 hover:bg-violet-50">
                 Fund Wallet
               </Link>
               <Link href="/transactions" className="rounded-lg border border-white/40 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white hover:bg-white/20">
@@ -102,10 +102,10 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-emerald-800 to-emerald-950 shadow-card">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">New — no account needed</p>
+        <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-violet-800 to-violet-950 shadow-card">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-violet-300">New — no account needed</p>
           <h3 className="mt-1 text-lg font-extrabold">TIN Verification Slip</h3>
-          <p className="mt-1 text-xs text-emerald-100">Pay once, get your slip in under 90 seconds. From ₦50.</p>
+          <p className="mt-1 text-xs text-violet-100">Pay once, get your slip in under 90 seconds. From ₦50.</p>
           <Link href="/taxid" className="mt-3 inline-block rounded-lg bg-primary px-4 py-2 text-xs font-extrabold text-white">Get yours →</Link>
         </section>
 

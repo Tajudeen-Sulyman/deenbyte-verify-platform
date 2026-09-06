@@ -113,17 +113,17 @@ export default function TaxIdSuccessPage() {
       <div className="w-full max-w-md rounded-2xl border border-border bg-white p-6 text-center">
         {!done && (
           <>
-            <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-emerald-700 border-t-transparent" />
-            <h1 className="mt-4 text-lg font-extrabold text-emerald-950">Confirming your payment…</h1>
+            <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-violet-700 border-t-transparent" />
+            <h1 className="mt-4 text-lg font-extrabold text-violet-950">Confirming your payment…</h1>
             <p className="mt-1 text-xs text-muted">This takes a few seconds. Don&apos;t close this page.</p>
           </>
         )}
         {done && slip && (
           <>
-            <div className="mx-auto h-16 w-16 rounded-full border-4 border-emerald-800 flex items-center justify-center">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-emerald-800"><path d="M5 13l4 4L19 7" /></svg>
+            <div className="mx-auto h-16 w-16 rounded-full border-4 border-violet-800 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-violet-800"><path d="M5 13l4 4L19 7" /></svg>
             </div>
-            <h1 className="mt-4 text-xl font-extrabold text-emerald-950">Payment Successful!</h1>
+            <h1 className="mt-4 text-xl font-extrabold text-violet-950">Payment Successful!</h1>
             <p className="mt-2 text-sm text-muted">Your TIN Slip for <span className="font-bold text-dark">{slip.email}</span> is ready.</p>
             <button onClick={() => downloadPdf(slip)} className="mt-5 w-full rounded-xl bg-primary text-white font-extrabold py-4 text-sm">↓ DOWNLOAD PDF</button>
             <div className="mt-4 rounded-xl border-2 border-dashed border-border p-3 flex items-center justify-between gap-2">
@@ -131,13 +131,13 @@ export default function TaxIdSuccessPage() {
                 <p className="text-[10px] font-bold uppercase text-muted">Your reference (save this)</p>
                 <p className="text-sm font-extrabold text-dark">{slip.reference}</p>
               </div>
-              <button onClick={() => { navigator.clipboard.writeText(slip.reference); setCopied(true); setTimeout(() => setCopied(false), 1500); }} className="rounded-lg bg-emerald-800 text-white text-xs font-bold px-3 py-2">{copied ? 'Copied' : 'Copy'}</button>
+              <button onClick={() => { navigator.clipboard.writeText(slip.reference); setCopied(true); setTimeout(() => setCopied(false), 1500); }} className="rounded-lg bg-violet-800 text-white text-xs font-bold px-3 py-2">{copied ? 'Copied' : 'Copy'}</button>
             </div>
           </>
         )}
         {done && !slip && (
           <>
-            <h1 className="text-lg font-extrabold text-emerald-950">Payment not confirmed yet</h1>
+            <h1 className="text-lg font-extrabold text-violet-950">Payment not confirmed yet</h1>
             <p className="mt-2 text-xs text-muted">If you paid, wait a minute and refresh this page{ref ? '' : ' with your reference'}. Your reference: <span className="font-bold text-dark">{ref || '—'}</span></p>
           </>
         )}

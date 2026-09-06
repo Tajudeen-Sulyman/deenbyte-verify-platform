@@ -22,12 +22,12 @@ const OVERVIEW: Item[] = [
   { href: '/wallet', label: 'Fund Wallet', d: 'M3 7h18v12H3zM3 7l3-4h12l3 4M15 12h4', g: 'from-amber-500 to-orange-600' },
 ];
 const NIN: Item[] = [
-  { href: '/services', label: 'All NIN Services', d: 'M4 6h16M4 12h16M4 18h16', g: 'from-emerald-500 to-teal-600' },
-  { href: '/verify?s=nin_regular', label: 'NIN Verification', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-emerald-500 to-teal-600' },
-  { href: '/verify?s=nin_by_phone', label: 'NIN by Phone', d: 'M7 3h10v18H7zM11 18h2', g: 'from-emerald-500 to-teal-600' },
-  { href: '/verify?s=nin_demographic', label: 'Demographic Search', d: 'M8 10a3 3 0 106 0 3 3 0 00-6 0zM4 20c0-3 3-5 8-5s8 2 8 5', g: 'from-emerald-500 to-teal-600' },
-  { href: '/nin/validation', label: 'NIN Validation', d: 'M9 3h6v3H9zM9 5H7v16h10V5h-2M9 12l2 2 4-4', g: 'from-emerald-500 to-teal-600' },
-  { href: '/nin/modification', label: 'NIN Modification', d: 'M4 4h16v16H4zM8 10h8M8 14h5', g: 'from-teal-500 to-cyan-600' },
+  { href: '/services', label: 'All NIN Services', d: 'M4 6h16M4 12h16M4 18h16', g: 'from-violet-500 to-fuchsia-600' },
+  { href: '/verify?s=nin_regular', label: 'NIN Verification', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-violet-500 to-fuchsia-600' },
+  { href: '/verify?s=nin_by_phone', label: 'NIN by Phone', d: 'M7 3h10v18H7zM11 18h2', g: 'from-violet-500 to-fuchsia-600' },
+  { href: '/verify?s=nin_demographic', label: 'Demographic Search', d: 'M8 10a3 3 0 106 0 3 3 0 00-6 0zM4 20c0-3 3-5 8-5s8 2 8 5', g: 'from-violet-500 to-fuchsia-600' },
+  { href: '/nin/validation', label: 'NIN Validation', d: 'M9 3h6v3H9zM9 5H7v16h10V5h-2M9 12l2 2 4-4', g: 'from-violet-500 to-fuchsia-600' },
+  { href: '/nin/modification', label: 'NIN Modification', d: 'M4 4h16v16H4zM8 10h8M8 14h5', g: 'from-fuchsia-500 to-cyan-600' },
   { href: '/nin/ipe', label: 'IPE Clearance', d: 'M12 9v4m0 4h.01M10 3h4l1 2h5v14H4V5h5l1-2z', g: 'from-rose-500 to-red-600' },
 ];
 const BVN: Item[] = [
@@ -44,7 +44,7 @@ const ACCOUNT: Item[] = [
   { href: '/notifications', label: 'Notifications', d: 'M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h11z', g: 'from-amber-500 to-yellow-600' },
   { href: '/privacy', label: 'Privacy', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-slate-500 to-slate-600' },
   { href: '/terms', label: 'Terms', d: 'M6 3h9l4 4v14H6zM9 3v5h5', g: 'from-slate-500 to-slate-600' },
-  { href: 'mailto:deenbyte.technologies@gmail.com', label: 'Support', d: 'M4 6h16v12H4zM4 7l8 6 8-6', g: 'from-emerald-500 to-teal-600' },
+  { href: 'mailto:deenbyte.technologies@gmail.com', label: 'Support', d: 'M4 6h16v12H4zM4 7l8 6 8-6', g: 'from-violet-500 to-fuchsia-600' },
 ];
 
 function NavGroup({ label, d, g, items, active, onNav, defaultOpen }: {
@@ -66,7 +66,7 @@ function NavGroup({ label, d, g, items, active, onNav, defaultOpen }: {
           {items.map((i) => (
             <Link key={i.href} href={i.href} onClick={onNav}
               className={'flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium border-l-2 ' +
-                (active === i.href ? 'border-teal-400 bg-white/10 text-teal-300' : 'border-transparent text-slate-400 hover:bg-white/5 hover:text-white')}>
+                (active === i.href ? 'border-fuchsia-400 bg-white/10 text-fuchsia-300' : 'border-transparent text-slate-400 hover:bg-white/5 hover:text-white')}>
               {i.label}
             </Link>
           ))}
@@ -84,17 +84,17 @@ function SideNav({ email, balance, isAdmin, active, onNav }: {
     <>
       <div className="px-4 py-4 border-b border-white/10 bg-white/5">
         <div className="flex items-center gap-3 px-2 py-1">
-          <span className="h-10 w-10 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-600 text-white flex items-center justify-center font-bold">{initial}</span>
+          <span className="h-10 w-10 rounded-xl bg-gradient-to-br from-fuchsia-400 to-violet-600 text-white flex items-center justify-center font-bold">{initial}</span>
           <div className="min-w-0">
             <p className="text-sm font-semibold text-white truncate">{email || 'DeenByte User'}</p>
-            <p className="text-xs font-bold text-emerald-400">₦{balance.toLocaleString('en-NG', { minimumFractionDigits: 2 })}</p>
+            <p className="text-xs font-bold text-violet-400">₦{balance.toLocaleString('en-NG', { minimumFractionDigits: 2 })}</p>
           </div>
         </div>
       </div>
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-3">
         <NavGroup label="Overview" d="M3 12l9-9 9M5 10v10h5v-6h4v6h5V10" g="from-sky-500 to-blue-600" items={OVERVIEW} active={active} onNav={onNav} defaultOpen />
         <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">Your identity, simplified</p>
-        <NavGroup label="NIN Services" d="M4 6h16M4 12h16M4 18h16" g="from-emerald-500 to-teal-600" items={NIN} active={active} onNav={onNav} defaultOpen />
+        <NavGroup label="NIN Services" d="M4 6h16M4 12h16M4 18h16" g="from-violet-500 to-fuchsia-600" items={NIN} active={active} onNav={onNav} defaultOpen />
         <NavGroup label="BVN Services" d="M12 3a9 9 0 019 9v9h-4v-9a5 5 0 00-10 0v9H3v-9a9 9 0 019-9z" g="from-violet-500 to-purple-600" items={BVN} active={active} onNav={onNav} />
         <NavGroup label="Products" d="M6 3h9l4 4v14H6zM9 3v5h5" g="from-amber-500 to-orange-600" items={[{ href: '/taxid', label: 'TIN Verification Slip', d: 'M6 3h9l4 4v14H6zM9 3v5h5', g: 'from-amber-500 to-orange-600' }, { href: '/tin', label: 'Generate TIN (Agency)', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-pink-500 to-rose-600' }, { href: '/tin/history', label: 'TIN History', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z', g: 'from-blue-500 to-indigo-600' }]} active={active} onNav={onNav} />
         {isAdmin && (
@@ -116,7 +116,7 @@ export function ShellChrome({ balance, isAdmin, title, email, logoutSlot, childr
   const brand = (
     <Link href="/dashboard" className="flex items-center gap-2 text-lg font-bold text-white">
       <img src="/logo.jpg" alt="" className="h-9 w-9 rounded-xl object-cover shadow-md" />
-      DeenByte <span className="text-emerald-400">Verify</span>
+      DeenByte <span className="text-violet-400">Verify</span>
     </Link>
   );
 

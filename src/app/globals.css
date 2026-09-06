@@ -47,3 +47,12 @@ body {
 .card3d input, .card3d select { color: #0F172A; background: #f8fafc; border: 1px solid #e2e8f0; }
 .card3d input::placeholder { color: #94A3B8; }
 .card3d input.text-dark, .card3d select.text-dark { color: #0F172A; }
+
+[data-theme='dark'] { color-scheme: dark; }
+[data-theme='dark'] .bg-light { background-color: #0f172a !important; }
+[data-theme='dark'] .bg-white { background-color: #151f38 !important; }
+[data-theme='dark'] .text-dark { color: #e5e9f2 !important; }
+[data-theme='dark'] .text-muted { color: #93a0b4 !important; }
+[data-theme='dark'] .border-border { border-color: #263352 !important; }
+[data-theme='dark'] .card3d { background-color: #151f38 !important; border-color: #263352 !important; }
+[data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea { background-color: #0d1526 !important; color: #e5e9f2 !important; border-color: #263352 !important; }

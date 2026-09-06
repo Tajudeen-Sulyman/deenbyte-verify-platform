@@ -17,11 +17,11 @@ export default function ModHistoryPage() {
   useEffect(() => { fetch('/api/v1/ninmod/history').then((r) => r.json()).then((j) => { setRows(j.rows ?? []); setLoaded(true); }).catch(() => setLoaded(true)); }, []);
   return (
     <div className="min-h-screen bg-light pb-16">
-      <header className="bg-emerald-950 text-white px-4 py-8">
+      <header className="bg-violet-950 text-white px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <Link href="/nin/modification" className="text-xs font-bold text-emerald-300">← New modification</Link>
+          <Link href="/nin/modification" className="text-xs font-bold text-violet-300">← New modification</Link>
           <h1 className="mt-1 text-2xl font-extrabold">Modification History</h1>
-          <p className="mt-1 text-sm text-emerald-100">Track your NIN modification requests and download results.</p>
+          <p className="mt-1 text-sm text-violet-100">Track your NIN modification requests and download results.</p>
         </div>
       </header>
       <main className="max-w-2xl mx-auto p-4 space-y-3 mt-4">

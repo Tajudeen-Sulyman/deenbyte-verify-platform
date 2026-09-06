@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { ShellChrome } from './shell-chrome';
 import { LogoutButton } from './logout-button';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export async function AppShell({ children, title }: { children: React.ReactNode; title: string }) {
   const supabase = await createClient();
@@ -24,6 +25,7 @@ export async function AppShell({ children, title }: { children: React.ReactNode;
       logoutSlot={<LogoutButton />}
     >
       {children}
+      <ThemeToggle />
     </ShellChrome>
   );
 }

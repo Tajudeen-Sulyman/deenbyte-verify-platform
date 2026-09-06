@@ -66,11 +66,11 @@ export default function NinModificationPage() {
         </div>
       )}
 
-      <header className="bg-emerald-950 text-white px-4 py-8">
+      <header className="bg-violet-950 text-white px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <Link href="/dashboard" className="text-xs font-bold text-emerald-300">← Back to Dashboard</Link>
+          <Link href="/dashboard" className="text-xs font-bold text-violet-300">← Back to Dashboard</Link>
           <h1 className="mt-2 text-2xl font-extrabold">NIN Modification</h1>
-          <p className="mt-1 text-sm text-emerald-100">Official processing for Change of Name, Phone Number, and Address on your National Identity record.</p>
+          <p className="mt-1 text-sm text-violet-100">Official processing for Change of Name, Phone Number, and Address on your National Identity record.</p>
           <Link href="/nin/modification/history" className="mt-4 inline-block rounded-xl bg-white/10 px-4 py-2.5 text-xs font-bold">≡ Modification History →</Link>
         </div>
       </header>
@@ -81,7 +81,7 @@ export default function NinModificationPage() {
           <h2 className="mt-4 text-sm font-extrabold text-dark">SELECT MODIFICATION SERVICE</h2>
           <div className="space-y-3 mt-3">
             {SERVICES.map((s) => (
-              <button key={s.id} onClick={() => pick(s.id)} className={'w-full rounded-xl border-2 p-4 text-left ' + (type === s.id ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
+              <button key={s.id} onClick={() => pick(s.id)} className={'w-full rounded-xl border-2 p-4 text-left ' + (type === s.id ? 'border-violet-700 bg-violet-50' : 'border-border bg-white')}>
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-extrabold text-dark">{s.title}</p>
                   <span className="rounded-full bg-green-50 border border-green-200 text-green-700 px-2.5 py-1 text-[10px] font-extrabold">₦{FEE.toLocaleString('en-NG')}</span>
@@ -127,7 +127,7 @@ export default function NinModificationPage() {
             </>)}
 
             <div><label className={label}>Supporting Document * (PDF/JPG/PNG, max 1.5MB)</label>
-              <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={onFile} className="w-full text-xs text-muted file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-800 file:px-3 file:py-2 file:text-xs file:font-bold file:text-white" />
+              <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={onFile} className="w-full text-xs text-muted file:mr-3 file:rounded-lg file:border-0 file:bg-violet-800 file:px-3 file:py-2 file:text-xs file:font-bold file:text-white" />
               {docName && <p className="mt-1 text-[10px] font-bold text-green-700">✓ {docName}</p>}
               <p className="mt-1 text-[10px] text-muted">e.g. affidavit, marriage certificate, utility bill, or NIMC enrollment slip.</p></div>
 
@@ -135,7 +135,7 @@ export default function NinModificationPage() {
             <div><label className={label}>Phone *</label><input className={input} type="tel" value={f.phone} onChange={set('phone')} placeholder="e.g. 08012345678" /></div>
 
             <label className="flex items-start gap-3 text-xs text-muted">
-              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
+              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
               <span>I confirm that I am the applicant or hold lawful authorization to request this modification in accordance with the <b className="text-dark">Nigeria Data Protection Act (NDPA) 2023</b>, and I authorize the fee of <b className="text-dark">₦{FEE.toLocaleString('en-NG')}</b> to be debited.</span>
             </label>
 
@@ -148,7 +148,7 @@ export default function NinModificationPage() {
                   {busy ? 'Processing…' : 'PAY ₦' + FEE.toLocaleString('en-NG') + ' FROM WALLET (BALANCE: ₦' + wallet.balance.toLocaleString('en-NG') + ')'}
                 </button>
               )}
-              <button onClick={() => submit('paystack')} disabled={busy} className="w-full rounded-xl bg-emerald-950 text-white font-extrabold py-4 text-sm disabled:opacity-60">
+              <button onClick={() => submit('paystack')} disabled={busy} className="w-full rounded-xl bg-violet-950 text-white font-extrabold py-4 text-sm disabled:opacity-60">
                 {busy ? 'Redirecting…' : 'REVIEW & SUBMIT • PAY ₦' + FEE.toLocaleString('en-NG')}
               </button>
             </>)}

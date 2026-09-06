@@ -21,18 +21,18 @@ export default function ModSuccessPage() {
   return (
     <div className="min-h-screen bg-light flex items-center justify-center p-4">
       <div className="w-full max-w-md rounded-2xl border border-border bg-white p-6 text-center">
-        {!status && (<><div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-emerald-700 border-t-transparent" /><h1 className="mt-4 text-lg font-extrabold text-emerald-950">Confirming payment…</h1></>)}
+        {!status && (<><div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-violet-700 border-t-transparent" /><h1 className="mt-4 text-lg font-extrabold text-violet-950">Confirming payment…</h1></>)}
         {status && status !== 'awaiting_payment' && status !== 'failed' && (
           <>
-            <div className="mx-auto h-16 w-16 rounded-full border-4 border-emerald-800 flex items-center justify-center"><span className="text-2xl text-emerald-800 font-bold">✓</span></div>
-            <h1 className="mt-4 text-xl font-extrabold text-emerald-950">Request Queued!</h1>
+            <div className="mx-auto h-16 w-16 rounded-full border-4 border-violet-800 flex items-center justify-center"><span className="text-2xl text-violet-800 font-bold">✓</span></div>
+            <h1 className="mt-4 text-xl font-extrabold text-violet-950">Request Queued!</h1>
             <p className="mt-2 text-sm text-muted">Your modification is now <b className="text-dark">processing (1–48 hours)</b>. Track it in History.</p>
             <p className="mt-3 text-xs text-muted">Reference: <b className="text-dark">{ref}</b></p>
             <Link href="/nin/modification/history" className="mt-4 block w-full rounded-xl bg-primary text-white font-extrabold py-3.5 text-sm">VIEW MODIFICATION HISTORY →</Link>
           </>
         )}
         {status === 'failed' && (<><h1 className="text-lg font-extrabold text-red-700">Submission failed</h1><p className="mt-2 text-xs text-muted">The provider rejected this request. Contact support with reference <b className="text-dark">{ref}</b> for a refund review.</p></>)}
-        {status === 'awaiting_payment' && (<><h1 className="text-lg font-extrabold text-emerald-950">Payment not confirmed yet</h1><p className="mt-2 text-xs text-muted">Refresh in a minute. Reference: <b className="text-dark">{ref}</b></p></>)}
+        {status === 'awaiting_payment' && (<><h1 className="text-lg font-extrabold text-violet-950">Payment not confirmed yet</h1><p className="mt-2 text-xs text-muted">Refresh in a minute. Reference: <b className="text-dark">{ref}</b></p></>)}
       </div>
     </div>
   );

@@ -79,11 +79,11 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
         )}
         <button type="button" onClick={() => setSpecimen(true)} className="text-xs font-semibold text-primary underline">👁 View Example Slip</button>
         <label className="flex items-start gap-2 text-xs text-muted">
-          <input type="checkbox" checked={consent1} onChange={(e) => setConsent1(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
+          <input type="checkbox" checked={consent1} onChange={(e) => setConsent1(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
           <span>I confirm that I am the owner of this {isBvn ? 'BVN' : 'NIN'} or have lawful authorization to retrieve this record in accordance with the <b className="text-dark">Nigeria Data Protection Act (NDPA) 2023</b>.</span>
         </label>
         <label className="flex items-start gap-2 text-xs text-muted">
-          <input type="checkbox" checked={consent2} onChange={(e) => setConsent2(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
+          <input type="checkbox" checked={consent2} onChange={(e) => setConsent2(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
           <span>I authorize the fee of <b className="text-dark">₦{price.toLocaleString('en-NG')}</b> to be debited from my wallet.</span>
         </label>
         {insufficient && <p className="text-xs text-red-600">Insufficient wallet balance.</p>}
@@ -148,8 +148,8 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
               <p className="mt-2 text-center text-[10px] text-muted">Official NIMC {slipType} slip format — specimen with placeholder data.</p>
             </>
           ) : (
-            <div className="mt-4 rounded-xl border-2 border-emerald-700 bg-emerald-50 p-4">
-              <p className="text-center text-xs font-extrabold text-emerald-900">DEENBYTE VERIFY — {isBvn ? 'BVN' : 'NIN'} VERIFICATION SLIP</p>
+            <div className="mt-4 rounded-xl border-2 border-violet-700 bg-violet-50 p-4">
+              <p className="text-center text-xs font-extrabold text-violet-900">DEENBYTE VERIFY — {isBvn ? 'BVN' : 'NIN'} VERIFICATION SLIP</p>
               <div className="mt-3 space-y-1 text-[11px] text-dark">
                 <p>First Name: <b>JOHN</b> • Last Name: <b>DOE</b></p>
                 <p>DOB: <b>01 JAN 1990</b> • Gender: <b>M</b></p>

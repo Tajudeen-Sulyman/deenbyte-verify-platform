@@ -52,11 +52,11 @@ export default function NinValidationPage() {
           </div>
         </div>
       )}
-      <header className="bg-emerald-950 text-white px-4 py-8">
+      <header className="bg-violet-950 text-white px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <Link href="/dashboard" className="text-xs font-bold text-emerald-300">← Back to Dashboard</Link>
+          <Link href="/dashboard" className="text-xs font-bold text-violet-300">← Back to Dashboard</Link>
           <h1 className="mt-2 text-2xl font-extrabold">NIN Validation</h1>
-          <p className="mt-1 text-sm text-emerald-100">Validate your NIN record, VNIN sync, or record modifications.</p>
+          <p className="mt-1 text-sm text-violet-100">Validate your NIN record, VNIN sync, or record modifications.</p>
         </div>
       </header>
       <main className="max-w-2xl mx-auto p-4 space-y-5 mt-5">
@@ -64,7 +64,7 @@ export default function NinValidationPage() {
           <h2 className="text-sm font-extrabold text-dark">1. Select Validation Category</h2>
           <div className="space-y-3 mt-3">
             {CATS.map((c) => (
-              <button key={c.id} onClick={() => pick(c)} className={'w-full rounded-xl border-2 p-4 text-left ' + (cat?.id === c.id ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
+              <button key={c.id} onClick={() => pick(c)} className={'w-full rounded-xl border-2 p-4 text-left ' + (cat?.id === c.id ? 'border-violet-700 bg-violet-50' : 'border-border bg-white')}>
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-extrabold text-dark">{c.title}</p>
                   <span className="rounded-full bg-green-50 border border-green-200 text-green-700 px-2.5 py-1 text-[10px] font-extrabold">₦{c.fee.toLocaleString('en-NG')}</span>
@@ -82,7 +82,7 @@ export default function NinValidationPage() {
             <div><label className={label}>Email *</label><input className={input} type="email" value={f.email} onChange={set('email')} placeholder="your@email.com" /></div>
             <div><label className={label}>Phone *</label><input className={input} type="tel" value={f.phone} onChange={set('phone')} placeholder="e.g. 08012345678" /></div>
             <label className="flex items-start gap-3 text-xs text-muted">
-              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
+              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
               <span>I confirm that I am the applicant or hold lawful authorization to request this validation in accordance with the <b className="text-dark">Nigeria Data Protection Act (NDPA) 2023</b>, and I authorize the fee of <b className="text-dark">₦{cat.fee.toLocaleString('en-NG')}</b> to be debited.</span>
             </label>
             {err && <p className="text-xs font-bold text-red-700">{err}</p>}
@@ -94,7 +94,7 @@ export default function NinValidationPage() {
                   {busy ? 'Processing…' : 'PAY ₦' + cat.fee.toLocaleString('en-NG') + ' FROM WALLET'}
                 </button>
               )}
-              <button onClick={() => submit('paystack')} disabled={busy} className="w-full rounded-xl bg-emerald-950 text-white font-extrabold py-4 text-sm disabled:opacity-60">
+              <button onClick={() => submit('paystack')} disabled={busy} className="w-full rounded-xl bg-violet-950 text-white font-extrabold py-4 text-sm disabled:opacity-60">
                 {busy ? 'Redirecting…' : 'SUBMIT • PAY ₦' + cat.fee.toLocaleString('en-NG')}
               </button>
             </>)}

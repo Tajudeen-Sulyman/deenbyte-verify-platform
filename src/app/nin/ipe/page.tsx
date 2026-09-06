@@ -46,11 +46,11 @@ export default function IpePage() {
           </div>
         </div>
       )}
-      <header className="bg-emerald-950 text-white px-4 py-8">
+      <header className="bg-violet-950 text-white px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <Link href="/dashboard" className="text-xs font-bold text-emerald-300">← Back to Dashboard</Link>
+          <Link href="/dashboard" className="text-xs font-bold text-violet-300">← Back to Dashboard</Link>
           <h1 className="mt-2 text-2xl font-extrabold">IPE Clearance</h1>
-          <p className="mt-1 text-sm text-emerald-100">Clear In-Processing Errors on your NIN.</p>
+          <p className="mt-1 text-sm text-violet-100">Clear In-Processing Errors on your NIN.</p>
         </div>
       </header>
       <main className="max-w-2xl mx-auto p-4 space-y-5 mt-5">
@@ -62,7 +62,7 @@ export default function IpePage() {
           <div><label className={label}>Email *</label><input className={input} type="email" value={f.email} onChange={set('email')} placeholder="your@email.com" /></div>
           <div><label className={label}>Phone *</label><input className={input} type="tel" value={f.phone} onChange={set('phone')} placeholder="e.g. 08012345678" /></div>
           <label className="flex items-start gap-3 text-xs text-muted">
-            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
+            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
             <span>I confirm that I am the applicant or hold lawful authorization to request IPE clearance for this Tracking ID in accordance with the <b className="text-dark">Nigeria Data Protection Act (NDPA) 2023</b>.</span>
           </label>
           {err && <p className="text-xs font-bold text-red-700">{err}</p>}
@@ -74,7 +74,7 @@ export default function IpePage() {
                 {busy ? 'Processing…' : 'PAY ₦' + FEE + ' FROM WALLET'}
               </button>
             )}
-            <button onClick={() => submit('paystack')} disabled={busy} className="w-full rounded-xl bg-emerald-950 text-white font-extrabold py-4 text-sm disabled:opacity-60">
+            <button onClick={() => submit('paystack')} disabled={busy} className="w-full rounded-xl bg-violet-950 text-white font-extrabold py-4 text-sm disabled:opacity-60">
               {busy ? 'Redirecting…' : 'SUBMIT IPE CLEARANCE • ₦' + FEE}
             </button>
           </>)}

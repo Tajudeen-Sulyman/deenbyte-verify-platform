@@ -145,7 +145,7 @@ export default async function AdminAnalyticsPage() {
             {days.map((d) => (
               <div key={d.key} className="flex-1 flex flex-col items-center justify-end h-full"
                 title={d.key + ': ' + ngn(d.revenue) + ' • ' + d.count + ' verifications'}>
-                <div className="w-full rounded-t bg-gradient-to-t from-emerald-600 to-teal-400"
+                <div className="w-full rounded-t bg-gradient-to-t from-violet-600 to-fuchsia-400"
                   style={{ height: Math.round((d.revenue / maxRev) * 112) + (d.count ? 6 : 2) }} />
               </div>
             ))}
@@ -166,7 +166,7 @@ export default async function AdminAnalyticsPage() {
                   <span>{s.name}</span><span>{ngn(s.revenue)}</span>
                 </div>
                 <div className="mt-1 h-1.5 rounded-full bg-light">
-                  <div className="h-1.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"
+                  <div className="h-1.5 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500"
                     style={{ width: Math.round((s.revenue / maxSvc) * 100) + '%' }} />
                 </div>
                 <p className="mt-1 text-[10px] text-muted">{s.count} verifications • profit {ngn(s.margin)}</p>

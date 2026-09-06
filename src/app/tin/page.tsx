@@ -30,9 +30,9 @@ export default function TinPage() {
 
   return (
     <div className="min-h-screen bg-light pb-16">
-      <header className="bg-emerald-950 text-white px-4 py-8 text-center">
+      <header className="bg-violet-950 text-white px-4 py-8 text-center">
         <h1 className="text-2xl font-extrabold">Generate Tax ID (TIN)</h1>
-        <p className="mt-1 text-sm text-emerald-100">Get your 13-digit Tax Identification Number — processed for you by DeenByte Verify.</p>
+        <p className="mt-1 text-sm text-violet-100">Get your 13-digit Tax Identification Number — processed for you by DeenByte Verify.</p>
         <Link href="/tin/history" className="mt-4 inline-block rounded-xl bg-white/10 px-4 py-2.5 text-xs font-bold">≡ View History &amp; Status →</Link>
       </header>
 
@@ -40,8 +40,8 @@ export default function TinPage() {
         <section className="rounded-2xl border border-border bg-white p-5">
           <h2 className="text-sm font-extrabold text-dark">1. Select Request Type</h2>
           <div className="grid grid-cols-2 gap-2 mt-3 rounded-xl bg-light p-1">
-            <button onClick={() => setType('individual')} className={'rounded-lg py-2.5 text-xs font-bold ' + (type === 'individual' ? 'bg-emerald-800 text-white' : 'text-muted')}>Individual (NIN)</button>
-            <button onClick={() => setType('non_individual')} className={'rounded-lg py-2.5 text-xs font-bold ' + (type === 'non_individual' ? 'bg-emerald-800 text-white' : 'text-muted')}>Non-Individual (CAC)</button>
+            <button onClick={() => setType('individual')} className={'rounded-lg py-2.5 text-xs font-bold ' + (type === 'individual' ? 'bg-violet-800 text-white' : 'text-muted')}>Individual (NIN)</button>
+            <button onClick={() => setType('non_individual')} className={'rounded-lg py-2.5 text-xs font-bold ' + (type === 'non_individual' ? 'bg-violet-800 text-white' : 'text-muted')}>Non-Individual (CAC)</button>
           </div>
           <span className="mt-3 inline-block rounded-full bg-green-50 border border-green-200 text-green-700 px-3 py-1.5 text-xs font-extrabold">🏷 PROCESSING FEE: ₦{fee.toLocaleString('en-NG')}</span>
         </section>
@@ -76,7 +76,7 @@ export default function TinPage() {
 
         <section className="rounded-2xl border border-border bg-white p-5">
           <label className="flex items-start gap-3 text-xs text-muted">
-            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
+            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
             <span>I hereby declare under the <b className="text-dark">Nigeria Data Protection Act (NDPA) 2023</b> that I am the applicant or authorized corporate proxy for this entity, and authorize <b className="text-dark">DeenByte Verify</b> to process this tax identity application with relevant revenue authorities.</span>
           </label>
           {err && <p className="mt-3 text-xs font-bold text-red-700">{err}</p>}
@@ -89,7 +89,7 @@ export default function TinPage() {
                   {busy ? 'Processing…' : 'PAY ₦' + fee.toLocaleString('en-NG') + ' FROM WALLET (BALANCE: ₦' + wallet.balance.toLocaleString('en-NG') + ')'}
                 </button>
               )}
-              <button onClick={() => submit('paystack')} disabled={busy} className="mt-3 w-full rounded-xl bg-emerald-950 text-white font-extrabold py-4 text-sm disabled:opacity-60">
+              <button onClick={() => submit('paystack')} disabled={busy} className="mt-3 w-full rounded-xl bg-violet-950 text-white font-extrabold py-4 text-sm disabled:opacity-60">
                 {busy ? 'Redirecting…' : 'PAY ₦' + fee.toLocaleString('en-NG') + ' WITH CARD / BANK TRANSFER'}
               </button>
             </>

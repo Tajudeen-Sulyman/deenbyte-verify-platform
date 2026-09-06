@@ -27,7 +27,7 @@ function badgeCls(cat: string, isAsync: boolean) {
 function tileCls(cat: string, isAsync: boolean) {
   if (isAsync) return 'from-amber-500 to-orange-600';
   if (cat === 'BVN') return 'from-violet-500 to-purple-600';
-  return 'from-emerald-500 to-teal-600';
+  return 'from-violet-500 to-fuchsia-600';
 }
 
 export default async function ServicesPage() {

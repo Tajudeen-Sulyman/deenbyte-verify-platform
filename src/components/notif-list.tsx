@@ -15,7 +15,7 @@ export function NotifList() {
       </div>
       {rows.length === 0 && <p className="card3d p-6 text-center text-xs text-muted">No notifications yet.</p>}
       {rows.map((r) => (
-        <div key={r.id} className={'card3d p-4 ' + (!r.read ? 'border-l-4 border-l-emerald-600' : 'opacity-70')}>
+        <div key={r.id} className={'card3d p-4 ' + (!r.read ? 'border-l-4 border-l-violet-600' : 'opacity-70')}>
           <p className="text-sm font-bold text-dark">{r.title}</p>
           {r.body && <p className="mt-1 text-xs text-muted">{r.body}</p>}
           <p className="mt-1 text-[10px] text-muted">{new Date(r.created_at).toLocaleString()}</p>
