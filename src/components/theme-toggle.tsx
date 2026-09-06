@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 export function ThemeToggle() {
   const [dark, setDark] = useState(false);
   useEffect(() => {
-    const t = localStorage.getItem('db-theme') === 'dark';
+    const saved = localStorage.getItem('db-theme');
+    const t = saved ? saved === 'dark' : true;
     setDark(t);
     document.documentElement.dataset.theme = t ? 'dark' : 'light';
   }, []);
