@@ -15,16 +15,9 @@ const CHIPS = [
   { t: 'BVN Verification', c: 'bg-indigo-200 text-indigo-900', r: '-rotate-1' },
   { t: 'NIN Modification', c: 'bg-violet-200 text-violet-900', r: 'rotate-2' },
   { t: 'IPE Clearance', c: 'bg-sky-200 text-sky-900', r: '-rotate-1' },
+  { t: 'CAC Registration', c: 'bg-fuchsia-200 text-fuchsia-900', r: 'rotate-1' },
 ];
 
-const SERVICES = [
-  { t: 'TIN Verification Slip', d: 'Standard & premium certificates with QR verify, ready in under 90 seconds.', href: '/taxid', c: 'from-violet-600 to-fuchsia-800' },
-  { t: 'NIN Verification', d: 'Official NIMC slips — Regular, Standard, Premium, VNIN — instant lookup.', href: '/register', c: 'from-fuchsia-600 to-cyan-800' },
-  { t: 'NIN Modification', d: 'Change of name, phone or address on your NIN record. 1–48 hrs.', href: '/nin/modification', c: 'from-cyan-700 to-blue-900' },
-  { t: 'NIN Validation', d: 'Resolve No-Record, VNIN sync, SIM/Bank and photographic issues.', href: '/nin/validation', c: 'from-sky-700 to-blue-900' },
-  { t: 'IPE Clearance', d: 'Clear In-Processing Errors on your NIN within ~24 hours.', href: '/nin/ipe', c: 'from-rose-600 to-red-900' },
-  { t: 'BVN Verification', d: 'Official BVN slips and retrieval in seconds.', href: '/register', c: 'from-violet-600 to-purple-900' },
-];
 
 const FEATURES = [
   { t: 'Instant delivery', d: 'Slips generated in seconds from official databases; async services tracked in real time.' },
@@ -68,18 +61,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-4 py-14">
-        <h2 className="text-3xl font-extrabold max-w-xl">A fully integrated suite of identity services — everything you need in one platform.</h2>
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {SERVICES.map((s) => (
-            <Link key={s.t} href={s.href} className={'rounded-2xl p-5 bg-gradient-to-br ' + s.c}>
-              <p className="text-sm font-extrabold">{s.t}</p>
-              <p className="mt-2 text-xs text-white/80">{s.d}</p>
-              <p className="mt-4 text-xs font-bold">Open →</p>
-            </Link>
-          ))}
-        </div>
-      </section>
+      
 
       <section className="border-y border-white/5 py-10">
         <p className="text-center text-xs font-bold uppercase tracking-[0.3em] text-slate-500">Facilitating verification across official databases</p>
@@ -97,6 +79,17 @@ export default async function HomePage() {
         ))}
       </section>
 
+      <section className="max-w-4xl mx-auto px-4 pb-14">
+        <div className="rounded-3xl bg-gradient-to-br from-fuchsia-600 to-purple-900 p-8 text-center">
+          <p className="text-[11px] font-extrabold uppercase tracking-widest text-fuchsia-200">New — Corporate Affairs Commission</p>
+          <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold">Register your business with CAC</h2>
+          <p className="mt-3 text-sm text-fuchsia-100 max-w-2xl mx-auto">Business Name ₦29,000 • Limited Liability ₦36,000 • Annual Returns from ₦8,000. Apply online, we process it on the official CAC portal, and your documents are delivered for download or email.</p>
+          <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
+            <Link href="/register" className="rounded-full bg-white px-6 py-3.5 text-sm font-extrabold text-purple-800">Start CAC Registration →</Link>
+            <Link href="/login" className="rounded-full border border-white/40 px-6 py-3.5 text-sm font-extrabold text-white">Track an application</Link>
+          </div>
+        </div>
+      </section>
       <section id="pricing" className="max-w-5xl mx-auto px-4 pb-14">
         <h2 className="text-2xl font-extrabold mb-4">Transparent service prices</h2>
         <div className="grid grid-cols-2 gap-3">
@@ -122,6 +115,7 @@ export default async function HomePage() {
             <p className="font-extrabold mb-3">Services</p>
             <ul className="space-y-2 text-slate-400">
               <li><Link href="/taxid">TIN Verification Slip</Link></li>
+              <li><Link href="/register">CAC Registration</Link></li>
               <li><Link href="/nin/modification">NIN Modification</Link></li>
               <li><Link href="/nin/validation">NIN Validation</Link></li>
               <li><Link href="/nin/ipe">IPE Clearance</Link></li>
