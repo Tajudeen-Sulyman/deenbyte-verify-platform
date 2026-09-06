@@ -41,6 +41,7 @@ const ADMIN: Item[] = [
 ];
 const ACCOUNT: Item[] = [
   { href: '/history', label: 'History', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z', g: 'from-blue-500 to-indigo-600' },
+  { href: '/notifications', label: 'Notifications', d: 'M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h11z', g: 'from-amber-500 to-yellow-600' },
   { href: '/privacy', label: 'Privacy', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-slate-500 to-slate-600' },
   { href: '/terms', label: 'Terms', d: 'M6 3h9l4 4v14H6zM9 3v5h5', g: 'from-slate-500 to-slate-600' },
   { href: 'mailto:deenbyte.technologies@gmail.com', label: 'Support', d: 'M4 6h16v12H4zM4 7l8 6 8-6', g: 'from-emerald-500 to-teal-600' },
