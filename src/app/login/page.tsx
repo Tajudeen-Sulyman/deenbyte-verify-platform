@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { GoogleButton } from '@/components/google-button';
 import { createClient } from '@/lib/supabase/client';
-import { BrandLogo } from '@/components/brand';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,9 +36,9 @@ export default function LoginPage() {
                                                                             };
 
                                                                               return (
-                                                                                  <main className="bg-[#0b1120] min-h-screen flex items-center justify-center px-4 py-10">
+                                                                                  <main className="login-dark bg-[#0b1120] min-h-screen flex items-center justify-center px-4 py-10">
                                                                                         <div className="w-full max-w-sm">
-                                                                                                <BrandLogo />
+                                                                                                <p className="text-xl font-extrabold text-white">DeenByte <span className="text-violet-400">Verify</span></p>
                                                                                                         <p className="text-center text-slate-400 text-sm mt-2">Fast, secure and reliable identity verification.</p>
 
                                                                                                                 <div className="card3d p-6 mt-8 shadow-sm">

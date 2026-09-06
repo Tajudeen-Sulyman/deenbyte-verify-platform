@@ -126,7 +126,7 @@ export function ShellChrome({ balance, isAdmin, title, email, logoutSlot, childr
       <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col bg-dark border-r border-white/10">
         <div className="px-5 py-5 border-b border-white/10">{brand}</div>
         <SideNav email={email ?? ''} balance={balance} isAdmin={isAdmin} active={path} onNav={onNav} />
-        <div className="px-4 py-3 border-t border-white/10">{logoutSlot}</div>
+        <div className="px-4 py-3 border-t border-white/10 space-y-2"><ThemeToggle />{logoutSlot}</div>
       </aside>
 
       {open && (
@@ -138,7 +138,7 @@ export function ShellChrome({ balance, isAdmin, title, email, logoutSlot, childr
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 rounded-lg text-slate-300 hover:bg-white/10">✕</button>
             </div>
             <SideNav email={email ?? ''} balance={balance} isAdmin={isAdmin} active={path} onNav={onNav} />
-            <div className="px-4 py-3 border-t border-white/10">{logoutSlot}</div>
+            <div className="px-4 py-3 border-t border-white/10 space-y-2"><ThemeToggle />{logoutSlot}</div>
           </div>
         </div>
       )}
