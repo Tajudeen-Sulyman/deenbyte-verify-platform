@@ -20,7 +20,6 @@ type Item = { href: string; label: string; d: string; g: string };
 const OVERVIEW: Item[] = [
   { href: '/dashboard', label: 'Dashboard', d: 'M3 12l9-9 9M5 10v10h5v-6h4v6h5V10', g: 'from-sky-500 to-blue-600' },
   { href: '/transactions', label: 'Transactions', d: 'M4 6h16M4 12h16M4 18h10', g: 'from-pink-500 to-rose-600' },
-  { href: '/wallet', label: 'Fund Wallet', d: 'M3 7h18v12H3zM3 7l3-4h12l3 4M15 12h4', g: 'from-amber-500 to-orange-600' },
   { href: '/profile', label: 'Profile', d: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21v-1a7 7 0 0114 0v1', g: 'from-pink-500 to-rose-600' },
 ];
 const NIN: Item[] = [
