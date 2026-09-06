@@ -37,7 +37,7 @@ export default function LoginPage() {
                                                                             };
 
                                                                               return (
-                                                                                  <main className="min-h-screen flex items-center justify-center px-4 py-10">
+                                                                                  <main className="bg-[#0b1120] min-h-screen flex items-center justify-center px-4 py-10">
                                                                                         <div className="w-full max-w-sm">
                                                                                                 <BrandLogo />
                                                                                                         <p className="text-center text-slate-400 text-sm mt-2">Fast, secure and reliable identity verification.</p>
