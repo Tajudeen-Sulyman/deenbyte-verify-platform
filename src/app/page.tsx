@@ -32,11 +32,6 @@ export default async function HomePage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (user) redirect('/dashboard');
 
-  const { data: services } = await supabase
-    .from('verification_services')
-    .select('name, category, selling_price')
-    .eq('enabled', true).eq('status', 'active')
-    .order('category').order('name');
 
   return (
     <main className="min-h-screen bg-[#0b1120] text-white">
@@ -90,18 +85,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <section id="pricing" className="max-w-5xl mx-auto px-4 pb-14">
-        <h2 className="text-2xl font-extrabold mb-4">Transparent service prices</h2>
-        <div className="grid grid-cols-2 gap-3">
-          {services?.map((s: any) => (
-            <div key={s.name} className="rounded-xl border border-white/10 bg-white/5 p-4">
-              <p className="text-[10px] font-bold uppercase text-slate-400">{s.category}</p>
-              <p className="text-sm font-bold">{s.name}</p>
-              <p className="mt-1 text-violet-400 font-extrabold">₦{Number(s.selling_price).toLocaleString('en-NG')}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      
 
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-3xl font-extrabold">Start verifying with DeenByte</h2>
