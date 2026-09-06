@@ -63,6 +63,7 @@ export default async function DashboardPage() {
   });
 
   const hubs = [
+    { href: '/cac', t: 'CAC Registration', d: 'Business Name, LLC & Annual Returns.', time: '24–72 hrs', g: 'from-fuchsia-600 to-purple-900' },
     { href: '/verify?s=nin_regular', t: 'NIN Verification', d: 'Official NIMC slips with instant database lookup.', time: 'Instant', g: 'from-violet-600 to-fuchsia-800' },
     { href: '/verify?s=nin_by_phone', t: 'NIN by Phone', d: 'Retrieve an NIN record using a phone number.', time: 'Instant', g: 'from-fuchsia-600 to-cyan-800' },
     { href: '/verify?s=nin_demographic', t: 'Demographic Search', d: 'Search NIN records by demographics.', time: 'Instant', g: 'from-cyan-600 to-sky-800' },
