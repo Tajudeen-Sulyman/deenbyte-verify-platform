@@ -6,8 +6,8 @@ import { BrandLogo } from '@/components/brand';
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'DeenByte Verify — Instant NIN & BVN Verification Slips',
-  description: 'Official NIN and BVN verification slips in seconds. Wallet payments, PDF slips, automatic refunds on failed requests.',
+  title: 'DeenByte Verify — Instant TIN, NIN & BVN Verification Slips',
+  description: 'Get your TIN verification slip in under 90 seconds — no account needed. NIN & BVN slips, NIN modification, validation and IPE clearance with wallet payments and automatic refunds.',
 };
 
 export default async function HomePage() {
@@ -36,20 +36,32 @@ export default async function HomePage() {
       </header>
 
       <section className="max-w-4xl mx-auto px-4 pt-12 pb-8 text-center">
-        <h1 className="text-3xl font-bold text-dark">
-          Instant NIN &amp; BVN verification slips
+        <p className="text-[11px] font-extrabold uppercase tracking-widest text-primary">Secure identity at light speed</p>
+        <h1 className="mt-2 text-3xl font-bold text-dark">
+          Get your TIN slip in under 90 seconds
         </h1>
         <p className="mt-3 text-sm text-muted max-w-xl mx-auto">
-          Official slips sourced directly from NIMC and NIBSS databases.
-          Verify in seconds, download the PDF, and get an automatic wallet
-          refund if any request ever fails.
+          No account. No wallet funding. Pay once and download instantly.
+          Plus NIN &amp; BVN slips, NIN modification, validation and IPE clearance — all in one trusted platform.
         </p>
-        <div className="mt-6 flex justify-center gap-3">
-          <Link href="/register" className="px-5 py-3 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary-dark">
-            Start verifying
+        <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
+          <Link href="/taxid" className="px-5 py-3 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary-dark">
+            Get TIN Slip — No Account →
           </Link>
-          <Link href="#pricing" className="px-5 py-3 text-sm font-semibold text-dark card3d rounded-lg">
-            See prices
+          <Link href="/register" className="px-5 py-3 text-sm font-semibold text-dark card3d rounded-lg">
+            Create free account
+          </Link>
+        </div>
+        <div className="mt-8 grid sm:grid-cols-2 gap-3 text-left">
+          <Link href="/taxid" className="card3d rounded-2xl p-4 bg-white">
+            <p className="text-[10px] font-extrabold uppercase tracking-widest text-primary">Instant • from ₦300</p>
+            <p className="mt-1 text-sm font-extrabold text-dark">TIN Verification Slip</p>
+            <p className="mt-1 text-xs text-muted">Standard &amp; Premium certificate formats with QR verify. Ready in under 90 seconds.</p>
+          </Link>
+          <Link href="/nin/modification" className="card3d rounded-2xl p-4 bg-white">
+            <p className="text-[10px] font-extrabold uppercase tracking-widest text-primary">1–48 hrs • NDPA compliant</p>
+            <p className="mt-1 text-sm font-extrabold text-dark">NIN Modification &amp; Validation</p>
+            <p className="mt-1 text-xs text-muted">Change name, phone or address. Fix No-Record, VNIN sync &amp; IPE errors.</p>
           </Link>
         </div>
       </section>
