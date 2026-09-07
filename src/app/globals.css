@@ -234,3 +234,6 @@ textarea,
 [data-theme='dark'] .plain-bg .card3d, [data-theme='dark'] .plain-bg .bg-white { background: #1d1826 !important; border-color: #2c2636 !important; }
 [data-theme='dark'] .plain-bg .text-dark { color: #f2eef7 !important; }
 [data-theme='dark'] .plain-bg .text-muted { color: #9b93a8 !important; }
+
+.profile-pop { background: #ffffff !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; opacity: 1 !important; }
+[data-theme='dark'] .profile-pop { background: #241035 !important; }

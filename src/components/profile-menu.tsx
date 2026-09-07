@@ -46,7 +46,7 @@ export function ProfileMenu({ email, avatarUrl }: { email: string; avatarUrl?: s
           : <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-extrabold text-white">{initial}</span>}
       </button>
       {open && (
-        <div className="absolute right-0 top-12 z-50 w-72 rounded-2xl border border-border bg-white p-4 shadow-2xl">
+        <div className="profile-pop absolute right-0 top-12 z-50 w-72 rounded-2xl border border-border bg-white p-4 shadow-2xl">
           <div className="flex items-center gap-3">
             <div className="relative">
               {photo ? <img src={photo} alt="profile" className="h-12 w-12 rounded-full object-cover border-2 border-primary" />
