@@ -38,7 +38,7 @@ export default function LoginPage() {
                                                                               return (
                                                                                   <main className="vibe-login bg-[#0b1120] min-h-screen flex items-center justify-center px-4 py-10">
                                                                                         <div className="w-full max-w-sm">
-                                                                                                <div className="flex w-full flex-col items-center text-center"><img src="/" alt="DeenByte Verify" className="h-16 w-16 rounded-2xl" /><p className="mt-3 text-2xl font-extrabold text-white">DeenByte <span className="text-violet-400">Verify</span></p></div>
+                                                                                                <div className="flex w-full flex-col items-center text-center"><img src="/brand logo.jpg" alt="DeenByte Verify" className="h-16 w-16 rounded-2xl" /><p className="mt-3 text-2xl font-extrabold text-white">DeenByte <span className="text-violet-400">Verify</span></p></div>
                                                                                                         <p className="text-center text-slate-400 text-sm mt-2">Fast, secure and reliable identity verification.</p>
 
                                                                                                                 <div className="card3d p-6 mt-8 shadow-sm">
