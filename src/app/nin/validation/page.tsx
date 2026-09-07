@@ -37,7 +37,7 @@ export default function ValidationPage() {
   }
   return (
     <div className="min-h-screen bg-light pb-16">
-      <header className="bg-violet-950 text-white px-4 py-6">
+      <header className="vibe-mesh bg-violet-950 text-white px-4 py-6">
         <div className="max-w-2xl mx-auto flex items-center gap-4">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-700 text-2xl"></div>
           <div>

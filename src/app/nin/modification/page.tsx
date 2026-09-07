@@ -40,7 +40,7 @@ else window.location.reload();
 }
 return (
 <div className="min-h-screen bg-light pb-16">
-<header className="bg-violet-950 text-white px-4 py-6">
+<header className="vibe-mesh bg-violet-950 text-white px-4 py-6">
 <div className="max-w-2xl mx-auto">
 <Link href="/dashboard" className="text-xs font-bold text-violet-300">← Back to Dashboard</Link>
 <h1 className="mt-2 text-2xl font-extrabold">NIN Modification</h1>
