@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { ProfileMenu } from '@/components/profile-menu';
 
 function Icon({ d, className }: { d: string; className?: string }) {
   return (
@@ -153,9 +154,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
               </button>
               <h1 className="text-sm lg:text-base font-semibold text-dark truncate">{title}</h1>
             </div>
-            <Link href="/profile" aria-label="Profile" className="shrink-0">
-              {avatarUrl ? <img src={avatarUrl} alt="profile" className="h-9 w-9 rounded-full object-cover border-2 border-primary" /> : <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-extrabold text-white">{(email ?? 'D')[0].toUpperCase()}</span>}
-            </Link>
+            <ProfileMenu email={email ?? ''} avatarUrl={avatarUrl} />
           </div>
         </header>
         <main className="p-4 lg:p-6 pb-24 lg:pb-6 max-w-5xl mx-auto">{children}</main>
