@@ -225,3 +225,12 @@ textarea,
 [data-theme='dark'] .border-border {
   border-color: rgba(255, 255, 255, 0.12) !important;
 }
+
+.plain-bg { background: #f6f7fb !important; }
+.plain-bg .card3d, .plain-bg .bg-white { background: #ffffff !important; border-color: #e7e9f2 !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: 0 1px 2px rgba(16,24,40,.05) !important; }
+.plain-bg .text-dark { color: #101828 !important; }
+.plain-bg .text-muted { color: #667085 !important; }
+[data-theme='dark'] .plain-bg { background: #141019 !important; }
+[data-theme='dark'] .plain-bg .card3d, [data-theme='dark'] .plain-bg .bg-white { background: #1d1826 !important; border-color: #2c2636 !important; }
+[data-theme='dark'] .plain-bg .text-dark { color: #f2eef7 !important; }
+[data-theme='dark'] .plain-bg .text-muted { color: #9b93a8 !important; }

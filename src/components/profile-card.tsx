@@ -8,21 +8,18 @@ export function ProfileCard() {
   const [edit, setEdit] = useState(false);
   const [f, setF] = useState({ full_name: '', phone: '' });
   const [msg, setMsg] = useState('');
-  const [bal, setBal] = useState(0);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   useEffect(() => {
     supabase.auth.getUser().then(({ data }: any) => {
       setUser(data.user);
       setF({ full_name: data.user?.user_metadata?.full_name ?? '', phone: data.user?.user_metadata?.phone ?? '' });
     });
-    fetch('/api/v1/taxid/me').then((r) => r.json()).then((j) => setBal(j.balance ?? 0)).catch(() => {});
     fetch('/api/v1/profile').then((r) => r.json()).then((j) => setAvatarUrl(j.avatarUrl ?? null)).catch(() => {});
   }, []);
   async function save() {
     const { error } = await supabase.auth.updateUser({ data: { full_name: f.full_name, phone: f.phone } });
     setMsg(error ? 'Could not save: ' + error.message : 'Profile updated ✅');
-    if (!error) { const { data } = await supabase.auth.getUser(); setUser(data.user); }
-    setEdit(false);
+    if (!error) { const { data } = await supabase.auth.getUser(); setUser(data.user); setEdit(false); }
   }
   async function onPhoto(e: any) {
     const file = e.target.files?.[0]; if (!file) return;
@@ -39,38 +36,43 @@ export function ProfileCard() {
   const name = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Customer';
   const initial = (name[0] ?? 'D').toUpperCase();
   return (
-    <div className="space-y-4">
-      <div className="card3d rounded-2xl bg-white p-6 text-center">
-        <div className="relative mx-auto h-24 w-24">
-          {avatarUrl ? <img src={avatarUrl} alt="profile" className="h-24 w-24 rounded-full object-cover border-4 border-primary" />
-            : <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary text-3xl font-extrabold text-white">{initial}</div>}
-          <label className="absolute -bottom-1 -right-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-primary text-white text-sm shadow">📷
-            <input type="file" accept="image/*" onChange={onPhoto} className="hidden" />
-          </label>
+    <div className="plain-bg -m-4 min-h-[calc(100vh-3.5rem)] p-4 lg:-m-6 lg:p-6">
+      <div className="mx-auto max-w-md space-y-3 pt-6">
+        <div className="card3d rounded-2xl bg-white p-5">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              {avatarUrl ? <img src={avatarUrl} alt="profile" className="h-16 w-16 rounded-full object-cover border-2 border-primary" />
+                : <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-xl font-extrabold text-white">{initial}</div>}
+              <label className="absolute -bottom-1 -right-1 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-primary text-xs text-white shadow">📷
+                <input type="file" accept="image/*" onChange={onPhoto} className="hidden" />
+              </label>
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-base font-extrabold text-dark">{name}</p>
+              <p className="truncate text-xs text-muted">{user?.email}</p>
+            </div>
+          </div>
+          <div className="mt-4 border-t border-border pt-2">
+            <button onClick={() => setEdit(!edit)} className="flex w-full items-center gap-3 px-1 py-3 text-sm font-bold text-dark">
+              <span>✏️</span> Edit Profile
+            </button>
+            <a href="mailto:deenbyte.technologies@gmail.com" className="flex w-full items-center gap-3 border-t border-border px-1 py-3 text-sm font-bold text-dark">
+              <span>🎧</span> Support
+            </a>
+            <button onClick={logout} className="flex w-full items-center gap-3 border-t border-border px-1 py-3 text-sm font-bold text-red-600">
+              <span>⎋</span> Log out
+            </button>
+          </div>
         </div>
-        <p className="mt-3 text-lg font-extrabold text-dark">{name}</p>
-        <p className="text-xs text-muted">{user?.email}</p>
-        <p className="mt-1 text-[10px] text-muted">Member since {user?.created_at ? new Date(user.created_at).toLocaleDateString() : '—'}</p>
-        <div className="mt-4 rounded-xl bg-primary/10 p-3">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-muted">Wallet Balance</p>
-          <p className="text-xl font-extrabold text-primary">₦{Number(bal).toLocaleString('en-NG', { minimumFractionDigits: 2 })}</p>
-        </div>
-      </div>
-      <div className="card3d rounded-2xl bg-white p-5 space-y-3">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-extrabold text-dark">Edit Profile</p>
-          <button onClick={() => setEdit(!edit)} className="text-xs font-bold text-primary">{edit ? 'Cancel' : 'Edit'}</button>
-        </div>
-        {edit && (<>
-          <input className="w-full rounded-xl border border-border bg-light px-4 py-3 text-sm text-dark" placeholder="Full name" value={f.full_name} onChange={(e) => setF({ ...f, full_name: e.target.value })} />
-          <input className="w-full rounded-xl border border-border bg-light px-4 py-3 text-sm text-dark" placeholder="Phone e.g. 08012345678" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
-          <button onClick={save} className="w-full rounded-xl bg-primary py-3 text-sm font-extrabold text-white">Save Changes</button>
-        </>)}
-        {msg && <p className="text-xs font-bold text-green-700">{msg}</p>}
-      </div>
-      <div className="card3d rounded-2xl bg-white p-5 space-y-2">
-        <a href="mailto:deenbyte.technologies@gmail.com" className="block rounded-xl border border-border px-4 py-3 text-sm font-bold text-dark"> Support</a>
-        <button onClick={logout} className="w-full rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm font-extrabold text-red-700">Log out</button>
+        {edit && (
+          <div className="card3d space-y-3 rounded-2xl bg-white p-5">
+            <p className="text-sm font-extrabold text-dark">Edit Profile</p>
+            <input className="w-full rounded-xl border border-border bg-light px-4 py-3 text-sm text-dark" placeholder="Full name" value={f.full_name} onChange={(e) => setF({ ...f, full_name: e.target.value })} />
+            <input className="w-full rounded-xl border border-border bg-light px-4 py-3 text-sm text-dark" placeholder="Phone e.g. 08012345678" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
+            <button onClick={save} className="w-full rounded-xl bg-primary py-3 text-sm font-extrabold text-white">Save Changes</button>
+          </div>
+        )}
+        {msg && <p className="text-center text-xs font-bold text-green-700">{msg}</p>}
       </div>
     </div>
   );
