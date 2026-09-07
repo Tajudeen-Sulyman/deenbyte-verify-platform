@@ -4,6 +4,7 @@ import { createClient as adminClient } from '@supabase/supabase-js';
 import { VAL_FEE, SLIP_PREMIUM, VAL_CATEGORIES } from '@/lib/val-data';
 
 const admin = adminClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+const AIJ = process.env.AIJALON_TOKEN || process.env.AIJALON_API_KEY || process.env.AIJALON_KEY || process.env.AIJALON_BEARER || '';
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -26,14 +27,14 @@ export async function POST(req: NextRequest) {
     await admin.from('wallets').update({ balance: bal - fee }).eq('user_id', user.id);
     await admin.from('wallet_transactions').insert({ reference, user_id: user.id, amount: fee, type: 'nin_validation', status: 'successful', description: 'Validation ' + b.category + ' ' + reference });
     await admin.from('nin_validation_requests').insert({ user_id: user.id, reference, nin: raw, email: b.email ?? '', phone: b.phone ?? '', category: b.category, slip_type: slip, fee, status: 'processing' });
-    const sub = await fetch('https://aijalon.ng/api/v1/val', { method: 'POST', headers: { Authorization: 'Bearer ' + process.env.AIJALON_TOKEN, 'Content-Type': 'application/json' }, body: JSON.stringify({ number: raw }) });
+    const sub = await fetch('https://aijalon.ng/api/v1/val', { method: 'POST', headers: { Authorization: 'Bearer ' + AIJ, 'Content-Type': 'application/json' }, body: JSON.stringify({ number: raw }) });
     const j = await sub.json().catch(() => ({}));
     if (j.status !== 'success') {
       await admin.from('nin_validation_requests').update({ status: 'failed', admin_note: 'Provider submit failed' }).eq('reference', reference);
       const { data: w2 } = await admin.from('wallets').select('balance').eq('user_id', user.id).maybeSingle();
       await admin.from('wallets').update({ balance: Number(w2?.balance ?? 0) + fee }).eq('user_id', user.id);
       await admin.from('wallet_transactions').insert({ reference: reference + '-R', user_id: user.id, amount: fee, type: 'reversal', status: 'successful', description: 'Validation refund ' + reference });
-      return NextResponse.json({ error: 'Provider unavailable — payment refunded.' }, { status: 502 });
+      return NextResponse.json({ error: 'Provider: ' + String(j.message ?? j.status ?? 'unreachable') + ' — payment refunded.' }, { status: 502 });
     }
     await admin.from('nin_validation_requests').update({ provider_ref: String(j.reportID ?? '') }).eq('reference', reference);
     await admin.from('notifications').insert({ user_id: user.id, title: 'Validation submitted', body: reference + ' queued — results in 24–48h.' });
