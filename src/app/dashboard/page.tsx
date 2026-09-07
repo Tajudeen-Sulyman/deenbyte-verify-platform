@@ -82,7 +82,7 @@ export default async function DashboardPage() {
           <p className="text-sm text-muted mt-1">Manage verifications, wallet and transactions from one place.</p>
         </section>
 
-        <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-violet-600 to-fuchsia-700 shadow-card">
+        <section className="relative overflow-hidden rounded-2xl p-5 text-white vibe-gradient from-violet-600 to-fuchsia-700 shadow-card">
           <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-white/10" />
           <div className="absolute -right-2 -top-2 h-20 w-20 rounded-full bg-white/10" />
           <div className="relative flex flex-wrap items-center justify-between gap-3">
@@ -103,7 +103,7 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        <section className="relative overflow-hidden rounded-2xl p-5 text-white bg-gradient-to-br from-violet-800 to-violet-950 shadow-card">
+        <section className="relative overflow-hidden rounded-2xl p-5 text-white vibe-gradient from-violet-800 to-violet-950 shadow-card">
           <p className="text-[10px] font-bold uppercase tracking-widest text-violet-300">New — no account needed</p>
           <h3 className="mt-1 text-lg font-extrabold">TIN Verification Slip</h3>
           <p className="mt-1 text-xs text-violet-100">Pay once, get your slip in under 90 seconds. From ₦50.</p>
@@ -114,7 +114,7 @@ export default async function DashboardPage() {
           <h3 className="text-sm font-bold text-dark mb-2">Service Hub</h3>
           <div className="grid sm:grid-cols-2 gap-3">
             {hubs.map((h) => (
-              <Link key={h.t} href={h.href} className={'relative overflow-hidden rounded-2xl p-4 text-white bg-gradient-to-br shadow-card ' + h.g}>
+              <Link key={h.t} href={h.href} className={'relative overflow-hidden rounded-2xl p-4 text-white vibe-gradient shadow-card ' + h.g}>
                 <p className="text-sm font-extrabold">{h.t}</p>
                 <p className="mt-1 text-[11px] text-white/80">{h.d}</p>
                 <span className="mt-3 inline-block rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold">🕐 {h.time}</span>

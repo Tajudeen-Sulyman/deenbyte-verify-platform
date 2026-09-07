@@ -6,7 +6,7 @@
   --color-primary-dark: #6D28D9;
   --color-accent: #34D399;
   --color-dark: #0F172A;
-  --color-light: #F6F9FD;
+  --color-light: #f9eef6;
   --color-muted: #64748B;
   --color-border: #E2E8F0;
   --color-success: #16A34A;
@@ -67,3 +67,17 @@ body {
 .login-dark .bg-light { background-color: #0d1526 !important; }
 [data-theme='dark'] header { background-color: #0f172a !important; border-color: #263352 !important; }
 [data-theme='dark'] nav { background-color: #0f172a !important; border-color: #263352 !important; }
+
+.vibe-gradient { background: linear-gradient(135deg,#bfe3c0 0%,#a8dcd9 30%,#c8b6e2 65%,#f4e2a6 100%) !important; }
+.vibe-gradient p, .vibe-gradient span, .vibe-gradient h1, .vibe-gradient h2, .vibe-gradient h3 { color: #3b0764 !important; }
+[data-theme='dark'] .vibe-gradient { background: linear-gradient(135deg,#581c87 0%,#9333ea 45%,#c026d3 100%) !important; }
+[data-theme='dark'] .vibe-gradient p, [data-theme='dark'] .vibe-gradient span, [data-theme='dark'] .vibe-gradient h1, [data-theme='dark'] .vibe-gradient h2, [data-theme='dark'] .vibe-gradient h3 { color: #ffffff !important; }
+[data-theme='dark'] .bg-light { background-color: #1b0b26 !important; }
+[data-theme='dark'] .bg-white { background-color: #251435 !important; }
+[data-theme='dark'] .card3d { background-color: #251435 !important; border-color: #3b2152 !important; }
+[data-theme='dark'] .text-dark { color: #f0e7fa !important; }
+[data-theme='dark'] .text-muted { color: #a795be !important; }
+[data-theme='dark'] .border-border { border-color: #3b2152 !important; }
+[data-theme='dark'] header { background-color: #1b0b26 !important; border-color: #3b2152 !important; }
+[data-theme='dark'] nav { background-color: #1b0b26 !important; border-color: #3b2152 !important; }
+[data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea { background-color: #180a21 !important; color: #f0e7fa !important; border-color: #3b2152 !important; }
