@@ -34,7 +34,7 @@ export default async function HomePage() {
 
 
   return (
-    <main className="min-h-screen bg-[#0b1120] text-white">
+    <main className="vibe-landing min-h-screen bg-[#0b1120] text-white">
       <header className="border-b border-white/5">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <p className="text-lg font-extrabold">DeenByte <span className="text-violet-400">Verify</span></p>
