@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createClient as adminClient } from '@supabase/supabase-js';
+
+const admin = adminClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
 export async function GET() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: 'Login required.' }, { status: 401 });
-  const { data } = await supabase.from('nin_val_requests')
-    .select('reference, category, nin, fee, status, result_text, error_message, created_at')
-    .eq('user_id', user.id).order('created_at', { ascending: false }).limit(100);
+  if (!user) return NextResponse.json({ rows: [] });
+  const { data } = await admin.from('nin_validation_requests').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50);
   return NextResponse.json({ rows: data ?? [] });
 }
