@@ -1,6 +1,6 @@
 'use client';
-
 import { useState } from 'react';
+
 import { NinSlipModal } from '@/components/nin-slip-modal';
 
 type Service = {
@@ -12,7 +12,7 @@ type Service = {
 };
 
 const NIN_SLIPS = ['basic', 'premium', 'standard', 'regular', 'vnin'];
-const BVN_SLIPS = ['premium', 'standard'];
+const BVN_SLIPS = ['basic', 'premium', 'standard'];
 
 export function VerifyForm({ service, walletBalance }: { service: Service; walletBalance: number }) {
   const slips = service.provider === 'techhub'
@@ -26,7 +26,7 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
   const [reverify, setReverify] = useState<any>(null);
   const [result, setResult] = useState<any>(null);
   const [slipData, setSlipData] = useState<any>(null);
-  const [consent1, setConsent1] = useState(false);
+const [consent1, setConsent1] = useState(false);
   const [consent2, setConsent2] = useState(false);
   const [timeline, setTimeline] = useState(false);
   const [specimen, setSpecimen] = useState(false);
@@ -143,10 +143,10 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
       <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setSpecimen(false)}>
         <div className="w-full max-w-md rounded-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-extrabold text-dark">{(!isBvn && ['regular', 'standard', 'premium', 'vnin'].includes(slipType)) ? slipType.charAt(0).toUpperCase() + slipType.slice(1) + ' Slip Example Specimen' : service.name + ' — Example Specimen'}</h3>
+            <h3 className="text-sm font-extrabold text-dark">{(!isBvn && ['basic', 'regular', 'standard', 'premium', 'vnin'].includes(slipType)) ? slipType.charAt(0).toUpperCase() + slipType.slice(1) + ' Slip Example Specimen' : service.name + ' — Example Specimen'}</h3>
             <button onClick={() => setSpecimen(false)} className="font-bold text-muted">✕</button>
           </div>
-          {(!isBvn && ['regular', 'standard', 'premium', 'vnin'].includes(slipType)) ? (
+          {(!isBvn && ['basic', 'regular', 'standard', 'premium', 'vnin'].includes(slipType)) ? (
             <>
               <img src={'/specimens/' + slipType + '.jpg'} alt={slipType + ' slip example specimen'} className="mt-4 w-full rounded-lg border border-border bg-white" />
               <p className="mt-2 text-center text-[10px] text-muted">Official NIMC {slipType} slip format — specimen with placeholder data.</p>
