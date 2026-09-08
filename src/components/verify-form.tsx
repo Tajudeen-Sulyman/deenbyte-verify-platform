@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { NinSlipModal } from '@/components/nin-slip-modal';
 
 type Service = {
   service_id: string;
@@ -24,6 +25,7 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
   const [error, setError] = useState('');
   const [reverify, setReverify] = useState<any>(null);
   const [result, setResult] = useState<any>(null);
+  const [slipData, setSlipData] = useState<any>(null);
   const [consent1, setConsent1] = useState(false);
   const [consent2, setConsent2] = useState(false);
   const [timeline, setTimeline] = useState(false);
@@ -48,12 +50,14 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
       const data = await res.json();
       if (res.status === 409) { setReverify(data); return; }
       if (!res.ok) throw new Error(data.error || 'Verification failed.');
-      setResult(data);
+      setResult(data); setSlipData(data);
     } catch (err: any) { setError(err.message); }
     finally { setLoading(false); }
   };
 
   return (
+    <>
+      {slipData && <NinSlipModal result={slipData} pdfBase64={slipData?.pdf_base64} onClose={() => setSlipData(null)} />}
     <div className="card3d p-5">
       <div className="flex items-center justify-between">
         <div>
@@ -164,5 +168,6 @@ export function VerifyForm({ service, walletBalance }: { service: Service; walle
       </div>
     )}
     </div>
+    </>
   );
 }
