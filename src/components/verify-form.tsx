@@ -51,7 +51,7 @@ const [consent1, setConsent1] = useState(false);
       const data = await res.json();
       if (res.status === 409) { setReverify(data); return; }
       if (!res.ok) throw new Error(data.error || 'Verification failed.');
-      setResult(data); setSlipData(data);
+      if (data?.message) data.message = String(data.message).replace(/premium/i, slipType); setResult(data); setSlipData(data);
     } catch (err: any) { setError(err.message); }
     finally { setLoading(false); }
   };
