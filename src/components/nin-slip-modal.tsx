@@ -64,7 +64,7 @@ export function NinSlipModal({ result, pdfBase64, slipType, onClose }: { result:
               <button onClick={() => window.print()} className="mt-3 w-full rounded-xl bg-light py-2 text-xs font-extrabold text-dark">🖨 Print Slip</button>
             </div>
           )}
-          {pdfBase64 && slipType !== 'basic' && (<>
+          {pdfBase64 && (<>
             <div className="rounded-xl bg-[#151f38] p-4 text-center">
               <p className="text-xs text-slate-300">PDF Slip Preview</p>
               <a href={'data:application/pdf;base64,' + pdfBase64} target="_blank" rel="noreferrer" className="mt-2 inline-block rounded-full bg-sky-400 px-8 py-3 text-sm font-extrabold text-slate-900">Open</a>

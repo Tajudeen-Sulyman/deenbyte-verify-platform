@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { NinSlipModal } from '@/components/nin-slip-modal';
 import { openSlipPrint } from '@/lib/slip-print';
+import { openProviderPdf } from '@/lib/slip-print';
 
 type Service = {
   service_id: string;
@@ -127,7 +128,7 @@ const [consent1, setConsent1] = useState(false);
               {result.data.phone && <p>Phone: {result.data.phone}</p>}
             </div>
           )}
-          <button onClick={() => openSlipPrint((result?.user_data ?? result))} className="text-sm font-bold text-primary underline">View / Download Slip</button>
+          <button onClick={() => result?.pdf_base64 ? openProviderPdf(result.pdf_base64, 'NIN-slip.pdf') : openSlipPrint((result?.user_data ?? result))} className="text-sm font-bold text-primary underline">View / Download Slip</button>
         </div>
       )}
     {timeline && (

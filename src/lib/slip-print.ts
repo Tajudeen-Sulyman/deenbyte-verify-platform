@@ -35,3 +35,10 @@ export function openSlipPrint(u: any) {
   w.document.write(slipPrintHtml(u));
   w.document.close();
 }
+
+export function openProviderPdf(pdfBase64: string, name: string) {
+  const a = document.createElement('a');
+  a.href = 'data:application/pdf;base64,' + pdfBase64;
+  a.download = name;
+  a.click();
+}
