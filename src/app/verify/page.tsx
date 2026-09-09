@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
@@ -6,7 +5,6 @@ import { AppShell } from '@/components/shell';
 import { VerifyForm } from '@/components/verify-form';
 import { AsyncForm } from '@/components/async-form';
 import { DemographicForm } from '@/components/demographic-form';
-import { NinSlipModal } from '@/components/nin-slip-modal';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Verify — DeenByte Verify' };
@@ -85,4 +83,3 @@ export default async function VerifyPage(props: { searchParams: Promise<Record<s
     </AppShell>
   );
 }
-  const [slipData, setSlipData] = useState<any>(null);
