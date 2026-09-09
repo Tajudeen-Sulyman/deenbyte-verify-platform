@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 
 import { NinSlipModal } from '@/components/nin-slip-modal';
+import { openSlipPrint } from '@/lib/slip-print';
 
 type Service = {
   service_id: string;
@@ -58,7 +59,7 @@ const [consent1, setConsent1] = useState(false);
 
   return (
     <>
-      {slipData && <NinSlipModal result={slipData} pdfBase64={slipData?.pdf_base64} onClose={() => setSlipData(null)} />}
+      {slipData && <NinSlipModal result={slipData} pdfBase64={slipData?.pdf_base64} slipType={slipType} onClose={() => setSlipData(null)} />}
     <div className="card3d p-5">
       <div className="flex items-center justify-between">
         <div>
@@ -126,8 +127,7 @@ const [consent1, setConsent1] = useState(false);
               {result.data.phone && <p>Phone: {result.data.phone}</p>}
             </div>
           )}
-          <a href={'/api/v1/slip/' + result.requestId} target="_blank" rel="noopener"
-            className="mt-2 inline-block text-sm font-semibold text-primary underline">View / Download Slip</a>
+          <button onClick={() => openSlipPrint((result?.user_data ?? result))} className="text-sm font-bold text-primary underline">View / Download Slip</button>
         </div>
       )}
     {timeline && (

@@ -1,11 +1,12 @@
 'use client';
 import { useState } from 'react';
+import { openSlipPrint } from '@/lib/slip-print';
 
 const SLIP_ROWS: [string, string][] = [
   ['First Name', 'first_name'], ['Middle Name', 'middle_name'], ['Last Name', 'last_name'], ['Date of Birth', 'date_of_birth'], ['Gender', 'gender'], ['NIN', 'nin'], ['Phone Number', 'phone_number'], ['Tracking ID', 'tracking_id'], ['Residence State', 'residence_state'], ['Birth State', 'birth_state'], ['Address', 'address'], ['Residence LGA', 'residence_lga'], ['Birth LGA', 'birth_lga'],
 ];
 
-export function NinSlipModal({ result, pdfBase64, onClose }: { result: any; pdfBase64?: string; onClose: () => void }) {
+export function NinSlipModal({ result, pdfBase64, slipType, onClose }: { result: any; pdfBase64?: string; slipType?: string; onClose: () => void }) {
   const [tab, setTab] = useState<'data' | 'slip'>('data');
   const u = result?.user_data ?? result?.data ?? result ?? {};
   const fields: [string, any][] = [
@@ -63,13 +64,14 @@ export function NinSlipModal({ result, pdfBase64, onClose }: { result: any; pdfB
               <button onClick={() => window.print()} className="mt-3 w-full rounded-xl bg-light py-2 text-xs font-extrabold text-dark">🖨 Print Slip</button>
             </div>
           )}
-          {pdfBase64 && (<>
+          {pdfBase64 && slipType !== 'basic' && (<>
             <div className="rounded-xl bg-[#151f38] p-4 text-center">
               <p className="text-xs text-slate-300">PDF Slip Preview</p>
               <a href={'data:application/pdf;base64,' + pdfBase64} target="_blank" rel="noreferrer" className="mt-2 inline-block rounded-full bg-sky-400 px-8 py-3 text-sm font-extrabold text-slate-900">Open</a>
             </div>
             <button onClick={download} className="w-full rounded-xl bg-sky-700 py-4 text-sm font-extrabold text-white underline">⬇ Download PDF</button>
           </>)}
+          <button onClick={() => openSlipPrint(u)} className="w-full rounded-xl bg-green-700 py-4 text-sm font-extrabold text-white">🖨 Download Official NIMC Slip (PDF)</button>
           <button onClick={onClose} className="w-full rounded-xl bg-light py-4 text-sm font-extrabold text-dark">✕ Close</button>
         </div>
       </div>
