@@ -28,7 +28,7 @@ td{padding:2px 4px;vertical-align:top}
 <div class="hdr">
   <div class="crest"><img src="/coat-of-arms.png" alt="NG" style="width:46px;height:auto"/></div>
   <div><p class="t">Federal Republic of Nigeria</p><p class="st">Verified NIN Details</p></div>
-  <div class="nimc"><img src="/nimc-logo.png" alt="NIMC" style="height:30px"/></div>
+  <div class="nimc">NIMC</div>
 </div>
 <div class="cols">
   <table class="col">

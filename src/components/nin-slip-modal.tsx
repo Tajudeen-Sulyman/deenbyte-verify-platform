@@ -48,7 +48,7 @@ export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: 
                     <p className="text-sm font-extrabold">Federal Republic of Nigeria</p>
                     <p className="font-bold">Verified NIN Details</p>
                   </div>
-                  <img src="/nimc-logo.png" alt="NIMC" className="h-7 w-auto" />
+                  <span className="text-xs font-extrabold italic text-green-700">NIMC</span>
                 </div>
                 <div className="mt-3 grid grid-cols-3 gap-2">
                   <div className="space-y-1">
