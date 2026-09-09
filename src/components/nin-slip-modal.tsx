@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { openSlipPrint } from '@/lib/slip-print';
+import { openProviderPdf } from '@/lib/slip-print';
 
 const SLIP_ROWS: [string, string][] = [
   ['First Name', 'first_name'], ['Middle Name', 'middle_name'], ['Last Name', 'last_name'], ['Date of Birth', 'date_of_birth'], ['Gender', 'gender'], ['NIN', 'nin'], ['Phone Number', 'phone_number'], ['Tracking ID', 'tracking_id'], ['Residence State', 'residence_state'], ['Birth State', 'birth_state'], ['Address', 'address'], ['Residence LGA', 'residence_lga'], ['Birth LGA', 'birth_lga'],
@@ -72,7 +73,7 @@ export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: 
             </div>
             <button onClick={download} className="w-full rounded-xl bg-sky-700 py-4 text-sm font-extrabold text-white underline">⬇ Download PDF</button>
           </>)}
-          <button onClick={() => openSlipPrint(u)} className="w-full rounded-xl bg-green-700 py-4 text-sm font-extrabold text-white">🖨 Download Official NIMC Slip (PDF)</button>
+          <button onClick={() => pdfBase64 ? openProviderPdf(pdfBase64, 'NIMC-slip-' + (u.nin ?? '') + '.pdf') : openSlipPrint(u)} className="w-full rounded-xl bg-green-700 py-4 text-sm font-extrabold text-white">🖨 Download Official NIMC Slip (PDF)</button>
           <button onClick={onClose} className="w-full rounded-xl bg-light py-4 text-sm font-extrabold text-dark">✕ Close</button>
         </div>
       </div>
