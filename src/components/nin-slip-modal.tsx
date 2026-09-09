@@ -7,7 +7,7 @@ export function NinSlipModal({ result, pdfBase64, onClose }: { result: any; pdfB
   const fields: [string, any][] = [
     ['NIN', u.nin], ['FIRST NAME', u.first_name ?? u.firstname], ['MIDDLE NAME', u.middle_name ?? u.middlename],
     ['SURNAME', u.last_name ?? u.surname], ['GENDER', u.gender], ['DATE OF BIRTH', u.date_of_birth ?? u.birthdate],
-    ['PHONE NUMBER', u.phone_number ?? u.telephoneno], ['ADDRESS', u.address ?? u.residence_address],
+    ['PHONE NUMBER', u.phone_number ?? u.phone ?? u.telephoneno ?? u.msisdn], ['ADDRESS', u.address ?? u.residence_address],
   ];
   const photo = u.photo ?? u.passport_photo_base64;
   function download() {
@@ -19,7 +19,7 @@ export function NinSlipModal({ result, pdfBase64, onClose }: { result: any; pdfB
   }
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 sm:items-center" onClick={onClose}>
-      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
+      <div className="profile-pop max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-white px-4 py-3">
           <p className="flex items-center gap-2 text-base font-extrabold text-dark"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-green-600 text-xs text-white">✓</span>NIN Verification Successful</p>
           <button onClick={onClose} className="text-lg font-bold text-muted">✕</button>
