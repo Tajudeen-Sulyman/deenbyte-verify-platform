@@ -139,7 +139,7 @@ export const TechHubProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapUser(srcOf(json)),
-      pdf_base64: smallPdf(json),
+      pdf_base64: json.pdf_base64 ?? smallPdf(json),
     };
   },
 
@@ -150,7 +150,7 @@ export const TechHubProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapUser(srcOf(json)),
-      pdf_base64: smallPdf(json),
+      pdf_base64: json.pdf_base64 ?? smallPdf(json),
     };
   },
 
@@ -166,7 +166,7 @@ export const TechHubProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapUser(srcOf(json)),
-      pdf_base64: smallPdf(json),
+      pdf_base64: json.pdf_base64 ?? smallPdf(json),
     };
   },
 
@@ -177,7 +177,7 @@ export const TechHubProvider = {
       success: true,
       message: json.message ?? 'Verification successful.',
       data: mapUser(srcOf(json)),
-      pdf_base64: smallPdf(json),
+      pdf_base64: json.pdf_base64 ?? smallPdf(json),
     };
   },
 };
