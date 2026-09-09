@@ -60,7 +60,7 @@ const [consent1, setConsent1] = useState(false);
 
   return (
     <>
-      {slipData && <NinSlipModal result={slipData} pdfBase64={slipData?.pdf_base64} slipType={slipType} onClose={() => setSlipData(null)} />}
+      {slipData && <NinSlipModal result={slipData} pdfBase64={slipData?.pdf_base64 ?? slipData?.data?.pdf_base64 ?? slipData?.slip?.pdf_base64} slipType={slipType} onClose={() => setSlipData(null)} />}
     <div className="card3d p-5">
       <div className="flex items-center justify-between">
         <div>
@@ -128,7 +128,7 @@ const [consent1, setConsent1] = useState(false);
               {result.data.phone && <p>Phone: {result.data.phone}</p>}
             </div>
           )}
-          <button onClick={() => result?.pdf_base64 ? openProviderPdf(result.pdf_base64, 'NIN-slip.pdf') : openSlipPrint((result?.user_data ?? result))} className="text-sm font-bold text-primary underline">View / Download Slip</button>
+          <button onClick={() => (result?.pdf_base64 ?? result?.data?.pdf_base64 ?? result?.slip?.pdf_base64) ? openProviderPdf((result?.pdf_base64 ?? result?.data?.pdf_base64 ?? result?.slip?.pdf_base64), 'NIN-slip.pdf') : openSlipPrint((result?.user_data ?? result))} className="text-sm font-bold text-primary underline">View / Download Slip</button>
         </div>
       )}
     {timeline && (

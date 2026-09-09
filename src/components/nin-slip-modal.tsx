@@ -6,9 +6,10 @@ const SLIP_ROWS: [string, string][] = [
   ['First Name', 'first_name'], ['Middle Name', 'middle_name'], ['Last Name', 'last_name'], ['Date of Birth', 'date_of_birth'], ['Gender', 'gender'], ['NIN', 'nin'], ['Phone Number', 'phone_number'], ['Tracking ID', 'tracking_id'], ['Residence State', 'residence_state'], ['Birth State', 'birth_state'], ['Address', 'address'], ['Residence LGA', 'residence_lga'], ['Birth LGA', 'birth_lga'],
 ];
 
-export function NinSlipModal({ result, pdfBase64, slipType, onClose }: { result: any; pdfBase64?: string; slipType?: string; onClose: () => void }) {
+export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: { result: any; pdfBase64?: string; slipType?: string; onClose: () => void }) {
   const [tab, setTab] = useState<'data' | 'slip'>('data');
   const u = result?.user_data ?? result?.data ?? result ?? {};
+  const pdfBase64 = pdfProp ?? result?.pdf_base64 ?? result?.data?.pdf_base64 ?? result?.slip?.pdf_base64 ?? u?.pdf_base64;
   const fields: [string, any][] = [
     ['NIN', u.nin], ['FIRST NAME', u.first_name ?? u.firstname], ['MIDDLE NAME', u.middle_name ?? u.middlename],
     ['SURNAME', u.last_name ?? u.surname], ['GENDER', u.gender], ['DATE OF BIRTH', u.date_of_birth ?? u.birthdate],
