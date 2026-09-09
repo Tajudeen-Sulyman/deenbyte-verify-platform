@@ -23,7 +23,7 @@ export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: 
         <div className="space-y-3 p-4">
           <div className="flex gap-2">
             <button onClick={() => setTab('data')} className={'flex-1 rounded-xl py-2 text-xs font-extrabold ' + (tab === 'data' ? 'bg-primary text-white' : 'bg-light text-muted')}>Details</button>
-            <button onClick={() => setTab('slip')} className={'flex-1 rounded-xl py-2 text-xs font-extrabold ' + (tab === 'slip' ? 'bg-primary text-white' : 'bg-light text-muted')}>Basic Slip</button>
+            <button onClick={() => setTab('slip')} className={'flex-1 rounded-xl py-2 text-xs font-extrabold ' + (tab === 'slip' ? 'bg-primary text-white' : 'bg-light text-muted')}>Slip View</button>
           </div>
           {tab === 'data' && (
             <div className="space-y-3">
@@ -87,7 +87,7 @@ export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: 
               <button onClick={() => openProviderPdf(pdfBase64, 'NIMC-slip-' + (u.nin ?? '') + '.pdf')} className="w-full rounded-xl bg-sky-700 py-4 text-sm font-extrabold text-white underline">⬇ Download PDF</button>
             </div>
           )}
-          <button onClick={() => pdfBase64 ? openProviderPdf(pdfBase64, 'NIMC-slip-' + (u.nin ?? '') + '.pdf') : openSlipPrint(u)} className="w-full rounded-xl bg-green-700 py-4 text-sm font-extrabold text-white">🖨 Download Official NIMC Slip (PDF)</button>
+          <button onClick={() => pdfBase64 ? openProviderPdf(pdfBase64, 'NIMC-slip-' + (u.nin ?? '') + '.pdf') : openSlipPrint(u)} className="w-full rounded-xl bg-green-700 py-4 text-sm font-extrabold text-white">⬇ Download Slip (PDF)</button>
           <button onClick={onClose} className="w-full rounded-xl bg-light py-4 text-sm font-extrabold text-dark">✕ Close</button>
         </div>
       </div>

@@ -118,7 +118,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
 
   const brand = (
     <Link href="/dashboard" className="flex items-center gap-2 text-lg font-bold text-white">
-      <img src="/logo.jpg" alt="" className="h-9 w-9 rounded-xl object-cover shadow-md" />
+      <img src="/brand-logo.jpg?v=3" alt="" className="h-9 w-9 rounded-xl object-cover shadow-md" />
       DeenByte <span className="text-violet-400">Verify</span>
     </Link>
   );

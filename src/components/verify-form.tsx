@@ -14,8 +14,8 @@ type Service = {
   selling_price: number;
 };
 
-const NIN_SLIPS = ['basic', 'premium', 'standard', 'regular', 'vnin'];
-const BVN_SLIPS = ['basic', 'premium', 'standard'];
+const NIN_SLIPS = ['premium', 'standard', 'regular', 'vnin'];
+const BVN_SLIPS = ['premium', 'standard'];
 
 export function VerifyForm({ service, walletBalance }: { service: Service; walletBalance: number }) {
   const slips = service.provider === 'techhub'
