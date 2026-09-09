@@ -73,7 +73,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
 
-  const slipType = String(body.slip_type ?? config.defaultSlip);
+  const slipType = String(body.slip_type ?? (body.slip_type || config.defaultSlip));
   const confirmReverify = Boolean(body.confirm_reverify);
 
   const { data: svcRow } = await supabaseAdmin

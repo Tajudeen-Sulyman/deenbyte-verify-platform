@@ -1,6 +1,10 @@
 'use client';
 import { useState } from 'react';
 
+const SLIP_ROWS: [string, string][] = [
+  ['First Name', 'first_name'], ['Middle Name', 'middle_name'], ['Last Name', 'last_name'], ['Date of Birth', 'date_of_birth'], ['Gender', 'gender'], ['NIN', 'nin'], ['Phone Number', 'phone_number'], ['Tracking ID', 'tracking_id'], ['Residence State', 'residence_state'], ['Birth State', 'birth_state'], ['Address', 'address'], ['Residence LGA', 'residence_lga'], ['Birth LGA', 'birth_lga'],
+];
+
 export function NinSlipModal({ result, pdfBase64, onClose }: { result: any; pdfBase64?: string; onClose: () => void }) {
   const [tab, setTab] = useState<'data' | 'slip'>('data');
   const u = result?.user_data ?? result?.data ?? result ?? {};
@@ -53,7 +57,7 @@ export function NinSlipModal({ result, pdfBase64, onClose }: { result: any; pdfB
                   <span className="text-xs font-extrabold text-green-700">NIMC</span>
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1">
-                  {fields.filter(([, v]) => v).map(([k, v]) => (<p key={k}><b>{k}:</b> {String(v)}</p>))}
+                  {SLIP_ROWS.map(([k, key]) => (<p key={k}><b>{k}:</b> {String(u[key] ?? u[key.replace(/_/g, '')] ?? '')}</p>))}
                 </div>
                 <p className="mt-3 text-center text-lg font-extrabold text-green-700">✓ Verified</p>
               </div>
