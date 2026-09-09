@@ -49,7 +49,6 @@ export function NinSlipModal({ result, pdfBase64, onClose }: { result: any; pdfB
               <p className="text-center font-bold">For your security & privacy, please DO NOT permit others to photocopy this slip.</p>
               <div className="mt-3 border border-border p-3">
                 <div className="flex items-start justify-between gap-2">
-                  <img src="/brand-logo.jpg?v=2" alt="DeenByte" className="h-10 w-10 rounded object-contain" />
                   <div className="text-center">
                     <p className="text-sm font-extrabold">Federal Republic of Nigeria</p>
                     <p className="font-bold">Verified NIN Details</p>
