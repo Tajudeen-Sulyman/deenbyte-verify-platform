@@ -26,9 +26,9 @@ td{padding:2px 4px;vertical-align:top}
 <p class="notes">Please find below your Digital NIN Slip<br>You may cut it out of the paper, fold and laminate as desired.<br>For your security &amp; privacy, please DO NOT permit others to make photocopies of this slip.</p>
 <div class="box">
 <div class="hdr">
-  <div class="crest">🇳</div>
+  <div class="crest"><img src="/coat-of-arms.png" alt="NG" style="width:46px;height:auto"/></div>
   <div><p class="t">Federal Republic of Nigeria</p><p class="st">Verified NIN Details</p></div>
-  <div class="nimc">NIMC</div>
+  <div class="nimc"><img src="/nimc-logo.png" alt="NIMC" style="height:30px"/></div>
 </div>
 <div class="cols">
   <table class="col">

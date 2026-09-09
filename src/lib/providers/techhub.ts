@@ -138,7 +138,7 @@ export const TechHubProvider = {
     return {
       success: true,
       message: json.message ?? 'Verification successful.',
-      data: mapUser(srcOf(json)),
+      data: { ...(srcOf(json) ?? {}), ...mapUser(srcOf(json)) },
       pdf_base64: json.pdf_base64 ?? smallPdf(json),
     };
   },
@@ -149,7 +149,7 @@ export const TechHubProvider = {
     return {
       success: true,
       message: json.message ?? 'Verification successful.',
-      data: mapUser(srcOf(json)),
+      data: { ...(srcOf(json) ?? {}), ...mapUser(srcOf(json)) },
       pdf_base64: json.pdf_base64 ?? smallPdf(json),
     };
   },
@@ -165,7 +165,7 @@ export const TechHubProvider = {
     return {
       success: true,
       message: json.message ?? 'Verification successful.',
-      data: mapUser(srcOf(json)),
+      data: { ...(srcOf(json) ?? {}), ...mapUser(srcOf(json)) },
       pdf_base64: json.pdf_base64 ?? smallPdf(json),
     };
   },
@@ -176,7 +176,7 @@ export const TechHubProvider = {
     return {
       success: true,
       message: json.message ?? 'Verification successful.',
-      data: mapUser(srcOf(json)),
+      data: { ...(srcOf(json) ?? {}), ...mapUser(srcOf(json)) },
       pdf_base64: json.pdf_base64 ?? smallPdf(json),
     };
   },

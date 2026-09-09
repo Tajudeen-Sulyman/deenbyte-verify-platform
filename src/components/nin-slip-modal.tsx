@@ -43,12 +43,12 @@ export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: 
               <p className="text-center font-bold">For your security & privacy, please DO NOT permit others to photocopy this slip.</p>
               <div className="mt-3 border border-border p-3">
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-lg">🇳</span>
+                  <img src="/coat-of-arms.png" alt="NG" className="h-11 w-auto" />
                   <div className="text-center">
                     <p className="text-sm font-extrabold">Federal Republic of Nigeria</p>
                     <p className="font-bold">Verified NIN Details</p>
                   </div>
-                  <span className="text-xs font-extrabold italic text-green-700">NIMC</span>
+                  <img src="/nimc-logo.png" alt="NIMC" className="h-7 w-auto" />
                 </div>
                 <div className="mt-3 grid grid-cols-3 gap-2">
                   <div className="space-y-1">
