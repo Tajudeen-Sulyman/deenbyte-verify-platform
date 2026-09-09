@@ -125,7 +125,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
 
   return (
     <div className="min-h-screen bg-light">
-      <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col bg-dark border-r border-white/10">
+      <aside className="shell-sidebar hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col bg-dark border-r border-white/10">
         <div className="px-5 py-5 border-b border-white/10">{brand}</div>
         <SideNav email={email ?? ''} balance={balance} isAdmin={isAdmin} active={path} onNav={onNav} />
         <div className="px-4 py-3 border-t border-white/10 space-y-2"><ThemeToggle />{logoutSlot}</div>
