@@ -79,10 +79,13 @@ const [consent1, setConsent1] = useState(false);
           className="w-full rounded-lg border border-border px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
         {slips && (
-          <select value={slipType} onChange={(e) => setSlipType(e.target.value)}
-            className="w-full rounded-lg border border-border px-3 py-2.5 text-sm bg-white outline-none focus:border-primary">
-            {slips.map((s) => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)} Slip</option>)}
-          </select>
+          <div className="grid grid-cols-2 gap-2">
+              {slips.map((s) => (
+                <button type="button" key={s} onClick={() => setSlipType(s)} className={'rounded-xl border-2 p-3 text-center text-xs font-extrabold ' + (slipType === s ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-white text-muted')}>
+                  {s.charAt(0).toUpperCase() + s.slice(1)} Slip
+                </button>
+              ))}
+            </div>
         )}
         <button type="button" onClick={() => setSpecimen(true)} className="text-xs font-semibold text-primary underline">👁 View Example Slip</button>
         <label className="flex items-start gap-2 text-xs text-muted">
