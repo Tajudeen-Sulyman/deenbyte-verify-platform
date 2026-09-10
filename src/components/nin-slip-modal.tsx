@@ -19,11 +19,11 @@ export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: 
           <button onClick={onClose} className="text-lg font-bold text-muted">✕</button>
         </div>
         <div className="space-y-3 p-4">
-          {photoSrc && <img src={photoSrc} alt="portrait" className="mx-auto h-28 w-28 rounded-full border-4 border-sky-700 object-cover" />}
-          {fields.filter(([, v]) => v).map(([k, v]) => (
+          {photoSrc ? <img src={photoSrc} alt="portrait" className="mx-auto h-28 w-28 rounded-full border-4 border-sky-700 object-cover" /> : <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full border-4 border-sky-700 bg-primary/10 text-3xl font-extrabold text-primary">{(u.first_name ?? u.firstname ?? '?').charAt(0) + (u.last_name ?? u.surname ?? '').charAt(0)}</div>}
+          {fields.filter(([k, v]) => v || k === 'PHONE NUMBER').map(([k, v]) => (
             <div key={k} className="rounded-xl bg-light p-3">
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted">{k}</p>
-              <p className="mt-1 text-sm font-extrabold text-dark">{String(v)}</p>
+              <p className="mt-1 text-sm font-extrabold text-dark">{v ? String(v) : '—'}</p>
             </div>
           ))}
           {pdfBase64 && (
