@@ -13,6 +13,12 @@ export async function openSlipFor(result: any) {
     const j = await fetch('/api/v1/slip/by-ref', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: result.reference }) }).then((x) => x.json()).catch(() => null);
     if (j?.pdf_base64) return openProviderPdf(j.pdf_base64, name);
   }
+  if (result?.reference || u.nin) {
+    const q = new URLSearchParams();
+    q.set('reference', result?.reference ?? ''); q.set('nin', u.nin ?? '');
+    window.open('/api/v1/slip?' + q.toString(), '_blank');
+    return;
+  }
   const tries: Array<() => Promise<Response>> = [
     () => fetch('/api/v1/slip?nin=' + encodeURIComponent(u.nin ?? '') + '&reference=' + encodeURIComponent(result?.reference ?? '')),
     () => fetch('/api/v1/slip/' + encodeURIComponent(result?.reference ?? '')),
