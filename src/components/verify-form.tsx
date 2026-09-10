@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 
 import { NinSlipModal } from '@/components/nin-slip-modal';
-import { openSlipPrint } from '@/lib/slip-print';
 import { openProviderPdf } from '@/lib/slip-print';
 import { openSlipFor } from '@/lib/slip-print';
 
