@@ -107,9 +107,7 @@ export async function runVerification(opts: {
     const result = await callProvider(identifier, slipType);
     const rawData = result.data ?? {};
     const safeData = { ...rawData };
-    delete safeData.photo;
-    delete safeData.base64Image;
-
+        
     await supabaseAdmin.from('verification_requests')
       .update({
         status: 'successful',

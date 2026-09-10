@@ -4,7 +4,7 @@ import { openProviderPdf, openSlipFor } from '@/lib/slip-print';
 export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: { result: any; pdfBase64?: string; slipType?: string; onClose: () => void }) {
   const u = result?.user_data ?? result?.data ?? result ?? {};
   const pdfBase64 = pdfProp ?? result?.pdf_base64 ?? result?.data?.pdf_base64 ?? result?.slip?.pdf_base64 ?? u?.pdf_base64;
-  const photoRaw = u.photo ?? u.base64Image ?? u.passport_photo_base64;
+  const photoRaw = u.photo ?? u.base64Image ?? u.passport_photo_base64 ?? u.photo_base64 ?? u.image ?? u.passport_photo ?? u.passportPhoto ?? u.photobase64;
   const photoSrc = photoRaw ? (String(photoRaw).startsWith('data:') ? String(photoRaw) : 'data:image/jpeg;base64,' + String(photoRaw)) : '';
   const fields: [string, any][] = [
     ['NIN', u.nin], ['FIRST NAME', u.first_name ?? u.firstname], ['MIDDLE NAME', u.middle_name ?? u.middlename],
