@@ -1,4 +1,8 @@
-export function slipPrintHtml(u: any): string {
+function flat(u: any): any {
+  return { ...(u?.data ?? {}), ...(u?.user_data ?? {}), ...(u?.result ?? {}), ...u };
+}
+export function slipPrintHtml(src: any): string {
+  const u = flat(src);
   const L = (k: string, v: any) => `<tr><td class="k">${k}:</td><td class="v">${v ?? ''}</td></tr>`;
   const photo = u.photo ?? u.base64Image ?? '';
   const photoSrc = photo ? (String(photo).startsWith('data:') ? String(photo) : 'data:image/jpeg;base64,' + String(photo)) : '';
@@ -8,7 +12,7 @@ body{font-family:Arial,Helvetica,sans-serif;color:#111;margin:20px}
 .notes{font-size:11px;text-align:center;font-weight:700;line-height:1.5}
 .box{border:1px solid #888;padding:14px;margin-top:14px}
 .hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.crest{font-size:28px;line-height:1}
+.crest img{width:46px;height:auto}
 .t{text-align:center;font-size:15px;font-weight:800;margin:0}
 .st{text-align:center;font-size:12px;font-weight:700;margin:2px 0 0}
 .nimc{color:#0a7a2f;font-style:italic;font-weight:800;font-size:15px}
@@ -26,7 +30,7 @@ td{padding:2px 4px;vertical-align:top}
 <p class="notes">Please find below your Digital NIN Slip<br>You may cut it out of the paper, fold and laminate as desired.<br>For your security &amp; privacy, please DO NOT permit others to make photocopies of this slip.</p>
 <div class="box">
 <div class="hdr">
-  <div class="crest"><img src="/coat-of-arms.png" alt="NG" style="width:46px;height:auto"/></div>
+  <div class="crest"><img src="/coat-of-arms.png" alt="NG"/></div>
   <div><p class="t">Federal Republic of Nigeria</p><p class="st">Verified NIN Details</p></div>
   <div class="nimc">NIMC</div>
 </div>
@@ -38,11 +42,11 @@ td{padding:2px 4px;vertical-align:top}
     ${L('Date of Birth', u.date_of_birth ?? u.birthdate)}
     ${L('Gender', u.gender)}
     ${L('NIN', u.nin)}
-    ${L('Tracking ID', u.tracking_id)}
+    ${L('Tracking ID', u.tracking_id ?? u.trackingId)}
   </table>
   <div class="col mid">
     ${photoSrc ? `<img src="${photoSrc}" alt="photo"/>` : '<div style="width:110px;height:130px;border:1px solid #999;margin:auto"></div>'}
-    <table><tr><td class="k">Signature:</td><td>NIL</td></tr><tr><td class="k">Phone Number:</td><td>${u.phone_number ?? u.phone ?? ''}</td></tr></table>
+    <table><tr><td class="k">Signature:</td><td>${u.signature && !String(u.signature).startsWith('data:') ? u.signature : 'NIL'}</td></tr><tr><td class="k">Phone Number:</td><td>${u.phone_number ?? u.phone ?? u.telephoneno ?? ''}</td></tr></table>
   </div>
   <div class="col right">
     <p class="ver">Verified</p>
@@ -69,15 +73,14 @@ export function openProviderPdf(pdfBase64: string, name: string) {
   a.download = name;
   a.click();
 }
-
 export async function openSlipFor(result: any) {
-  const pdf = result?.pdf_base64 ?? result?.data?.pdf_base64 ?? result?.slip?.pdf_base64;
-  const u = result?.user_data ?? result?.data ?? result ?? {};
+  const u = flat(result);
+  const pdf = u.pdf_base64 ?? u.pdf ?? u.slip_base64;
   const name = 'NIN-slip-' + (u.nin ?? result?.reference ?? 'slip') + '.pdf';
   if (pdf) return openProviderPdf(pdf, name);
   if (result?.reference) {
     const j = await fetch('/api/v1/slip/by-ref', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: result.reference }) }).then((x) => x.json()).catch(() => null);
     if (j?.pdf_base64) return openProviderPdf(j.pdf_base64, name);
   }
-  openSlipPrint(u);
+  openSlipPrint(result);
 }
