@@ -108,7 +108,7 @@ export default function ValidationPage() {
                 <span className={'rounded-full px-2 py-1 text-[10px] font-bold ' + (r.status === 'completed' ? 'bg-green-50 text-green-700' : r.status === 'failed' ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-700')}>{r.status}</span>
               </div>
               <div className="mt-3 flex gap-2">
-                {r.status !== 'completed' && r.status !== 'failed' && <button onClick={() => check(r.reference)} disabled={busy} className="rounded-lg bg-primary px-3 py-2 text-[10px] font-extrabold text-white disabled:opacity-60">Check status</button>}
+                {r.status !== 'completed' && r.status !== 'failed' && <button onClick={async () => { const res = await fetch('/api/v1/nin/validation/status', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: r.reference }) }).then((x) => x.json()); alert(res.message ?? res.status ?? 'No response'); window.location.reload(); }} disabled={busy} className="rounded-lg bg-primary px-3 py-2 text-[10px] font-extrabold text-white disabled:opacity-60">Check status</button>}
                 {r.status === 'completed' && r.slip && <button onClick={() => setView(r)} className="rounded-lg bg-green-600 px-3 py-2 text-[10px] font-extrabold text-white">View slip</button>}
               </div>
             </div>
