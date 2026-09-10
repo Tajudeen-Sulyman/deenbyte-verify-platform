@@ -108,14 +108,27 @@ export async function runVerification(opts: {
     const result = await callProvider(identifier, slipType);
     const rawData = result.data ?? {};
     const safeData = { ...rawData };
-    const phoneNow = (safeData as any).phone_number ?? (safeData as any).phone ?? (safeData as any).telephoneno;
-    if (process.env.ENRICH_PHONE !== 'off' && !phoneNow && /^\d{11}$/.test(String(identifier))) {
+    const canon = (d: any) => ({
+      nin: d.nin ?? d.NIN,
+      first_name: d.first_name ?? d.firstname,
+      middle_name: d.middle_name ?? d.middlename,
+      last_name: d.last_name ?? d.surname,
+      gender: d.gender,
+      date_of_birth: d.date_of_birth ?? d.birthdate,
+      phone_number: d.phone_number ?? d.phone ?? d.telephoneno ?? d.msisdn,
+      address: d.address ?? d.residence_address,
+      photo: d.photo ?? d.base64Image ?? d.photo_base64 ?? d.image,
+    });
+    Object.assign(safeData, Object.fromEntries(Object.entries(canon(safeData)).filter(([, v]) => v)));
+    const base = canon(safeData);
+    const missingAny = !base.phone_number || !base.first_name || !base.photo || !base.address;
+    if (process.env.ENRICH_PHONE !== 'off' && missingAny && /^\d{11}$/.test(String(identifier))) {
       try {
         const aj = await AijalonProvider.verifyNIN(String(identifier), 'basic');
-        const ad: any = aj?.data ?? {};
-        const p = ad.phone_number ?? ad.phone ?? ad.telephoneno ?? ad.msisdn;
-        if (p) (safeData as any).phone_number = p;
-        if (!(safeData as any).address) (safeData as any).address = ad.address ?? ad.residence_address ?? undefined;
+        const ac: any = canon(aj?.data ?? {});
+        for (const [k, v] of Object.entries(ac)) {
+          if (v && !(safeData as any)[k]) (safeData as any)[k] = v;
+        }
       } catch {}
     }
         
