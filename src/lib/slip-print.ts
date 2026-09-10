@@ -13,11 +13,23 @@ export async function openSlipFor(result: any) {
     const j = await fetch('/api/v1/slip/by-ref', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: result.reference }) }).then((x) => x.json()).catch(() => null);
     if (j?.pdf_base64) return openProviderPdf(j.pdf_base64, name);
   }
-  if (result?.reference || u.nin) {
-    const q = new URLSearchParams();
-    q.set('reference', result?.reference ?? ''); q.set('nin', u.nin ?? '');
-    window.open('/api/v1/slip?' + q.toString(), '_blank');
-    return;
+  const cands = [result?.requestId, result?.reference, u.nin].filter(Boolean);
+  for (const c of cands) {
+    try {
+      const r = await fetch('/api/v1/slip/' + encodeURIComponent(String(c)));
+      if (!r.ok) continue;
+      const ct = r.headers.get('content-type') || '';
+      if (ct.includes('pdf')) {
+        const b = await r.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = name;
+        a.click();
+        return;
+      }
+      const j = await r.json().catch(() => null);
+      if (j?.pdf_base64) return openProviderPdf(j.pdf_base64, name);
+    } catch {}
   }
   const tries: Array<() => Promise<Response>> = [
     () => fetch('/api/v1/slip?nin=' + encodeURIComponent(u.nin ?? '') + '&reference=' + encodeURIComponent(result?.reference ?? '')),
