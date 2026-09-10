@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { openSlipPrint, openProviderPdf } from '@/lib/slip-print';
+import { openSlipPrint, openProviderPdf, openSlipFor } from '@/lib/slip-print';
 
 export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: { result: any; pdfBase64?: string; slipType?: string; onClose: () => void }) {
   const [tab, setTab] = useState<'data' | 'slip'>('data');
@@ -87,7 +87,7 @@ export function NinSlipModal({ result, pdfBase64: pdfProp, slipType, onClose }: 
               <button onClick={() => openProviderPdf(pdfBase64, 'NIMC-slip-' + (u.nin ?? '') + '.pdf')} className="w-full rounded-xl bg-sky-700 py-4 text-sm font-extrabold text-white underline">⬇ Download PDF</button>
             </div>
           )}
-          <button onClick={() => pdfBase64 ? openProviderPdf(pdfBase64, 'NIMC-slip-' + (u.nin ?? '') + '.pdf') : openSlipPrint(u)} className="w-full rounded-xl bg-green-700 py-4 text-sm font-extrabold text-white">⬇ Download Slip (PDF)</button>
+          <button onClick={() => openSlipFor(result)} className="w-full rounded-xl bg-green-700 py-4 text-sm font-extrabold text-white">⬇ Download Slip (PDF)</button>
           <button onClick={onClose} className="w-full rounded-xl bg-light py-4 text-sm font-extrabold text-dark">✕ Close</button>
         </div>
       </div>
