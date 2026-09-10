@@ -13,5 +13,28 @@ export async function openSlipFor(result: any) {
     const j = await fetch('/api/v1/slip/by-ref', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reference: result.reference }) }).then((x) => x.json()).catch(() => null);
     if (j?.pdf_base64) return openProviderPdf(j.pdf_base64, name);
   }
+  const tries: Array<() => Promise<Response>> = [
+    () => fetch('/api/v1/slip?nin=' + encodeURIComponent(u.nin ?? '') + '&reference=' + encodeURIComponent(result?.reference ?? '')),
+    () => fetch('/api/v1/slip/' + encodeURIComponent(result?.reference ?? '')),
+    () => fetch('/api/v1/slip', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nin: u.nin ?? '', reference: result?.reference ?? '', number: u.nin ?? '' }) }),
+  ];
+  for (const t of tries) {
+    try {
+      const r = await t();
+      if (!r.ok) continue;
+      const ct = r.headers.get('content-type') || '';
+      if (ct.includes('pdf')) {
+        const b = await r.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = name;
+        a.click();
+        return;
+      }
+      const j = await r.json().catch(() => null);
+      const p = j?.pdf_base64 ?? j?.pdf;
+      if (p) return openProviderPdf(p, name);
+    } catch {}
+  }
   alert('Slip PDF is not available for this request yet.');
 }
