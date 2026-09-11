@@ -122,7 +122,7 @@ export async function runVerification(opts: {
     Object.assign(safeData, Object.fromEntries(Object.entries(canon(safeData)).filter(([, v]) => v)));
     const base = canon(safeData);
     const missingAny = !base.phone_number || !base.first_name || !base.photo || !base.address;
-    if (process.env.ENRICH_PHONE !== 'off' && missingAny && /^\d{11}$/.test(String(identifier))) {
+    if (process.env.ENRICH_PHONE === 'on' && missingAny && /^\d{11}$/.test(String(identifier))) {
       try {
         const aj = await AijalonProvider.verifyNIN(String(identifier), 'basic');
         const ac: any = canon(aj?.data ?? {});
