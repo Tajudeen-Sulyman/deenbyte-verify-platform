@@ -494,3 +494,23 @@ h1, h2, h3 { letter-spacing: -0.02em; }
 [data-theme='dark'] .shell-sidebar [class*="rounded"] { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
 [data-theme='dark'] .shell-sidebar [class*="from-"] svg, [data-theme='dark'] .shell-sidebar [class*="bg-["] svg { color: #20C878 !important; }
 .shell-sidebar [class*="from-"] svg, .shell-sidebar [class*="bg-["] svg { color: #0E9F5A !important; }
+
+/* ===== Total gradient extermination + sidebar rebuild ===== */
+[class*="gradient"] { background-image: none !important; background-color: #ffffff !important; border: 1px solid #e3e8ee !important; }
+[class*="gradient"] [class*="text-white"], [class*="from-"] [class*="text-white"] { color: #0B1728 !important; }
+[data-theme='dark'] [class*="gradient"] { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
+[data-theme='dark'] [class*="gradient"] [class*="text-white"], [data-theme='dark'] [class*="from-"] [class*="text-white"] { color: #f5f7fa !important; }
+
+.shell-sidebar * { background-color: transparent !important; border-color: transparent !important; }
+.shell-sidebar a, .shell-sidebar button { background-color: #f4f7f9 !important; border: 1px solid #e3e8ee !important; }
+.shell-sidebar p, .shell-sidebar span { color: #33475b !important; }
+.shell-sidebar svg { color: #0E9F5A !important; }
+.shell-sidebar [class*="from-"] { background-color: #E6F7EE !important; }
+.shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
+
+[data-theme='dark'] .shell-sidebar * { background-color: transparent !important; border-color: transparent !important; }
+[data-theme='dark'] .shell-sidebar a, [data-theme='dark'] .shell-sidebar button { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
+[data-theme='dark'] .shell-sidebar p, [data-theme='dark'] .shell-sidebar span { color: #c6d2dd !important; }
+[data-theme='dark'] .shell-sidebar svg { color: #20C878 !important; }
+[data-theme='dark'] .shell-sidebar [class*="from-"] { background-color: #122033 !important; }
+[data-theme='dark'] .shell-sidebar [class*="bg-primary"], [data-theme='dark'] .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
