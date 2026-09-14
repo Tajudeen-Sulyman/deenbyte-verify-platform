@@ -64,3 +64,7 @@ button, a { transition: all .18s ease; }
 .animate-float { animation: float 5s ease-in-out infinite; }
 .animate-fade-in { animation: fadeIn .4s ease; }
 .animate-slide-up { animation: slideUp .4s ease; }
+
+.card3d { background: var(--card) !important; background-image: none !important; border: 1px solid var(--line) !important; border-radius: 1.5rem !important; box-shadow: 0 8px 24px rgba(11,23,40,.06) !important; transform: none !important; }
+[data-theme='dark'] .card3d { box-shadow: 0 10px 28px rgba(0,0,0,.35) !important; }
+.card3d h1, .card3d h2, .card3d h3, .card3d h4 { color: var(--ink) !important; }
