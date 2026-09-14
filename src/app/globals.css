@@ -410,3 +410,28 @@ input[type='checkbox'] { accent-color: #5a7184; }
 [data-theme='dark'] [class*="from-"], [data-theme='dark'] [class*="bg-gradient-to"] {
   background-color: #1a1f26 !important; border: 1px solid #2b3138 !important;
 }
+
+/* ===== Arbitrary-value + solid purple extermination ===== */
+[class*="bg-[linear"], [class*="bg-[radial"], [class*="bg-[#"],
+[class*="bg-violet"], [class*="bg-purple"], [class*="bg-fuchsia"], [class*="bg-indigo"] {
+  background-image: none !important;
+  background-color: #eef1f4 !important;
+  border: 1px solid #e2e5e9 !important;
+}
+[class*="bg-[linear"] svg, [class*="bg-[radial"] svg, [class*="bg-[#"] svg,
+[class*="bg-violet"] svg, [class*="bg-purple"] svg, [class*="bg-fuchsia"] svg, [class*="bg-indigo"] svg {
+  color: #5a7184 !important;
+}
+[data-theme='dark'] [class*="bg-[linear"], [data-theme='dark'] [class*="bg-[radial"], [data-theme='dark'] [class*="bg-[#"],
+[data-theme='dark'] [class*="bg-violet"], [data-theme='dark'] [class*="bg-purple"], [data-theme='dark'] [class*="bg-fuchsia"], [data-theme='dark'] [class*="bg-indigo"] {
+  background-color: #1a1f26 !important;
+  border: 1px solid #2b3138 !important;
+}
+[data-theme='dark'] [class*="bg-[linear"] svg, [data-theme='dark'] [class*="bg-[radial"] svg, [data-theme='dark'] [class*="bg-[#"] svg,
+[data-theme='dark'] [class*="bg-violet"] svg, [data-theme='dark'] [class*="bg-purple"] svg, [data-theme='dark'] [class*="bg-fuchsia"] svg, [data-theme='dark'] [class*="bg-indigo"] svg {
+  color: #f3f4f6 !important;
+}
+[data-theme='dark'] [class*="text-violet"], [data-theme='dark'] [class*="text-purple"], [data-theme='dark'] [class*="text-fuchsia"] {
+  color: #e5e7eb !important;
+}
+[class*="text-violet"], [class*="text-purple"], [class*="text-fuchsia"] { color: #1c232b !important; }
