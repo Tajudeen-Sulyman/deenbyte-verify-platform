@@ -317,3 +317,29 @@ button, a { transition: all .18s ease; }
   background-color: #1d1826 !important;
   border-color: #2c2438 !important;
 }
+
+/* ===== Premium dark fintech system ===== */
+[data-theme='dark'] body { background: #0e0b14 !important; }
+[data-theme='dark'] .mesh, [data-theme='dark'] [class*="mesh"] {
+  background: radial-gradient(900px 320px at 50% -80px, rgba(124,58,237,.12), transparent 70%), #0e0b14 !important;
+}
+[data-theme='dark'] [class*="bg-white"] {
+  background-color: rgba(23,18,32,.72) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(139,92,246,.14) !important;
+  box-shadow: 0 12px 32px rgba(0,0,0,.35) !important;
+}
+[data-theme='dark'] [class*="bg-light"] { background-color: rgba(139,92,246,.08) !important; }
+[data-theme='dark'] [class*="text-dark"] { color: #f4f1fa !important; }
+[data-theme='dark'] [class*="text-muted"] { color: #a79fc0 !important; }
+[data-theme='dark'] [class*="border-border"] { border-color: rgba(139,92,246,.16) !important; }
+[data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea {
+  background-color: #17121f !important;
+  color: #f4f1fa !important;
+  border-color: #2c2438 !important;
+}
+[data-theme='dark'] [class*="bg-black/"] { background-color: rgba(0,0,0,.55) !important; }
+[data-theme='dark'] [class*="bg-gradient-to"] {
+  background-image: linear-gradient(135deg, rgba(124,58,237,.9) 0%, rgba(91,33,182,.9) 100%) !important;
+}
