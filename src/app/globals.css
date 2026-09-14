@@ -301,3 +301,19 @@ body { background: #fbfaff !important; font-family: 'Inter', system-ui, -apple-s
 }
 h1, h2, h3 { letter-spacing: -0.02em; }
 button, a { transition: all .18s ease; }
+
+[class*="from-emerald"], [class*="from-green"], [class*="from-amber"], [class*="from-yellow"],
+[class*="from-orange"], [class*="from-pink"], [class*="from-rose"], [class*="from-teal"],
+[class*="from-cyan"], [class*="from-lime"], [class*="from-fuchsia-2"], [class*="from-purple-2"] {
+  background-image: none !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e9e4f4 !important;
+}
+[data-theme='dark'] [class*="from-emerald"], [data-theme='dark'] [class*="from-green"],
+[data-theme='dark'] [class*="from-amber"], [data-theme='dark'] [class*="from-yellow"],
+[data-theme='dark'] [class*="from-orange"], [data-theme='dark'] [class*="from-pink"],
+[data-theme='dark'] [class*="from-rose"], [data-theme='dark'] [class*="from-teal"],
+[data-theme='dark'] [class*="from-cyan"], [data-theme='dark'] [class*="from-lime"] {
+  background-color: #1d1826 !important;
+  border-color: #2c2438 !important;
+}
