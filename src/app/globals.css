@@ -482,3 +482,15 @@ input[type='checkbox'] { accent-color: #16B86A; }
 [data-theme='dark'] .shell-sidebar { background: #0E1B2C !important; }
 [data-theme='dark'] .shell-sidebar [class*="bg-"] { background-color: #122033 !important; }
 h1, h2, h3 { letter-spacing: -0.02em; }
+
+/* ===== Sidebar contrast fix (both modes) ===== */
+.shell-sidebar { color: #33475b; }
+.shell-sidebar [class*="text-"] { color: #33475b !important; }
+.shell-sidebar [class*="text-white"] { color: #0B1728 !important; }
+.shell-sidebar [class*="rounded"] { background-color: #f4f7f9 !important; border: 1px solid #e3e8ee !important; }
+[data-theme='dark'] .shell-sidebar { color: #f5f7fa; background: #0E1B2C !important; }
+[data-theme='dark'] .shell-sidebar [class*="text-"] { color: #c6d2dd !important; }
+[data-theme='dark'] .shell-sidebar [class*="text-white"] { color: #f5f7fa !important; }
+[data-theme='dark'] .shell-sidebar [class*="rounded"] { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
+[data-theme='dark'] .shell-sidebar [class*="from-"] svg, [data-theme='dark'] .shell-sidebar [class*="bg-["] svg { color: #20C878 !important; }
+.shell-sidebar [class*="from-"] svg, .shell-sidebar [class*="bg-["] svg { color: #0E9F5A !important; }
