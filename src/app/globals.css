@@ -328,3 +328,16 @@ body { background: #ffffff !important; }
 .shell-sidebar svg { color: #20C878 !important; }
 .shell-sidebar [class*="from-"], .shell-sidebar [class*="bg-[#"] { background-color: #000000 !important; border: 1px solid #1f2630 !important; }
 .shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
+
+/* ===== Semantic tint neutralisation (no plum/maroon) ===== */
+[class*="bg-rose"], [class*="bg-red"], [class*="bg-pink"], [class*="bg-maroon"] {
+  background-color: var(--card) !important;
+  border: 1px solid var(--line) !important;
+}
+[class*="text-rose"], [class*="text-red"] { color: #dc2626 !important; }
+[data-theme='dark'] [class*="text-rose"], [data-theme='dark'] [class*="text-red"] { color: #f87171 !important; }
+[class*="bg-muted"], [class*="bg-gray-2"], [class*="bg-slate-2"] {
+  background-color: rgba(154,169,186,.14) !important;
+  color: var(--ink) !important;
+}
+[data-theme='dark'] [class*="bg-emerald-5"], [data-theme='dark'] [class*="bg-green-5"] { background-color: rgba(32,200,120,.12) !important; }
