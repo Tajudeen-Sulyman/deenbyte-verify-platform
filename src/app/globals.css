@@ -341,3 +341,18 @@ body { background: #ffffff !important; }
   color: var(--ink) !important;
 }
 [data-theme='dark'] [class*="bg-emerald-5"], [data-theme='dark'] [class*="bg-green-5"] { background-color: rgba(32,200,120,.12) !important; }
+
+/* ===== Light spec + always-dark sidebar ===== */
+:root { --bg:#ffffff; --card:#ffffff; --line:#e3e8ee; --ink:#0B1728; --mut:#5c6b7f; --tile:#E6F7EE; --tileline:#cdeeda; --acc:#0E9F5A; }
+body { background: #ffffff !important; }
+.mesh, [class*="mesh"] { background: #ffffff !important; }
+[class*="bg-muted"] { background-color: var(--card) !important; }
+.shell-sidebar { background: #000000 !important; }
+.shell-sidebar [class*="bg-white"], .shell-sidebar [class*="bg-light"], .shell-sidebar [class*="rounded"], .sb-surf {
+  background-color: #0d1117 !important; border: 1px solid #1f2630 !important;
+}
+.shell-sidebar p, .shell-sidebar span { color: #e5e7eb !important; }
+.shell-sidebar [class*="text-white"] { color: #ffffff !important; }
+.shell-sidebar [class*="text-muted"] { color: #9aa9ba !important; }
+.shell-sidebar svg { color: #20C878 !important; }
+.shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
