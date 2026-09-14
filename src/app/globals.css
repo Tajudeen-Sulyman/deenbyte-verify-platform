@@ -387,3 +387,26 @@ body { background: #f4f5f6 !important; }
 [class*="text-emerald"], [class*="text-green"] { color: #7d93a8 !important; }
 [data-theme='dark'] [class*="bg-emerald"], [data-theme='dark'] [class*="bg-green"] { background-color: rgba(125,147,168,.14) !important; }
 h1, h2, h3 { letter-spacing: -0.02em; }
+
+/* ===== Monochrome dark override ===== */
+[style*="gradient"] { background-image: none !important; background-color: #ffffff !important; }
+[data-theme='dark'] [style*="gradient"] { background-color: #171b21 !important; }
+[data-theme='dark'] [class*="bg-primary"] { background-color: #f3f4f6 !important; color: #101317 !important; }
+[data-theme='dark'] [class*="text-primary"] { color: #e5e7eb !important; }
+[data-theme='dark'] [class*="border-primary"], [data-theme='dark'] [class*="ring-"] {
+  border-color: #3a4149 !important; box-shadow: none !important;
+}
+[data-theme='dark'] [class*="purple"], [data-theme='dark'] [class*="violet"], [data-theme='dark'] [class*="fuchsia"] {
+  background-color: #171b21 !important; color: #d1d5db !important;
+}
+[data-theme='dark'] [class*="text-amber"], [data-theme='dark'] [class*="text-orange"], [data-theme='dark'] [class*="text-blue"] {
+  color: #9aa3ad !important;
+}
+[data-theme='dark'] .shell-sidebar { background: #14181d !important; }
+[data-theme='dark'] .shell-sidebar [class*="bg-"] { background-color: #1d2229 !important; }
+input[type='checkbox'] { accent-color: #5a7184; }
+[data-theme='dark'] input[type='checkbox'] { accent-color: #d1d5db; }
+[data-theme='dark'] [class*="from-"] svg, [data-theme='dark'] [class*="bg-gradient-to"] svg { color: #f3f4f6 !important; }
+[data-theme='dark'] [class*="from-"], [data-theme='dark'] [class*="bg-gradient-to"] {
+  background-color: #1a1f26 !important; border: 1px solid #2b3138 !important;
+}
