@@ -29,9 +29,9 @@ export default function CacHistoryPage() {
   }
   return (
     <div className="min-h-screen bg-light pb-16">
-      <header className="bg-violet-950 text-white px-4 py-6">
+      <header className="bg-emerald-950 text-white px-4 py-6">
         <div className="max-w-2xl mx-auto">
-          <Link href="/cac" className="text-xs font-bold text-violet-300">← CAC Hub</Link>
+          <Link href="/cac" className="text-xs font-bold text-emerald-300">← CAC Hub</Link>
           <h1 className="mt-1 text-xl font-extrabold">CAC Application History</h1>
         </div>
       </header>

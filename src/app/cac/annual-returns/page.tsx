@@ -37,11 +37,11 @@ export default function AnnualReturnsPage() {
   }
   return (
     <div className="min-h-screen bg-light pb-16">
-      <header className="bg-violet-950 text-white px-4 py-6">
+      <header className="bg-emerald-950 text-white px-4 py-6">
         <div className="max-w-2xl mx-auto">
-          <Link href="/cac" className="text-xs font-bold text-violet-300">← Back to CAC Hub</Link>
+          <Link href="/cac" className="text-xs font-bold text-emerald-300">← Back to CAC Hub</Link>
           <h1 className="mt-1 text-xl font-extrabold">CAC Annual Returns</h1>
-          <p className="text-xs text-violet-200">Official statutory compliance filing for Business Names and Limited Liability Companies.</p>
+          <p className="text-xs text-emerald-200">Official statutory compliance filing for Business Names and Limited Liability Companies.</p>
         </div>
       </header>
       <main className="max-w-2xl mx-auto p-4 space-y-4 mt-4">
@@ -68,8 +68,8 @@ export default function AnnualReturnsPage() {
             <p className="text-[11px] font-bold text-amber-800">Upload either CAC Certificate OR Status Report (only one required)</p>
           </div>
           <div className="flex gap-4 text-xs font-bold text-dark">
-            <label className="flex items-center gap-2"><input type="radio" checked={docType === 'certificate'} onChange={() => setDocType('certificate')} className="accent-violet-700" />CAC Certificate</label>
-            <label className="flex items-center gap-2"><input type="radio" checked={docType === 'report'} onChange={() => setDocType('report')} className="accent-violet-700" />CAC Status Report</label>
+            <label className="flex items-center gap-2"><input type="radio" checked={docType === 'certificate'} onChange={() => setDocType('certificate')} className="accent-emerald-700" />CAC Certificate</label>
+            <label className="flex items-center gap-2"><input type="radio" checked={docType === 'report'} onChange={() => setDocType('report')} className="accent-emerald-700" />CAC Status Report</label>
           </div>
           <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={onFile} className="w-full text-xs text-muted file:mr-3 file:rounded-lg file:border-0 file:bg-primary file:px-3 file:py-2 file:text-xs file:font-bold file:text-white" />
           {docName && <p className="text-[10px] font-bold text-green-700">✓ {docName} ({docType})</p>}
@@ -86,7 +86,7 @@ export default function AnnualReturnsPage() {
             <div><label className={label}>Phone *</label><input className={input} type="tel" value={f.phone} onChange={set('phone')} /></div>
           </div>
           <label className="flex items-start gap-3 text-xs text-muted">
-            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
+            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
             <span>I confirm the registered details match the CAC portal record and authorize the filing fee of <b className="text-dark">₦{fee.toLocaleString('en-NG')}</b>.</span>
           </label>
           {err && <p className="text-xs font-bold text-red-700">{err}</p>}
@@ -94,7 +94,7 @@ export default function AnnualReturnsPage() {
             <Link href="/login" className="block w-full rounded-xl bg-primary py-4 text-center text-sm font-extrabold text-white">LOGIN TO FILE</Link>
           ) : (<>
             {wallet.balance >= fee && <button onClick={() => submit('wallet')} disabled={busy || !consent} className="w-full rounded-xl bg-primary py-4 text-sm font-extrabold text-white disabled:opacity-60">PAY ₦{fee.toLocaleString('en-NG')} FROM WALLET</button>}
-            <button onClick={() => submit('paystack')} disabled={busy || !consent} className="w-full rounded-xl bg-violet-950 py-4 text-sm font-extrabold text-white disabled:opacity-60">PROCEED TO CONFIRMATION • ₦{fee.toLocaleString('en-NG')}</button>
+            <button onClick={() => submit('paystack')} disabled={busy || !consent} className="w-full rounded-xl bg-emerald-950 py-4 text-sm font-extrabold text-white disabled:opacity-60">PROCEED TO CONFIRMATION • ₦{fee.toLocaleString('en-NG')}</button>
           </>)}
         </section>
       </main>

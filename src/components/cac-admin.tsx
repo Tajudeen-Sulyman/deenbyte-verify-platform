@@ -74,7 +74,7 @@ export function CacAdmin() {
               </div>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(r.payload?.docPaths ?? {}).map(([k, path]: any) => (
-                  <button key={k} onClick={() => openDoc(path)} className="rounded-lg bg-violet-50 border border-violet-200 px-3 py-2 text-[10px] font-bold text-violet-700">📄 {k.replace('_', ' ')}</button>
+                  <button key={k} onClick={() => openDoc(path)} className="rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2 text-[10px] font-bold text-emerald-700">📄 {k.replace('_', ' ')}</button>
                 ))}
               </div>
               <div className="flex flex-wrap gap-2">

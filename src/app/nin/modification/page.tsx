@@ -40,11 +40,11 @@ else window.location.reload();
 }
 return (
 <div className="min-h-screen bg-light pb-16">
-<header className="vibe-mesh bg-violet-950 text-white px-4 py-6">
+<header className="vibe-mesh bg-emerald-950 text-white px-4 py-6">
 <div className="max-w-2xl mx-auto">
-<Link href="/dashboard" className="text-xs font-bold text-violet-300">← Back to Dashboard</Link>
+<Link href="/dashboard" className="text-xs font-bold text-emerald-300">← Back to Dashboard</Link>
 <h1 className="mt-2 text-2xl font-extrabold">NIN Modification</h1>
-<p className="mt-1 text-sm text-violet-200">Official processing for Change of Name, Phone Number, and Address on your National Identity record.</p>
+<p className="mt-1 text-sm text-emerald-200">Official processing for Change of Name, Phone Number, and Address on your National Identity record.</p>
 <Link href="/nin/modification/history" className="mt-4 inline-block rounded-xl bg-white/10 px-4 py-3 text-xs font-extrabold">≡ Modification History →</Link>
 </div>
 </header>
@@ -90,7 +90,7 @@ return (
 <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => onFile('attest', e)} className="mt-2 text-[10px] text-muted file:mr-2 file:rounded-lg file:border-0 file:bg-primary file:px-3 file:py-2 file:text-[10px] file:font-bold file:text-white" />
 </div>
 <label className="flex items-start gap-3 rounded-xl bg-light p-3 text-xs text-muted">
-<input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
+<input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
 <span>I confirm I am the NIN owner or hold lawful authorization, per the <b>Nigeria Data Protection Act (NDPA) 2023</b>, and authorize the fee of ₦{MOD_FEE.toLocaleString('en-NG')}.</span>
 </label>
 {err && <p className="text-xs font-bold text-red-700">{err}</p>}
@@ -98,7 +98,7 @@ return (
 <Link href="/login" className="block w-full rounded-xl bg-primary py-4 text-center text-sm font-extrabold text-white">LOGIN TO SUBMIT</Link>
 ) : (<>
 {wallet.balance >= MOD_FEE && <button onClick={() => submit('wallet')} disabled={busy || !consent || !support} className="w-full rounded-xl bg-primary py-4 text-sm font-extrabold text-white disabled:opacity-60">PAY ₦{MOD_FEE.toLocaleString('en-NG')} FROM WALLET</button>}
-<button onClick={() => submit('paystack')} disabled={busy || !consent || !support} className="w-full rounded-xl bg-violet-950 py-4 text-sm font-extrabold text-white disabled:opacity-60">SUBMIT • PAY ₦{MOD_FEE.toLocaleString('en-NG')}</button>
+<button onClick={() => submit('paystack')} disabled={busy || !consent || !support} className="w-full rounded-xl bg-emerald-950 py-4 text-sm font-extrabold text-white disabled:opacity-60">SUBMIT • PAY ₦{MOD_FEE.toLocaleString('en-NG')}</button>
 </>)}
 </section>
 </main>

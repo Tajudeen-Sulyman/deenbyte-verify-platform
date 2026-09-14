@@ -37,12 +37,12 @@ export default function ValidationPage() {
   }
   return (
     <div className="min-h-screen bg-light pb-16">
-      <header className="vibe-mesh bg-violet-950 text-white px-4 py-6">
+      <header className="vibe-mesh bg-emerald-950 text-white px-4 py-6">
         <div className="max-w-2xl mx-auto flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-700 text-2xl"></div>
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 text-2xl"></div>
           <div>
             <h1 className="text-xl font-extrabold">Validation</h1>
-            <p className="text-xs text-violet-200">NIN validation request</p>
+            <p className="text-xs text-emerald-200">NIN validation request</p>
           </div>
         </div>
         <div className="max-w-2xl mx-auto mt-4">
@@ -84,7 +84,7 @@ export default function ValidationPage() {
             <input className={input} type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone" />
           </div>
           <label className="flex items-start gap-3 rounded-xl bg-light p-3 text-xs text-muted">
-            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
+            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
             <span>By checking this box, you agree that the owner of the ID has granted you consent to verify his/her identity (NDPA 2023).</span>
           </label>
           {err && <p className="text-xs font-bold text-red-700">{err}</p>}
@@ -92,7 +92,7 @@ export default function ValidationPage() {
             <Link href="/login" className="block w-full rounded-xl bg-primary py-4 text-center text-sm font-extrabold text-white">LOGIN TO SUBMIT</Link>
           ) : (<>
             {wallet.balance >= fee && <button onClick={() => submit('wallet')} disabled={busy || !consent} className="w-full rounded-xl bg-primary py-4 text-sm font-extrabold text-white disabled:opacity-60">PAY ₦{fee.toLocaleString('en-NG')} FROM WALLET</button>}
-            <button onClick={() => submit('paystack')} disabled={busy || !consent} className="w-full rounded-xl bg-violet-950 py-4 text-sm font-extrabold text-white disabled:opacity-60">SUBMIT • PAY ₦{fee.toLocaleString('en-NG')}</button>
+            <button onClick={() => submit('paystack')} disabled={busy || !consent} className="w-full rounded-xl bg-emerald-950 py-4 text-sm font-extrabold text-white disabled:opacity-60">SUBMIT • PAY ₦{fee.toLocaleString('en-NG')}</button>
           </>)}
         </section>
         <section className="space-y-3">

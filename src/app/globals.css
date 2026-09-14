@@ -271,270 +271,41 @@ textarea,
   #print-slip { position: absolute; left: 0; top: 0; width: 100%; }
 }
 
-.shell-sidebar { background: rgba(255,255,255,.92) !important; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
-.shell-sidebar .text-white { color: #3b0764 !important; }
-.shell-sidebar .text-slate-300, .shell-sidebar .text-slate-400, .shell-sidebar .text-slate-500 { color: #7c5a8f !important; }
-.shell-sidebar .bg-\[\#0d1526\], .shell-sidebar .bg-\[\#151f38\], .shell-sidebar .bg-\[\#1a2540\], .shell-sidebar .bg-\[\#0b1120\] { background: rgba(22,184,106,.08) !important; }
-.shell-sidebar .border-white\/10, .shell-sidebar .border-slate-800, .shell-sidebar .border-slate-700 { border-color: rgba(11,23,40,.14) !important; }
-[data-theme='dark'] .shell-sidebar { background: rgba(38,30,58,.95) !important; }
-[data-theme='dark'] .shell-sidebar .text-white { color: #f5f7fa !important; }
-[data-theme='dark'] .shell-sidebar .text-slate-300, [data-theme='dark'] .shell-sidebar .text-slate-400, [data-theme='dark'] .shell-sidebar .text-slate-500 { color: #9aa9ba !important; }
-[data-theme='dark'] .shell-sidebar .bg-\[\#0d1526\], [data-theme='dark'] .shell-sidebar .bg-\[\#151f38\], [data-theme='dark'] .shell-sidebar .bg-\[\#1a2540\], [data-theme='dark'] .shell-sidebar .bg-\[\#0b1120\] { background: rgba(22,184,106,.16) !important; }
 
-/* ===== Premium fintech design system ===== */
-body { background: #fbfaff !important; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-[data-theme='dark'] body { background: #0B1728 !important; }
-.mesh, [class*="mesh"] {
-  background: #122033, #fbfaff !important;
-  animation: none !important;
-}
-[data-theme='dark'] .mesh, [data-theme='dark'] [class*="mesh"] {
-  background: #122033, #0B1728 !important;
-}
-[class*="bg-gradient-to"] { background-image: #122033 !important; }
-[class*="bg-white"][class*="rounded-2xl"], [class*="bg-white"][class*="rounded-3xl"] {
-  box-shadow: 0 10px 30px rgba(76, 29, 149, .06);
-}
-[data-theme='dark'] [class*="bg-white"][class*="rounded-2xl"], [data-theme='dark'] [class*="bg-white"][class*="rounded-3xl"] {
-  box-shadow: none;
-  background-color: #122033 !important;
-}
-h1, h2, h3 { letter-spacing: -0.02em; }
-button, a { transition: all .18s ease; }
-
-[class*="from-emerald"], [class*="from-green"], [class*="from-amber"], [class*="from-yellow"],
-[class*="from-orange"], [class*="from-pink"], [class*="from-rose"], [class*="from-teal"],
-[class*="from-cyan"], [class*="from-lime"], [class*="from-fuchsia-2"], [class*="from-purple-2"] {
-  background-image: none !important;
-  background-color: #ffffff !important;
-  border: 1px solid #e9e4f4 !important;
-}
-[data-theme='dark'] [class*="from-emerald"], [data-theme='dark'] [class*="from-green"],
-[data-theme='dark'] [class*="from-amber"], [data-theme='dark'] [class*="from-yellow"],
-[data-theme='dark'] [class*="from-orange"], [data-theme='dark'] [class*="from-pink"],
-[data-theme='dark'] [class*="from-rose"], [data-theme='dark'] [class*="from-teal"],
-[data-theme='dark'] [class*="from-cyan"], [data-theme='dark'] [class*="from-lime"] {
-  background-color: #122033 !important;
-  border-color: #1d2f45 !important;
-}
-
-/* ===== Premium dark fintech system ===== */
-[data-theme='dark'] body { background: #0B1728 !important; }
-[data-theme='dark'] .mesh, [data-theme='dark'] [class*="mesh"] {
-  background: #122033, #0B1728 !important;
-}
-[data-theme='dark'] [class*="bg-white"] {
-  background-color: rgba(23,18,32,.72) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(29,47,69,.14) !important;
-  box-shadow: 0 12px 32px rgba(0,0,0,.35) !important;
-}
-[data-theme='dark'] [class*="bg-light"] { background-color: rgba(29,47,69,.08) !important; }
-[data-theme='dark'] [class*="text-dark"] { color: #f4f1fa !important; }
-[data-theme='dark'] [class*="text-muted"] { color: #9aa9ba !important; }
-[data-theme='dark'] [class*="border-border"] { border-color: rgba(29,47,69,.16) !important; }
-[data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea {
-  background-color: #17121f !important;
-  color: #f4f1fa !important;
-  border-color: #1d2f45 !important;
-}
-[data-theme='dark'] [class*="bg-black/"] { background-color: rgba(0,0,0,.55) !important; }
-[data-theme='dark'] [class*="bg-gradient-to"] {
-  background-image: #122033 !important;
-}
-
-/* ===== Neutral charcoal premium system ===== */
-body { background: #f4f5f6 !important; }
-[data-theme='dark'] body { background: #101317 !important; }
-.mesh, [class*="mesh"] { background: #f4f5f6 !important; animation: none !important; }
-[data-theme='dark'] .mesh, [data-theme='dark'] [class*="mesh"] { background: #101317 !important; }
-
-/* flatten EVERY gradient card (home hub, wallet, promos) */
-[class*="from-"], [class*="bg-gradient-to"] {
-  background-image: none !important;
-  background-color: #ffffff !important;
-  border: 1px solid #e2e5e9 !important;
-  box-shadow: 0 8px 24px rgba(16,24,32,.05) !important;
-}
-[data-theme='dark'] [class*="from-"], [data-theme='dark'] [class*="bg-gradient-to"] {
-  background-color: #122033 !important;
-  border: 1px solid #262b33 !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,.35) !important;
-}
-/* icon tiles: neutral slate, visible glyphs (fixes missing logos) */
-[class*="from-"] svg, [class*="bg-gradient-to"] svg { color: #5a7184 !important; }
-[data-theme='dark'] [class*="from-"] svg, [data-theme='dark'] [class*="bg-gradient-to"] svg { color: #dbe1e8 !important; }
-
-/* cards: solid, no glassmorphism */
-[class*="bg-white"] { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-[data-theme='dark'] [class*="bg-white"] {
-  background-color: #122033 !important;
-  border: 1px solid #262b33 !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,.35) !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-[data-theme='dark'] [class*="bg-light"] { background-color: #1d2229 !important; }
-[data-theme='dark'] [class*="text-dark"] { color: #f3f4f6 !important; }
-[data-theme='dark'] [class*="text-muted"] { color: #9aa3ad !important; }
-[data-theme='dark'] [class*="border-border"] { border-color: #262b33 !important; }
-[data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea {
-  background-color: #12161b !important; color: #f3f4f6 !important; border-color: #2a2f37 !important;
-}
-/* status pills: neutral instead of mint */
-[class*="bg-emerald"], [class*="bg-green"] { background-color: rgba(90,113,132,.14) !important; }
-[class*="text-emerald"], [class*="text-green"] { color: #7d93a8 !important; }
-[data-theme='dark'] [class*="bg-emerald"], [data-theme='dark'] [class*="bg-green"] { background-color: rgba(125,147,168,.14) !important; }
-h1, h2, h3 { letter-spacing: -0.02em; }
-
-/* ===== Monochrome dark override ===== */
-[style*="gradient"] { background-image: none !important; background-color: #ffffff !important; }
-[data-theme='dark'] [style*="gradient"] { background-color: #122033 !important; }
-[data-theme='dark'] [class*="bg-primary"] { background-color: #f3f4f6 !important; color: #101317 !important; }
-[data-theme='dark'] [class*="text-primary"] { color: #e5e7eb !important; }
-[data-theme='dark'] [class*="border-primary"], [data-theme='dark'] [class*="ring-"] {
-  border-color: #1d2f45 !important; box-shadow: none !important;
-}
-[data-theme='dark'] [class*="purple"], [data-theme='dark'] [class*="violet"], [data-theme='dark'] [class*="fuchsia"] {
-  background-color: #122033 !important; color: #d1d5db !important;
-}
-[data-theme='dark'] [class*="text-amber"], [data-theme='dark'] [class*="text-orange"], [data-theme='dark'] [class*="text-blue"] {
-  color: #9aa3ad !important;
-}
-[data-theme='dark'] .shell-sidebar { background: #14181d !important; }
-[data-theme='dark'] .shell-sidebar [class*="bg-"] { background-color: #1d2229 !important; }
-input[type='checkbox'] { accent-color: #5a7184; }
-[data-theme='dark'] input[type='checkbox'] { accent-color: #d1d5db; }
-[data-theme='dark'] [class*="from-"] svg, [data-theme='dark'] [class*="bg-gradient-to"] svg { color: #f3f4f6 !important; }
-[data-theme='dark'] [class*="from-"], [data-theme='dark'] [class*="bg-gradient-to"] {
-  background-color: #1a1f26 !important; border: 1px solid #1d2f45 !important;
-}
-
-/* ===== Arbitrary-value + solid purple extermination ===== */
-[class*="bg-[linear"], [class*="bg-[radial"], [class*="bg-[#"],
-[class*="bg-violet"], [class*="bg-purple"], [class*="bg-fuchsia"], [class*="bg-indigo"] {
-  background-image: none !important;
-  background-color: #eef1f4 !important;
-  border: 1px solid #e2e5e9 !important;
-}
-[class*="bg-[linear"] svg, [class*="bg-[radial"] svg, [class*="bg-[#"] svg,
-[class*="bg-violet"] svg, [class*="bg-purple"] svg, [class*="bg-fuchsia"] svg, [class*="bg-indigo"] svg {
-  color: #5a7184 !important;
-}
-[data-theme='dark'] [class*="bg-[linear"], [data-theme='dark'] [class*="bg-[radial"], [data-theme='dark'] [class*="bg-[#"],
-[data-theme='dark'] [class*="bg-violet"], [data-theme='dark'] [class*="bg-purple"], [data-theme='dark'] [class*="bg-fuchsia"], [data-theme='dark'] [class*="bg-indigo"] {
-  background-color: #1a1f26 !important;
-  border: 1px solid #1d2f45 !important;
-}
-[data-theme='dark'] [class*="bg-[linear"] svg, [data-theme='dark'] [class*="bg-[radial"] svg, [data-theme='dark'] [class*="bg-[#"] svg,
-[data-theme='dark'] [class*="bg-violet"] svg, [data-theme='dark'] [class*="bg-purple"] svg, [data-theme='dark'] [class*="bg-fuchsia"] svg, [data-theme='dark'] [class*="bg-indigo"] svg {
-  color: #f3f4f6 !important;
-}
-[data-theme='dark'] [class*="text-violet"], [data-theme='dark'] [class*="text-purple"], [data-theme='dark'] [class*="text-fuchsia"] {
-  color: #e5e7eb !important;
-}
-[class*="text-violet"], [class*="text-purple"], [class*="text-fuchsia"] { color: #1c232b !important; }
-
-/* ===== DeenByte brand system: emerald + navy ===== */
-body { background: #fbfcfd !important; }
-.mesh, [class*="mesh"] { background: #fbfcfd !important; animation: none !important; }
-[class*="text-dark"] { color: #0B1728 !important; }
-[class*="text-muted"] { color: #5c6b7f !important; }
-[class*="border-border"] { border-color: #e3e8ee !important; }
-[class*="bg-light"] { background-color: #f4f7f9 !important; }
-[class*="bg-white"] { background-color: #ffffff !important; border: 1px solid #e3e8ee; box-shadow: 0 8px 24px rgba(11,23,40,.06); backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-[class*="text-primary"] { color: #0E9F5A !important; }
+/* ===== DeenByte ONE system (emerald + navy) ===== */
+:root { --bg:#fbfcfd; --card:#ffffff; --line:#e3e8ee; --ink:#0B1728; --mut:#5c6b7f; --tile:#E6F7EE; --tileline:#cdeeda; --acc:#0E9F5A; }
+[data-theme='dark'] { --bg:#0B1728; --card:#122033; --line:#1d2f45; --ink:#f5f7fa; --mut:#9aa9ba; --tile:#0e1b2c; --tileline:#1d3a52; --acc:#20C878; }
+body { background: var(--bg) !important; font-family: 'Inter', system-ui, sans-serif; }
+.mesh, [class*="mesh"] { background: var(--bg) !important; animation: none !important; }
+[class*="text-dark"] { color: var(--ink) !important; }
+[class*="text-muted"] { color: var(--mut) !important; }
+[class*="border-border"] { border-color: var(--line) !important; }
+[class*="bg-light"] { background-color: var(--bg) !important; }
+[class*="bg-white"] { background-color: var(--card) !important; border-color: var(--line); backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+[class*="bg-white"][class*="rounded"] { background-color: var(--card) !important; border: 1px solid var(--line) !important; box-shadow: 0 8px 24px rgba(11,23,40,.06) !important; }
+[data-theme='dark'] [class*="bg-white"][class*="rounded"] { box-shadow: 0 10px 28px rgba(0,0,0,.35) !important; }
+[class*="text-primary"] { color: var(--acc) !important; }
 [class*="bg-primary"] { background-color: #16B86A !important; color: #ffffff !important; }
 [class*="border-primary"], [class*="ring-"] { border-color: #16B86A !important; }
 input[type='checkbox'] { accent-color: #16B86A; }
-[class*="from-"], [class*="bg-gradient-to"], [class*="bg-[#"], [class*="bg-[linear"],
-[class*="bg-violet"], [class*="bg-purple"], [class*="bg-fuchsia"], [class*="bg-indigo"] {
-  background-image: none !important; background-color: #E6F7EE !important; border: 1px solid #cdeeda !important;
+input, select, textarea { background-color: var(--card) !important; color: var(--ink) !important; border-color: var(--line) !important; }
+[class*="gradient"], [class*="from-"], [class*="bg-violet"], [class*="bg-purple"], [class*="bg-fuchsia"], [class*="bg-indigo"], [style*="gradient"] {
+  background-image: none !important; background-color: var(--card) !important; border: 1px solid var(--line) !important;
 }
-[class*="from-"] svg, [class*="bg-gradient-to"] svg, [class*="bg-[#"] svg, [class*="bg-[linear"] svg,
-[class*="bg-violet"] svg, [class*="bg-purple"] svg, [class*="bg-fuchsia"] svg, [class*="bg-indigo"] svg { color: #0E9F5A !important; }
+[class*="gradient"] [class*="text-white"], [class*="from-"] [class*="text-white"] { color: var(--ink) !important; }
+[class*="bg-[#"], [class*="bg-violet"], [class*="bg-purple"], [class*="bg-fuchsia"] { background-color: var(--tile) !important; border: 1px solid var(--tileline) !important; background-image: none !important; }
+[class*="from-"] svg, [class*="gradient"] svg, [class*="bg-[#"] svg, [class*="bg-violet"] svg, [class*="bg-purple"] svg { color: var(--acc) !important; }
 [class*="bg-emerald"], [class*="bg-green"] { background-color: rgba(22,184,106,.12) !important; }
-[class*="text-emerald"], [class*="text-green"] { color: #0E9F5A !important; }
-[class*="text-amber"], [class*="text-orange"], [class*="text-blue"] { color: #5c6b7f !important; }
-.shell-sidebar { background: #ffffff !important; }
-
-/* ---- dark mode: deep navy ---- */
-[data-theme='dark'] body, [data-theme='dark'] .mesh, [data-theme='dark'] [class*="mesh"] { background: #0B1728 !important; }
-[data-theme='dark'] [class*="text-dark"] { color: #f5f7fa !important; }
-[data-theme='dark'] [class*="text-muted"] { color: #9aa9ba !important; }
-[data-theme='dark'] [class*="border-border"] { border-color: #1d2f45 !important; }
-[data-theme='dark'] [class*="bg-light"] { background-color: #122033 !important; }
-[data-theme='dark'] [class*="bg-white"] { background-color: #122033 !important; border: 1px solid #1d2f45 !important; box-shadow: 0 10px 28px rgba(0,0,0,.35) !important; }
-[data-theme='dark'] [class*="text-primary"] { color: #20C878 !important; }
-[data-theme='dark'] [class*="bg-primary"] { background-color: #16B86A !important; color: #ffffff !important; }
-[data-theme='dark'] [class*="border-primary"], [data-theme='dark'] [class*="ring-"] { border-color: #20C878 !important; box-shadow: none !important; }
-[data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea { background-color: #0e1b2c !important; color: #f5f7fa !important; border-color: #1d2f45 !important; }
-[data-theme='dark'] [class*="from-"], [data-theme='dark'] [class*="bg-gradient-to"], [data-theme='dark'] [class*="bg-[#"], [data-theme='dark'] [class*="bg-[linear"],
-[data-theme='dark'] [class*="bg-violet"], [data-theme='dark'] [class*="bg-purple"], [data-theme='dark'] [class*="bg-fuchsia"], [data-theme='dark'] [class*="bg-indigo"] {
-  background-color: #122033 !important; border: 1px solid #1d3a52 !important;
-}
-[data-theme='dark'] [class*="from-"] svg, [data-theme='dark'] [class*="bg-gradient-to"] svg, [data-theme='dark'] [class*="bg-[#"] svg, [data-theme='dark'] [class*="bg-[linear"] svg,
-[data-theme='dark'] [class*="bg-violet"] svg, [data-theme='dark'] [class*="bg-purple"] svg, [data-theme='dark'] [class*="bg-fuchsia"] svg, [data-theme='dark'] [class*="bg-indigo"] svg { color: #20C878 !important; }
-[data-theme='dark'] [class*="bg-emerald"], [data-theme='dark'] [class*="bg-green"] { background-color: rgba(32,200,120,.14) !important; }
-[data-theme='dark'] [class*="text-emerald"], [data-theme='dark'] [class*="text-green"] { color: #20C878 !important; }
-[data-theme='dark'] [class*="text-amber"], [data-theme='dark'] [class*="text-orange"], [data-theme='dark'] [class*="text-blue"] { color: #9aa9ba !important; }
-[data-theme='dark'] .shell-sidebar { background: #0E1B2C !important; }
-[data-theme='dark'] .shell-sidebar [class*="bg-"] { background-color: #122033 !important; }
-h1, h2, h3 { letter-spacing: -0.02em; }
-
-/* ===== Sidebar contrast fix (both modes) ===== */
-.shell-sidebar { color: #33475b; }
-.shell-sidebar [class*="text-"] { color: #33475b !important; }
-.shell-sidebar [class*="text-white"] { color: #0B1728 !important; }
-.shell-sidebar [class*="rounded"] { background-color: #f4f7f9 !important; border: 1px solid #e3e8ee !important; }
-[data-theme='dark'] .shell-sidebar { color: #f5f7fa; background: #0E1B2C !important; }
-[data-theme='dark'] .shell-sidebar [class*="text-"] { color: #c6d2dd !important; }
-[data-theme='dark'] .shell-sidebar [class*="text-white"] { color: #f5f7fa !important; }
-[data-theme='dark'] .shell-sidebar [class*="rounded"] { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
-[data-theme='dark'] .shell-sidebar [class*="from-"] svg, [data-theme='dark'] .shell-sidebar [class*="bg-["] svg { color: #20C878 !important; }
-.shell-sidebar [class*="from-"] svg, .shell-sidebar [class*="bg-["] svg { color: #0E9F5A !important; }
-
-/* ===== Total gradient extermination + sidebar rebuild ===== */
-[class*="gradient"] { background-image: none !important; background-color: #ffffff !important; border: 1px solid #e3e8ee !important; }
-[class*="gradient"] [class*="text-white"], [class*="from-"] [class*="text-white"] { color: #0B1728 !important; }
-[data-theme='dark'] [class*="gradient"] { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
-[data-theme='dark'] [class*="gradient"] [class*="text-white"], [data-theme='dark'] [class*="from-"] [class*="text-white"] { color: #f5f7fa !important; }
-
-.shell-sidebar * { background-color: transparent !important; border-color: transparent !important; }
-.shell-sidebar a, .shell-sidebar button { background-color: #f4f7f9 !important; border: 1px solid #e3e8ee !important; }
-.shell-sidebar p, .shell-sidebar span { color: #33475b !important; }
-.shell-sidebar svg { color: #0E9F5A !important; }
-.shell-sidebar [class*="from-"] { background-color: #E6F7EE !important; }
-.shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
-
-[data-theme='dark'] .shell-sidebar * { background-color: transparent !important; border-color: transparent !important; }
-[data-theme='dark'] .shell-sidebar a, [data-theme='dark'] .shell-sidebar button { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
-[data-theme='dark'] .shell-sidebar p, [data-theme='dark'] .shell-sidebar span { color: #c6d2dd !important; }
-[data-theme='dark'] .shell-sidebar svg { color: #20C878 !important; }
-[data-theme='dark'] .shell-sidebar [class*="from-"] { background-color: #122033 !important; }
-[data-theme='dark'] .shell-sidebar [class*="bg-primary"], [data-theme='dark'] .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
-
-/* ===== Always-navy sidebar ===== */
+[class*="text-emerald"], [class*="text-green"] { color: var(--acc) !important; }
+[class*="text-amber"], [class*="text-orange"], [class*="text-blue"] { color: var(--mut) !important; }
+[class*="text-violet"], [class*="text-purple"], [class*="text-fuchsia"], [class*="text-[#5"], [class*="text-[#6"], [class*="text-[#7"], [class*="text-[#8"] { color: var(--ink) !important; }
 .shell-sidebar { background: #0E1B2C !important; }
-.sb-surf { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
+.shell-sidebar * { background-color: transparent !important; border-color: transparent !important; }
+.shell-sidebar a, .shell-sidebar button, .sb-surf { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
 .shell-sidebar p, .shell-sidebar span { color: #c6d2dd !important; }
 .shell-sidebar [class*="text-white"] { color: #f5f7fa !important; }
 .shell-sidebar svg { color: #20C878 !important; }
-.shell-sidebar [class*="from-"] { background-color: #122033 !important; }
+.shell-sidebar [class*="from-"], .shell-sidebar [class*="bg-[#"] { background-color: #122033 !important; }
 .shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
-.shell-sidebar img { border-radius: 12px; }
-
-/* ===== Navy card override (specificity-matched) ===== */
-[class*="bg-white"][class*="rounded"] {
-  background-color: #ffffff !important;
-  border: 1px solid #e3e8ee !important;
-  box-shadow: 0 8px 24px rgba(11,23,40,.06) !important;
-}
-[data-theme='dark'] [class*="bg-white"][class*="rounded"] {
-  background-color: #122033 !important;
-  border: 1px solid #1d2f45 !important;
-  box-shadow: 0 10px 28px rgba(0,0,0,.35) !important;
-}
-[data-theme='dark'] [class*="bg-light"][class*="rounded"] { background-color: #122033 !important; }
-[class*="bg-light"][class*="rounded"] { background-color: #f4f7f9 !important; }
+h1, h2, h3 { letter-spacing: -0.02em; }
+button, a { transition: all .18s ease; }

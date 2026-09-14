@@ -101,11 +101,11 @@ export default function CacApplyPage() {
           </div>
         </div>
       )}
-      <header className="bg-violet-950 text-white px-4 py-6">
+      <header className="bg-emerald-950 text-white px-4 py-6">
         <div className="max-w-2xl mx-auto">
-          <Link href="/cac" className="text-xs font-bold text-violet-300">← Back to CAC Hub</Link>
+          <Link href="/cac" className="text-xs font-bold text-emerald-300">← Back to CAC Hub</Link>
           <h1 className="mt-1 text-xl font-extrabold">{entity === 'ltd' ? 'Register a Company (LLC)' : 'Register Business Name'}</h1>
-          <p className="text-xs text-violet-200">Step {step === 1.5 ? 1 : step} of 4</p>
+          <p className="text-xs text-emerald-200">Step {step === 1.5 ? 1 : step} of 4</p>
           <div className="mt-3 h-1.5 rounded-full bg-white/15"><div className="h-1.5 rounded-full bg-primary" style={{ width: ((step === 1.5 ? 1 : step) / 4) * 100 + '%' }} /></div>
         </div>
       </header>
@@ -161,10 +161,10 @@ export default function CacApplyPage() {
             <h2 className="text-sm font-extrabold text-dark">{entity === 'ltd' ? 'Directors & Shareholders' : 'Who owns this business?'}</h2>
             {entity === 'bn' && (
               <div className="grid grid-cols-2 gap-3">
-                <button onClick={() => { setOwnership('sole'); setPersons([blankPerson('Proprietor')]); }} className={'rounded-xl border-2 p-4 text-left ' + (ownership === 'sole' ? 'border-primary bg-violet-50' : 'border-border')}>
+                <button onClick={() => { setOwnership('sole'); setPersons([blankPerson('Proprietor')]); }} className={'rounded-xl border-2 p-4 text-left ' + (ownership === 'sole' ? 'border-primary bg-emerald-50' : 'border-border')}>
                   <p className="text-sm font-extrabold text-dark">Sole Proprietor</p><p className="text-[10px] text-muted">Single 100% owner.</p>
                 </button>
-                <button onClick={() => { setOwnership('partnership'); setPersons([blankPerson('Proprietor'), blankPerson('Proprietor')]); }} className={'rounded-xl border-2 p-4 text-left ' + (ownership === 'partnership' ? 'border-primary bg-violet-50' : 'border-border')}>
+                <button onClick={() => { setOwnership('partnership'); setPersons([blankPerson('Proprietor'), blankPerson('Proprietor')]); }} className={'rounded-xl border-2 p-4 text-left ' + (ownership === 'partnership' ? 'border-primary bg-emerald-50' : 'border-border')}>
                   <p className="text-sm font-extrabold text-dark">Partnership</p><p className="text-[10px] text-muted">Two or more co-owners.</p>
                 </button>
               </div>
@@ -254,7 +254,7 @@ export default function CacApplyPage() {
               {persons.map((p, i) => <p key={i} className="text-dark"><b>{entity === 'ltd' ? 'Director' : 'Proprietor'} {i + 1}:</b> {p.surname} {p.first} • {p.phone}</p>)}
             </div>
             <label className="flex items-start gap-3 text-xs text-muted">
-              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-violet-700" />
+              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
               <span>I confirm the information provided is accurate and authorize DeenByte Verify to process this registration with the CAC on my behalf, and I authorize the fee of <b className="text-dark">₦{fee.toLocaleString('en-NG')}</b> to be debited.</span>
             </label>
             {err && <p className="text-xs font-bold text-red-700">{err}</p>}
@@ -262,7 +262,7 @@ export default function CacApplyPage() {
               <Link href="/login" className="block w-full rounded-xl bg-primary py-4 text-center text-sm font-extrabold text-white">LOGIN TO CHECKOUT</Link>
             ) : (<>
               {wallet.balance >= fee && <button onClick={() => checkout('wallet')} disabled={busy || !consent} className="w-full rounded-xl bg-primary py-4 text-sm font-extrabold text-white disabled:opacity-60">{busy ? 'Processing…' : 'PAY ₦' + fee.toLocaleString('en-NG') + ' FROM WALLET'}</button>}
-              <button onClick={() => checkout('paystack')} disabled={busy || !consent} className="w-full rounded-xl bg-violet-950 py-4 text-sm font-extrabold text-white disabled:opacity-60">{busy ? 'Redirecting…' : 'CHECKOUT & SUBMIT • ₦' + fee.toLocaleString('en-NG')}</button>
+              <button onClick={() => checkout('paystack')} disabled={busy || !consent} className="w-full rounded-xl bg-emerald-950 py-4 text-sm font-extrabold text-white disabled:opacity-60">{busy ? 'Redirecting…' : 'CHECKOUT & SUBMIT • ₦' + fee.toLocaleString('en-NG')}</button>
             </>)}
           </section>
         )}
