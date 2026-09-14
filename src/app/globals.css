@@ -435,3 +435,50 @@ input[type='checkbox'] { accent-color: #5a7184; }
   color: #e5e7eb !important;
 }
 [class*="text-violet"], [class*="text-purple"], [class*="text-fuchsia"] { color: #1c232b !important; }
+
+/* ===== DeenByte brand system: emerald + navy ===== */
+body { background: #fbfcfd !important; }
+.mesh, [class*="mesh"] { background: #fbfcfd !important; animation: none !important; }
+[class*="text-dark"] { color: #0B1728 !important; }
+[class*="text-muted"] { color: #5c6b7f !important; }
+[class*="border-border"] { border-color: #e3e8ee !important; }
+[class*="bg-light"] { background-color: #f4f7f9 !important; }
+[class*="bg-white"] { background-color: #ffffff !important; border: 1px solid #e3e8ee; box-shadow: 0 8px 24px rgba(11,23,40,.06); backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+[class*="text-primary"] { color: #0E9F5A !important; }
+[class*="bg-primary"] { background-color: #16B86A !important; color: #ffffff !important; }
+[class*="border-primary"], [class*="ring-"] { border-color: #16B86A !important; }
+input[type='checkbox'] { accent-color: #16B86A; }
+[class*="from-"], [class*="bg-gradient-to"], [class*="bg-[#"], [class*="bg-[linear"],
+[class*="bg-violet"], [class*="bg-purple"], [class*="bg-fuchsia"], [class*="bg-indigo"] {
+  background-image: none !important; background-color: #E6F7EE !important; border: 1px solid #cdeeda !important;
+}
+[class*="from-"] svg, [class*="bg-gradient-to"] svg, [class*="bg-[#"] svg, [class*="bg-[linear"] svg,
+[class*="bg-violet"] svg, [class*="bg-purple"] svg, [class*="bg-fuchsia"] svg, [class*="bg-indigo"] svg { color: #0E9F5A !important; }
+[class*="bg-emerald"], [class*="bg-green"] { background-color: rgba(22,184,106,.12) !important; }
+[class*="text-emerald"], [class*="text-green"] { color: #0E9F5A !important; }
+[class*="text-amber"], [class*="text-orange"], [class*="text-blue"] { color: #5c6b7f !important; }
+.shell-sidebar { background: #ffffff !important; }
+
+/* ---- dark mode: deep navy ---- */
+[data-theme='dark'] body, [data-theme='dark'] .mesh, [data-theme='dark'] [class*="mesh"] { background: #0B1728 !important; }
+[data-theme='dark'] [class*="text-dark"] { color: #f5f7fa !important; }
+[data-theme='dark'] [class*="text-muted"] { color: #9aa9ba !important; }
+[data-theme='dark'] [class*="border-border"] { border-color: #1d2f45 !important; }
+[data-theme='dark'] [class*="bg-light"] { background-color: #122033 !important; }
+[data-theme='dark'] [class*="bg-white"] { background-color: #122033 !important; border: 1px solid #1d2f45 !important; box-shadow: 0 10px 28px rgba(0,0,0,.35) !important; }
+[data-theme='dark'] [class*="text-primary"] { color: #20C878 !important; }
+[data-theme='dark'] [class*="bg-primary"] { background-color: #16B86A !important; color: #ffffff !important; }
+[data-theme='dark'] [class*="border-primary"], [data-theme='dark'] [class*="ring-"] { border-color: #20C878 !important; box-shadow: none !important; }
+[data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea { background-color: #0e1b2c !important; color: #f5f7fa !important; border-color: #1d2f45 !important; }
+[data-theme='dark'] [class*="from-"], [data-theme='dark'] [class*="bg-gradient-to"], [data-theme='dark'] [class*="bg-[#"], [data-theme='dark'] [class*="bg-[linear"],
+[data-theme='dark'] [class*="bg-violet"], [data-theme='dark'] [class*="bg-purple"], [data-theme='dark'] [class*="bg-fuchsia"], [data-theme='dark'] [class*="bg-indigo"] {
+  background-color: #122033 !important; border: 1px solid #1d3a52 !important;
+}
+[data-theme='dark'] [class*="from-"] svg, [data-theme='dark'] [class*="bg-gradient-to"] svg, [data-theme='dark'] [class*="bg-[#"] svg, [data-theme='dark'] [class*="bg-[linear"] svg,
+[data-theme='dark'] [class*="bg-violet"] svg, [data-theme='dark'] [class*="bg-purple"] svg, [data-theme='dark'] [class*="bg-fuchsia"] svg, [data-theme='dark'] [class*="bg-indigo"] svg { color: #20C878 !important; }
+[data-theme='dark'] [class*="bg-emerald"], [data-theme='dark'] [class*="bg-green"] { background-color: rgba(32,200,120,.14) !important; }
+[data-theme='dark'] [class*="text-emerald"], [data-theme='dark'] [class*="text-green"] { color: #20C878 !important; }
+[data-theme='dark'] [class*="text-amber"], [data-theme='dark'] [class*="text-orange"], [data-theme='dark'] [class*="text-blue"] { color: #9aa9ba !important; }
+[data-theme='dark'] .shell-sidebar { background: #0E1B2C !important; }
+[data-theme='dark'] .shell-sidebar [class*="bg-"] { background-color: #122033 !important; }
+h1, h2, h3 { letter-spacing: -0.02em; }
