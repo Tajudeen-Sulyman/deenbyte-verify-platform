@@ -71,7 +71,7 @@ export default async function DashboardPage() {
     { href: '/nin/modification', t: 'NIN Modification', d: 'Change of Name, Phone, or Address. ₦5,800.', time: '1–48 hrs', g: 'from-emerald-700 to-cyan-900' },
     { href: '/nin/ipe', t: 'IPE Clearance', d: 'Clear In-Processing Errors on your NIN.', time: '~24 hrs', g: 'from-rose-600 to-red-900' },
     { href: '/verify?s=bvn_basic', t: 'BVN Verification', d: 'Official BVN slip in seconds.', time: 'Instant', g: 'from-emerald-600 to-emerald-900' },
-    { href: '/verify?s=bvn_retrieval', t: 'BVN Retrieval', d: 'Get BVN from phone or NIN.', time: 'Instant', g: 'from-emerald-600 to-pink-900' },
+    { href: '/verify?s=bvn_retrieval', t: 'BVN Retrieval', d: 'Get BVN from phone or NIN.', time: 'Instant', g: 'from-emerald-600 to-[var(--tile)]900' },
   ];
 
   return (
