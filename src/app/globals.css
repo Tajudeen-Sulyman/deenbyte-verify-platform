@@ -280,3 +280,24 @@ textarea,
 [data-theme='dark'] .shell-sidebar .text-white { color: #f2eef7 !important; }
 [data-theme='dark'] .shell-sidebar .text-slate-300, [data-theme='dark'] .shell-sidebar .text-slate-400, [data-theme='dark'] .shell-sidebar .text-slate-500 { color: #b6aed0 !important; }
 [data-theme='dark'] .shell-sidebar .bg-\[\#0d1526\], [data-theme='dark'] .shell-sidebar .bg-\[\#151f38\], [data-theme='dark'] .shell-sidebar .bg-\[\#1a2540\], [data-theme='dark'] .shell-sidebar .bg-\[\#0b1120\] { background: rgba(124,58,237,.16) !important; }
+
+/* ===== Premium fintech design system ===== */
+body { background: #fbfaff !important; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+[data-theme='dark'] body { background: #141019 !important; }
+.mesh, [class*="mesh"] {
+  background: radial-gradient(900px 320px at 50% -80px, rgba(109,40,217,.07), transparent 70%), #fbfaff !important;
+  animation: none !important;
+}
+[data-theme='dark'] .mesh, [data-theme='dark'] [class*="mesh"] {
+  background: radial-gradient(900px 320px at 50% -80px, rgba(124,58,237,.10), transparent 70%), #141019 !important;
+}
+[class*="bg-gradient-to"] { background-image: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%) !important; }
+[class*="bg-white"][class*="rounded-2xl"], [class*="bg-white"][class*="rounded-3xl"] {
+  box-shadow: 0 10px 30px rgba(76, 29, 149, .06);
+}
+[data-theme='dark'] [class*="bg-white"][class*="rounded-2xl"], [data-theme='dark'] [class*="bg-white"][class*="rounded-3xl"] {
+  box-shadow: none;
+  background-color: #1d1826 !important;
+}
+h1, h2, h3 { letter-spacing: -0.02em; }
+button, a { transition: all .18s ease; }
