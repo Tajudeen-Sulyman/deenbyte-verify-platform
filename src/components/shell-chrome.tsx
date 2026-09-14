@@ -57,7 +57,7 @@ function NavGroup({ label, d, g, items, active, onNav, defaultOpen }: {
   return (
     <div>
       <button onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-200 hover:bg-white/5">
+        className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-200 hover:sb-surf">
         <span className={'h-8 w-8 rounded-lg bg-gradient-to-br ' + g + ' text-white flex items-center justify-center shadow'}>
           <Icon d={d} className="h-4 w-4" />
         </span>
@@ -85,7 +85,7 @@ function SideNav({ email, balance, isAdmin, active, onNav }: {
   const initial = (email || 'D').trim().charAt(0).toUpperCase();
   return (
     <>
-      <div className="px-4 py-4 border-b border-white/10 bg-white/5">
+      <div className="px-4 py-4 border-b border-white/10 sb-surf">
         <div className="flex items-center gap-3 px-2 py-1">
           <span className="h-10 w-10 rounded-xl bg-gradient-to-br from-fuchsia-400 to-violet-600 text-white flex items-center justify-center font-bold">{initial}</span>
           <div className="min-w-0">
@@ -125,7 +125,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
   );
 
   return (
-    <div className="min-h-screen bg-light">
+    <div className="min-h-screen sb-surf">
       <aside className="shell-sidebar hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col bg-dark border-r border-white/10">
         <div className="px-5 py-5 border-b border-white/10">{brand}</div>
         <SideNav email={email ?? ''} balance={balance} isAdmin={isAdmin} active={path} onNav={onNav} />
@@ -138,7 +138,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
           <div className="absolute inset-y-0 left-0 w-72 max-w-[85%] bg-dark shadow-card flex flex-col">
             <div className="px-5 py-5 border-b border-white/10 flex items-center justify-between">
               {brand}
-              <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 rounded-lg text-slate-300 hover:bg-white/10">✕</button>
+              <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 rounded-lg text-slate-300 hover:sb-surf">✕</button>
             </div>
             <SideNav email={email ?? ''} balance={balance} isAdmin={isAdmin} active={path} onNav={onNav} />
             <div className="px-4 py-3 border-t border-white/10 space-y-2"><ThemeToggle />{logoutSlot}</div>
@@ -147,10 +147,10 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
       )}
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-border">
+        <header className="sticky top-0 z-30 sb-surf backdrop-blur border-b border-border">
           <div className="flex items-center justify-between gap-3 px-4 lg:px-6 py-3">
             <div className="flex items-center gap-3 min-w-0">
-              <button onClick={() => setOpen(true)} aria-label="Open menu" className="lg:hidden p-2 rounded-lg text-dark hover:bg-light">
+              <button onClick={() => setOpen(true)} aria-label="Open menu" className="lg:hidden p-2 rounded-lg text-dark hover:sb-surf">
                 <Icon d="M4 6h16M4 12h16M4 18h16" />
               </button>
               <h1 className="text-sm lg:text-base font-semibold text-dark truncate">{title}</h1>
@@ -161,7 +161,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
         <main className="p-4 lg:p-6 pb-24 lg:pb-6 max-w-5xl mx-auto">{children}</main>
       </div>
 
-      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-border">
+      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-30 sb-surf border-t border-border">
         <div className="grid grid-cols-5">
           {[
             { href: '/dashboard', label: 'Home', d: 'M3 12l9-9 9M5 10v10h5v-6h4v6h5V10' },

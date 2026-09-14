@@ -514,3 +514,13 @@ h1, h2, h3 { letter-spacing: -0.02em; }
 [data-theme='dark'] .shell-sidebar svg { color: #20C878 !important; }
 [data-theme='dark'] .shell-sidebar [class*="from-"] { background-color: #122033 !important; }
 [data-theme='dark'] .shell-sidebar [class*="bg-primary"], [data-theme='dark'] .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
+
+/* ===== Always-navy sidebar ===== */
+.shell-sidebar { background: #0E1B2C !important; }
+.sb-surf { background-color: #122033 !important; border: 1px solid #1d2f45 !important; }
+.shell-sidebar p, .shell-sidebar span { color: #c6d2dd !important; }
+.shell-sidebar [class*="text-white"] { color: #f5f7fa !important; }
+.shell-sidebar svg { color: #20C878 !important; }
+.shell-sidebar [class*="from-"] { background-color: #122033 !important; }
+.shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
+.shell-sidebar img { border-radius: 12px; }
