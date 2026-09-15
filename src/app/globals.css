@@ -366,3 +366,47 @@ body { background: #ffffff !important; }
 .shell-sidebar p, .shell-sidebar span { color: #e5e7eb !important; }
 .shell-sidebar svg { color: #20C878 !important; }
 .shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
+
+/* ===== Royal blue brand pass ===== */
+:root { --blue:#1e40af; --blue-deep:#12275e; --blue-surf:#eef3fc; --blue-line:#c9d8f2; --blue-soft:#3b63c4; }
+[data-theme='dark'] { --blue:#7da2f0; --blue-deep:#0A1220; --blue-surf:#16264A; --blue-line:#24406e; --blue-soft:#2450b4; }
+body { background: #ffffff !important; }
+[data-theme='dark'] body { background: #0A1220 !important; }
+.mesh, [class*="mesh"] { background: #ffffff !important; }
+[data-theme='dark'] .mesh, [data-theme='dark'] [class*="mesh"] { background: #0A1220 !important; }
+
+/* hero surfaces: elegant royal-blue gradient (wallet, promos, hubs) */
+[class*="vibe-gradient"] { background-image: linear-gradient(135deg, #1e40af 0%, #12275e 100%) !important; border: none !important; }
+[data-theme='dark'] [class*="vibe-gradient"] { background-image: linear-gradient(135deg, #16264A 0%, #0E1B38 100%) !important; }
+[class*="vibe-gradient"] [class*="text-white"], [class*="vibe-gradient"] h2, [class*="vibe-gradient"] h3, [class*="vibe-gradient"] p { color: #ffffff !important; }
+
+/* cards */
+.card3d, [class*="bg-white"][class*="rounded"] { background-color: #ffffff !important; border: 1px solid #dbe4f0 !important; }
+[data-theme='dark'] .card3d, [data-theme='dark'] [class*="bg-white"][class*="rounded"], [data-theme='dark'] [class*="rounded-2xl"], [data-theme='dark'] [class*="rounded-3xl"] { background-color: #12203A !important; border: 1px solid #1e3050 !important; }
+
+/* typography: navy ink / white ink */
+[class*="text-dark"] { color: #0B1728 !important; }
+[data-theme='dark'] [class*="text-dark"] { color: #f5f7fa !important; }
+[class*="text-muted"] { color: #5c6b7f !important; }
+[data-theme='dark'] [class*="text-muted"] { color: #9fb0c8 !important; }
+
+/* icon tiles: blue identity surfaces */
+[class*="from-"], [class*="bg-[#"], [class*="bg-violet"], [class*="bg-purple"] { background-color: var(--blue-surf) !important; border: 1px solid var(--blue-line) !important; background-image: none !important; }
+[class*="from-"] svg, [class*="bg-[#"] svg, [class*="bg-violet"] svg, [class*="bg-purple"] svg { color: var(--blue-soft) !important; }
+
+/* navigation accents: blue */
+nav a[class*="text-primary"], nav a[class*="text-primary"] svg, [class*="bottom-"] a[class*="text-primary"] { color: var(--blue-soft) !important; }
+[data-theme='dark'] nav a[class*="text-primary"], [data-theme='dark'] nav a[class*="text-primary"] svg { color: #7da2f0 !important; }
+
+/* sidebar: deep navy-blue brand panel, both modes */
+.shell-sidebar { background: #0A1220 !important; }
+.shell-sidebar * { background-color: transparent !important; border-color: transparent !important; }
+.shell-sidebar a, .shell-sidebar button, .sb-surf, .shell-sidebar [class*="rounded"] { background-color: #12203A !important; border: 1px solid #1e3050 !important; }
+.shell-sidebar p, .shell-sidebar span { color: #e5ecf6 !important; }
+.shell-sidebar [class*="text-muted"] { color: #9fb0c8 !important; }
+.shell-sidebar svg { color: #7da2f0 !important; }
+.shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
+
+/* inputs */
+input, select, textarea { background-color: #ffffff !important; color: #0B1728 !important; border-color: #dbe4f0 !important; }
+[data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea { background-color: #0E1B38 !important; color: #f5f7fa !important; border-color: #1e3050 !important; }
