@@ -410,3 +410,55 @@ nav a[class*="text-primary"], nav a[class*="text-primary"] svg, [class*="bottom-
 /* inputs */
 input, select, textarea { background-color: #ffffff !important; color: #0B1728 !important; border-color: #dbe4f0 !important; }
 [data-theme='dark'] input, [data-theme='dark'] select, [data-theme='dark'] textarea { background-color: #0E1B38 !important; color: #f5f7fa !important; border-color: #1e3050 !important; }
+
+/* ===== DeenByte Royal system (single source of truth) ===== */
+:root { --bg:#ffffff; --card:#ffffff; --line:#dbe4f0; --ink:#0B1728; --mut:#5c6b7f; --blue:#1e40af; --blue-soft:#3b63c4; --surf:#eef3fc; --surfline:#c9d8f2; --acc:#0E9F5A; --accb:#16B86A; }
+[data-theme='dark'] { --bg:#0A1220; --card:#12203A; --line:#1e3050; --ink:#f5f7fa; --mut:#9fb0c8; --blue:#7da2f0; --blue-soft:#7da2f0; --surf:#16264A; --surfline:#24406e; --acc:#20C878; --accb:#16B86A; }
+html, body { background: var(--bg) !important; }
+body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); }
+.mesh, [class*="mesh"] { background: var(--bg) !important; animation: none !important; }
+/* identity tiles = blue */
+[class*="from-"], [class*="bg-[#"], [class*="bg-violet"], [class*="bg-purple"], [class*="bg-fuchsia"] { background-color: var(--surf) !important; border: 1px solid var(--surfline) !important; background-image: none !important; }
+[class*="from-"] svg, [class*="bg-[#"] svg, [class*="bg-violet"] svg, [class*="bg-purple"] svg, [class*="gradient"] svg { color: var(--blue-soft) !important; }
+/* hero surfaces = elegant royal-blue gradient */
+[class*="vibe-gradient"] { background-image: linear-gradient(135deg, #1e40af 0%, #12275e 100%) !important; border: none !important; box-shadow: 0 12px 32px rgba(18,39,94,.25) !important; }
+[data-theme='dark'] [class*="vibe-gradient"] { background-image: linear-gradient(135deg, #16264A 0%, #0E1B38 100%) !important; }
+[class*="vibe-gradient"] h2, [class*="vibe-gradient"] h3, [class*="vibe-gradient"] p, [class*="vibe-gradient"] [class*="text-white"] { color: #ffffff !important; }
+/* kill every other gradient */
+[class*="gradient"]:not([class*="vibe-gradient"]), [style*="gradient"] { background-image: none !important; }
+/* cards & panels */
+.card3d, [class*="bg-white"], [class*="bg-light"], [class*="bg-gray"], [class*="bg-slate"], [class*="bg-muted"] { background-color: var(--card) !important; }
+.card3d, [class*="bg-white"][class*="rounded"], [class*="rounded-2xl"], [class*="rounded-3xl"] { background-color: var(--card) !important; border: 1px solid var(--line) !important; box-shadow: 0 8px 24px rgba(11,23,40,.06) !important; }
+[data-theme='dark'] [class*="rounded-2xl"], [data-theme='dark'] [class*="rounded-3xl"], [data-theme='dark'] .card3d { box-shadow: 0 10px 28px rgba(0,0,0,.4) !important; }
+/* typography: navy ink / white ink */
+h1, h2, h3, h4, h5 { color: var(--ink) !important; letter-spacing: -0.02em; }
+[class*="text-dark"] { color: var(--ink) !important; }
+[class*="text-muted"] { color: var(--mut) !important; }
+[class*="text-[#"] { color: var(--ink) !important; }
+[class*="border-border"] { border-color: var(--line) !important; }
+/* actions = emerald */
+[class*="bg-primary"] { background-color: var(--accb) !important; color: #ffffff !important; }
+[class*="text-primary"] { color: var(--acc) !important; }
+[class*="border-primary"], [class*="ring-"] { border-color: var(--accb) !important; }
+input[type='checkbox'] { accent-color: var(--accb); }
+/* nav accents = blue */
+nav a[class*="text-primary"], nav a[class*="text-primary"] svg { color: var(--blue-soft) !important; }
+/* pills, badges, semantics */
+[class*="bg-emerald"], [class*="bg-green"] { background-color: rgba(22,184,106,.12) !important; }
+[class*="text-emerald"], [class*="text-green"] { color: var(--acc) !important; }
+[class*="text-amber"], [class*="text-orange"] { color: var(--mut) !important; }
+[class*="text-blue-7"], [class*="text-blue-6"] { color: var(--blue-soft) !important; }
+[class*="bg-rose"], [class*="bg-red"], [class*="bg-pink"] { background-color: var(--card) !important; border: 1px solid var(--line) !important; }
+[class*="text-rose"], [class*="text-red"] { color: #dc2626 !important; }
+[data-theme='dark'] [class*="text-rose"], [data-theme='dark'] [class*="text-red"] { color: #f87171 !important; }
+/* forms */
+input, select, textarea { background-color: var(--card) !important; color: var(--ink) !important; border-color: var(--line) !important; }
+/* sidebar: deep navy-blue panel, both modes */
+.shell-sidebar { background: #0A1220 !important; }
+.shell-sidebar * { background-color: transparent !important; border-color: transparent !important; }
+.shell-sidebar a, .shell-sidebar button, .sb-surf, .shell-sidebar [class*="rounded"] { background-color: #12203A !important; border: 1px solid #1e3050 !important; }
+.shell-sidebar p, .shell-sidebar span { color: #e5ecf6 !important; }
+.shell-sidebar [class*="text-muted"] { color: #9fb0c8 !important; }
+.shell-sidebar svg { color: #7da2f0 !important; }
+.shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
+button, a { transition: all .18s ease; }
