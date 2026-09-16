@@ -462,3 +462,43 @@ input, select, textarea { background-color: var(--card) !important; color: var(-
 .shell-sidebar svg { color: #7da2f0 !important; }
 .shell-sidebar [class*="bg-primary"], .shell-sidebar [class*="bg-primary"] * { background-color: #16B86A !important; color: #ffffff !important; }
 button, a { transition: all .18s ease; }
+
+/* === DeenByte Royal — A+B Hybrid Dashboard (added) === */
+:root {
+  --db-base: #060E1C;
+  --db-base-border: #1B2C4D;
+  --db-tile-primary: #1e40af;
+  --db-tile-primary-text: #ffffff;
+  --db-tile-primary-sub: #C9D6F5;
+  --db-tile-secondary-bg: #0F1E3A;
+  --db-tile-secondary-border: #22335A;
+  --db-tile-primary-icon: #ffffff;
+  --db-tile-secondary-icon: #7FA6E8;
+  --db-tile-tier2-bg: #1B3A7A;
+  --db-tile-tier4-border: #2A3B5E;
+  --db-tile-tier4-text: #8C9BBD;
+  --db-tile-secondary-text: #B9C4DB;
+  --db-wallet-bg: #0F1E3A;
+  --db-wallet-border: #22335A;
+  --db-wallet-label: #8CA0C4;
+  --db-wallet-value: #E7ECF7;
+  --db-action: #16B86A;
+  --db-action-text: #04342C;
+}
+
+.db-hub-card { background: var(--db-base); border: 0.5px solid var(--db-base-border); border-radius: 12px; }
+.db-tile-primary { background: var(--db-tile-primary); border-radius: 10px; padding: 10px; }
+.db-tile-primary .db-tile-label { color: var(--db-tile-primary-text); }
+.db-tile-primary .db-tile-icon { color: var(--db-tile-primary-text); }
+.db-tile-secondary { background: var(--db-tile-secondary-bg); border: 0.5px solid var(--db-tile-secondary-border); border-radius: 10px; padding: 10px; }
+.db-tile-secondary .db-tile-label { color: var(--db-tile-secondary-text); }
+.db-tile-secondary .db-tile-icon { color: var(--db-tile-secondary-icon); }
+.db-wallet-row { background: var(--db-wallet-bg); border: 0.5px solid var(--db-wallet-border); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; }
+.db-wallet-row .db-wallet-label { color: var(--db-wallet-label); font-size: 12px; }
+.db-wallet-row .db-wallet-value { color: var(--db-wallet-value); font-size: 14px; font-weight: 500; }
+.db-action-btn { width: 100%; background: var(--db-action); border: none; color: var(--db-action-text); font-weight: 500; font-size: 13px; padding: 8px; border-radius: 8px; }
+
+.db-tile-tier2 { background: var(--db-tile-tier2-bg); border-radius: 10px; padding: 10px; }
+.db-tile-tier2 .db-tile-label { color: var(--db-tile-primary-text); }
+.db-tile-tier4 { background: transparent; border: 0.5px dashed var(--db-tile-tier4-border); border-radius: 10px; padding: 8px; opacity: 0.85; }
+.db-tile-tier4 .db-tile-label { color: var(--db-tile-tier4-text); }
