@@ -502,3 +502,51 @@ button, a { transition: all .18s ease; }
 .db-tile-tier2 .db-tile-label { color: var(--db-tile-primary-text); }
 .db-tile-tier4 { background: transparent; border: 0.5px dashed var(--db-tile-tier4-border); border-radius: 10px; padding: 8px; opacity: 0.85; }
 .db-tile-tier4 .db-tile-label { color: var(--db-tile-tier4-text); }
+
+/* === DeenByte — Light Minimal (C) system, added for whole-site cutover === */
+:root {
+  --db-c-page-bg: #F6F8FC;
+  --db-c-surface: #FFFFFF;
+  --db-c-border: #DCE3EF;
+  --db-c-border-strong: #C7D2E5;
+  --db-c-text-primary: #0B1728;
+  --db-c-text-secondary: #425066;
+  --db-c-text-muted: #6B7690;
+
+  --db-c-tile-tier1: #1e40af;
+  --db-c-tile-tier2: #3D63C4;
+  --db-c-tile-tier1-text: #ffffff;
+  --db-c-tile-tier2-text: #E4EAF9;
+  --db-c-tile-tier3-icon: #1e40af;
+  --db-c-tile-tier4-text: #6B7690;
+  --db-c-tile-tier4-border: #C7D2E5;
+
+  --db-c-icon-chip-bg: #E6F1FB;
+  --db-c-icon-chip-fg: #185FA5;
+
+  --db-c-action: #16B86A;
+  --db-c-action-text: #ffffff;
+
+  --db-c-sidebar-bg: #0B1728;
+  --db-c-sidebar-text: #E7ECF7;
+  --db-c-sidebar-text-muted: #8CA0C4;
+  --db-c-sidebar-active: #1e40af;
+}
+
+.db-c-page { background: var(--db-c-page-bg); }
+.db-c-card { background: var(--db-c-surface); border: 0.5px solid var(--db-c-border); border-radius: 12px; }
+.db-c-text-primary { color: var(--db-c-text-primary); }
+.db-c-text-secondary { color: var(--db-c-text-secondary); }
+.db-c-text-muted { color: var(--db-c-text-muted); }
+
+.db-c-tile-tier1 { background: var(--db-c-tile-tier1); border-radius: 10px; padding: 10px; color: var(--db-c-tile-tier1-text); }
+.db-c-tile-tier2 { background: var(--db-c-tile-tier2); border-radius: 10px; padding: 10px; color: var(--db-c-tile-tier2-text); }
+.db-c-tile-tier3 { background: var(--db-c-surface); border: 0.5px solid var(--db-c-border-strong); border-radius: 10px; padding: 9px; color: var(--db-c-text-primary); }
+.db-c-tile-tier3 .db-c-icon { color: var(--db-c-tile-tier3-icon); }
+.db-c-tile-tier4 { background: transparent; border: 0.5px dashed var(--db-c-tile-tier4-border); border-radius: 10px; padding: 8px; color: var(--db-c-tile-tier4-text); }
+
+.db-c-action-btn { background: var(--db-c-action); color: var(--db-c-action-text); border: none; border-radius: 8px; font-weight: 500; }
+
+.db-c-sidebar { background: var(--db-c-sidebar-bg); color: var(--db-c-sidebar-text); }
+.db-c-sidebar-muted { color: var(--db-c-sidebar-text-muted); }
+.db-c-sidebar-active { background: var(--db-c-sidebar-active); }
