@@ -63,15 +63,15 @@ export default async function DashboardPage() {
   });
 
   const hubs = [
-    { href: '/cac', t: 'CAC Registration', d: 'Business Name, LLC & Annual Returns.', time: '24–72 hrs', g: 'from-emerald-600 to-emerald-900' },
-    { href: '/verify?s=nin_regular', t: 'NIN Verification', d: 'Official NIMC slips with instant database lookup.', time: 'Instant', g: 'from-emerald-600 to-emerald-800' },
-    { href: '/verify?s=nin_by_phone', t: 'NIN by Phone', d: 'Retrieve an NIN record using a phone number.', time: 'Instant', g: 'from-emerald-600 to-cyan-800' },
-    { href: '/verify?s=nin_demographic', t: 'Demographic Search', d: 'Search NIN records by demographics.', time: 'Instant', g: 'from-cyan-600 to-sky-800' },
-    { href: '/nin/validation', t: 'NIN Validation', d: 'Resolve No-Record, VNIN sync & modification issues.', time: '24–48 hrs', g: 'from-sky-700 to-blue-900' },
-    { href: '/nin/modification', t: 'NIN Modification', d: 'Change of Name, Phone, or Address. ₦5,800.', time: '1–48 hrs', g: 'from-emerald-700 to-cyan-900' },
-    { href: '/nin/ipe', t: 'IPE Clearance', d: 'Clear In-Processing Errors on your NIN.', time: '~24 hrs', g: 'from-rose-600 to-red-900' },
-    { href: '/verify?s=bvn_basic', t: 'BVN Verification', d: 'Official BVN slip in seconds.', time: 'Instant', g: 'from-emerald-600 to-emerald-900' },
-    { href: '/verify?s=bvn_retrieval', t: 'BVN Retrieval', d: 'Get BVN from phone or NIN.', time: 'Instant', g: 'from-emerald-600 to-[var(--tile)]900' },
+    { href: '/cac', id: null, t: 'CAC Registration', d: 'Business Name, LLC & Annual Returns.', time: '24–72 hrs', g: 'from-emerald-600 to-emerald-900' },
+    { href: '/verify?s=nin_regular', id: 'nin_regular', t: 'NIN Verification', d: 'Official NIMC slips with instant database lookup.', time: 'Instant', g: 'from-emerald-600 to-emerald-800' },
+    { href: '/verify?s=nin_by_phone', id: 'nin_by_phone', t: 'NIN by Phone', d: 'Retrieve an NIN record using a phone number.', time: 'Instant', g: 'from-emerald-600 to-cyan-800' },
+    { href: '/verify?s=nin_demographic', id: 'nin_demographic', t: 'Demographic Search', d: 'Search NIN records by demographics.', time: 'Instant', g: 'from-cyan-600 to-sky-800' },
+    { href: '/nin/validation', id: 'nin_validation', t: 'NIN Validation', d: 'Resolve No-Record, VNIN sync & modification issues.', time: '24–48 hrs', g: 'from-sky-700 to-blue-900' },
+    { href: '/nin/modification', id: null, t: 'NIN Modification', d: 'Change of Name, Phone, or Address. ₦5,800.', time: '1–48 hrs', g: 'from-emerald-700 to-cyan-900' },
+    { href: '/nin/ipe', id: 'ipe_clearance', t: 'IPE Clearance', d: 'Clear In-Processing Errors on your NIN.', time: '~24 hrs', g: 'from-rose-600 to-red-900' },
+    { href: '/verify?s=bvn_basic', id: 'bvn_basic', t: 'BVN Verification', d: 'Official BVN slip in seconds.', time: 'Instant', g: 'from-emerald-600 to-emerald-900' },
+    { href: '/verify?s=bvn_retrieval', id: 'bvn_retrieval', t: 'BVN Retrieval', d: 'Get BVN from phone or NIN.', time: 'Instant', g: 'from-emerald-600 to-[var(--tile)]900' },
   ];
 
   return (
@@ -112,15 +112,30 @@ export default async function DashboardPage() {
 
         <section>
           <h3 className="text-sm font-bold text-dark mb-2">Service Hub</h3>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {hubs.map((h) => (
-              <Link key={h.t} href={h.href} className={'relative overflow-hidden rounded-2xl p-4 text-white vibe-gradient shadow-card ' + h.g}>
-                <p className="text-sm font-extrabold">{h.t}</p>
-                <p className="mt-1 text-[11px] text-white/80">{h.d}</p>
-                <span className="mt-3 inline-block rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold">🕐 {h.time}</span>
-                <span className="ml-2 inline-block rounded-full bg-green-400/20 text-green-200 px-2.5 py-1 text-[10px] font-bold">● ACTIVE</span>
-              </Link>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {hubs.map((h) => {
+              const svc = h.id ? services.find((s: any) => s.service_id === h.id) : null;
+              return (
+                <Link key={h.t} href={h.href} className="relative card3d p-4 pt-6 flex flex-col items-center text-center gap-2 hover:border-primary hover:-translate-y-0.5">
+                  {svc && (
+                    <span className={'absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full ' + badgeCls(String(svc.category), !!svc.is_async)}>
+                      {svc.is_async ? 'ASYNC' : String(svc.category)}
+                    </span>
+                  )}
+                  <span className={'h-12 w-12 rounded-2xl bg-gradient-to-br text-white flex items-center justify-center shadow-md ' + tileCls(svc ? String(svc.category) : '', !!svc?.is_async)}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden="true">
+                      <path d={(h.id && ICONS[h.id]) ?? FALLBACK} />
+                    </svg>
+                  </span>
+                  <p className="text-sm font-semibold text-dark leading-tight">{h.t}</p>
+                  {svc ? (
+                    <p className="text-xs font-bold text-primary">₦{Number(svc.selling_price).toLocaleString('en-NG')}</p>
+                  ) : (
+                    <p className="text-xs font-semibold text-muted">{h.time}</p>
+                  )}
+                </Link>
+              );
+            })}
           </div>
         </section>
 

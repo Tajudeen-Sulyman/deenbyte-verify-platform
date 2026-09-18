@@ -24,7 +24,6 @@ const OVERVIEW: Item[] = [
   { href: '/profile', label: 'Profile', d: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21v-1a7 7 0 0114 0v1', g: 'from-pink-500 to-rose-600' },
 ];
 const NIN: Item[] = [
-  { href: '/services', label: 'All NIN Services', d: 'M4 6h16M4 12h16M4 18h16', g: 'from-emerald-500 to-emerald-600' },
   { href: '/verify?s=nin_regular', label: 'NIN Verification', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-emerald-500 to-emerald-600' },
   { href: '/verify?s=nin_by_phone', label: 'NIN by Phone', d: 'M7 3h10v18H7zM11 18h2', g: 'from-emerald-500 to-emerald-600' },
   { href: '/verify?s=nin_demographic', label: 'Demographic Search', d: 'M8 10a3 3 0 106 0 3 3 0 00-6 0zM4 20c0-3 3-5 8-5s8 2 8 5', g: 'from-emerald-500 to-emerald-600' },
