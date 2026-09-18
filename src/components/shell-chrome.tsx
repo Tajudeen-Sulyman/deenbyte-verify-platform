@@ -3,7 +3,6 @@
 import { useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { ProfileMenu } from '@/components/profile-menu';
 
 function Icon({ d, className }: { d: string; className?: string }) {
@@ -129,7 +128,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
       <aside className="shell-sidebar hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col bg-dark border-r border-white/10">
         <div className="px-5 py-5 border-b border-white/10">{brand}</div>
         <SideNav email={email ?? ''} balance={balance} isAdmin={isAdmin} active={path} onNav={onNav} />
-        <div className="px-4 py-3 border-t border-white/10 space-y-2"><ThemeToggle />{logoutSlot}</div>
+        <div className="px-4 py-3 border-t border-white/10 space-y-2">{logoutSlot}</div>
       </aside>
 
       {open && (
@@ -141,7 +140,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 rounded-lg text-slate-300 hover:sb-surf">✕</button>
             </div>
             <SideNav email={email ?? ''} balance={balance} isAdmin={isAdmin} active={path} onNav={onNav} />
-            <div className="px-4 py-3 border-t border-white/10 space-y-2"><ThemeToggle />{logoutSlot}</div>
+            <div className="px-4 py-3 border-t border-white/10 space-y-2">{logoutSlot}</div>
           </div>
         </div>
       )}
