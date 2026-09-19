@@ -25,9 +25,31 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
   if (b.action === 'failed') {
-    await admin.from('cac_applications').update({ status: 'failed', admin_note: String(b.note ?? ''), updated_at: now }).eq('reference', b.reference);
+    if (row.status === 'failed') return NextResponse.json({ ok: true, note: 'Already failed, not refunded again.' });
+
+    let refundNote = '';
+    if (row.status !== 'awaiting_payment') {
+      const { data: walletTx } = await admin.from('wallet_transactions').select('id').ilike('description', '%' + row.reference + '%').maybeSingle();
+      if (walletTx) {
+        const { data: wallet } = await admin.from('wallets').select('balance').eq('user_id', row.user_id).maybeSingle();
+        const bal = Number(wallet?.balance ?? 0);
+        await admin.from('wallets').update({ balance: bal + Number(row.fee) }).eq('user_id', row.user_id);
+        await admin.from('wallet_transactions').insert({ user_id: row.user_id, amount: row.fee, type: 'cac_refund', status: 'successful', description: 'Refund: CAC ' + String(row.entity_type).toUpperCase() + ' ' + row.reference });
+        refundNote = ' [Wallet refunded]';
+      } else {
+        const rf = await fetch('https://api.paystack.co/refund', {
+          method: 'POST',
+          headers: { Authorization: 'Bearer ' + process.env.PAYSTACK_SECRET_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transaction: row.reference }),
+        });
+        const rfJson = await rf.json().catch(() => null);
+        refundNote = rfJson?.status ? ' [Paystack refund initiated]' : ' [REFUND FAILED - handle manually via Paystack dashboard]';
+      }
+    }
+
+    await admin.from('cac_applications').update({ status: 'failed', admin_note: String(b.note ?? '') + refundNote, updated_at: now }).eq('reference', b.reference);
     await admin.from('notifications').insert({ user_id: row.user_id, title: 'CAC application failed', body: b.reference + ': ' + String(b.note ?? 'Contact support.') });
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, refundNote });
   }
   if (b.action === 'completed') {
     const docs = Array.isArray(b.docs) ? b.docs : [];
