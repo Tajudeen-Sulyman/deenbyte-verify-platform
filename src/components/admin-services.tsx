@@ -84,7 +84,7 @@ export function AdminServices({ services }: { services: Service[] }) {
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="font-semibold text-dark">{s.name}</p>
-                <p className="text-xs text-muted">{s.category} \u00b7 {s.service_id}</p>
+                <p className="text-xs text-muted">{s.category} · {s.service_id}</p>
               </div>
               <label className="flex items-center gap-2 text-sm text-muted">
                 <input
@@ -100,14 +100,14 @@ export function AdminServices({ services }: { services: Service[] }) {
             <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
               <div>
                 <p className="text-xs text-muted">Reference price</p>
-                <p className="font-medium text-dark">\u20a6{Number(s.reference_price ?? 0).toLocaleString('en-NG')}</p>
+                <p className="font-medium text-dark">₦{Number(s.reference_price ?? 0).toLocaleString('en-NG')}</p>
               </div>
               <div>
                 <p className="text-xs text-muted">Provider cost</p>
-                <p className="font-medium text-dark">\u20a6{Number(s.provider_cost ?? 0).toLocaleString('en-NG')}</p>
+                <p className="font-medium text-dark">₦{Number(s.provider_cost ?? 0).toLocaleString('en-NG')}</p>
               </div>
               <div>
-                <p className="text-xs text-muted mb-1">Selling price (\u20a6)</p>
+                <p className="text-xs text-muted mb-1">Selling price (₦)</p>
                 <input
                   type="number"
                   value={s.selling_price}
@@ -132,7 +132,7 @@ export function AdminServices({ services }: { services: Service[] }) {
 
             {tiersLoaded && rowTiers && (
               <div className="mt-4 rounded-xl border border-border p-3">
-                <p className="text-xs font-bold text-dark mb-2">Slip tier prices (\u20a6)</p>
+                <p className="text-xs font-bold text-dark mb-2">Slip tier prices (₦)</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {Object.keys(rowTiers).map((tier) => (
                     <div key={tier}>
@@ -153,7 +153,7 @@ export function AdminServices({ services }: { services: Service[] }) {
               <p className="text-xs text-muted">
                 Margin per verification:{' '}
                 <span className={margin > 0 ? 'text-primary font-semibold' : 'text-red-600 font-semibold'}>
-                  \u20a6{margin.toLocaleString('en-NG')}
+                  ₦{margin.toLocaleString('en-NG')}
                 </span>
               </p>
               <button
@@ -161,7 +161,7 @@ export function AdminServices({ services }: { services: Service[] }) {
                 disabled={saving === s.id}
                 className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
               >
-                {saving === s.id ? 'Saving\u2026' : 'Save'}
+                {saving === s.id ? 'Saving…' : 'Save'}
               </button>
             </div>
           </div>
