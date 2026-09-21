@@ -26,7 +26,8 @@ export async function POST(req: NextRequest) {
   if (!/^\d{10,15}$/.test(tin))
     return NextResponse.json({ error: 'Enter a valid TIN (10-15 digits).' }, { status: 400 });
 
-  const amount = 50; // TEST PRICE (revert: tier === 'premium' ? 700 : 300)
+  const { data: pricing } = await admin.from('taxid_pricing').select('price').eq('tier', tier).maybeSingle();
+  const amount = Number(pricing?.price ?? (tier === 'premium' ? 700 : 300));
   const { data: wallet } = await admin.from('wallets').select('balance').eq('user_id', user.id).maybeSingle();
   const bal = Number(wallet?.balance ?? 0);
   if (bal < amount) return NextResponse.json({ error: 'Insufficient wallet balance. Fund your wallet or pay with card.' }, { status: 400 });
