@@ -13,10 +13,12 @@ export default function TaxIdPage() {
   const [wallet, setWallet] = useState<{ loggedIn: boolean; balance: number }>({ loggedIn: false, balance: 0 });
   const [rec, setRec] = useState('');
   const set = (k: keyof typeof f) => (e: any) => setF({ ...f, [k]: e.target.value });
-  const price = 50; // TEST PRICE
+  const [prices, setPrices] = useState<{ standard: number; premium: number }>({ standard: 300, premium: 700 });
+  const price = tier === 'premium' ? prices.premium : prices.standard;
 
   useEffect(() => {
     fetch('/api/v1/taxid/me').then((r) => r.json()).then((j) => setWallet(j)).catch(() => {});
+    fetch('/api/v1/taxid/pricing').then((r) => r.json()).then((j) => setPrices({ standard: Number(j.standard ?? 300), premium: Number(j.premium ?? 700) })).catch(() => {});
   }, []);
 
   async function payWallet() {
@@ -61,13 +63,13 @@ export default function TaxIdPage() {
             <button onClick={() => setTier('standard')} className={'relative rounded-xl border-2 p-4 text-center ' + (tier === 'standard' ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
               <p className="text-base font-extrabold text-dark">STANDARD</p>
               <p className="text-xs text-muted mt-1">Validation summary slip</p>
-              <p className="text-lg font-extrabold text-emerald-800 mt-2">₦50</p>
+              <p className="text-lg font-extrabold text-emerald-800 mt-2">₦{prices.standard}</p>
             </button>
             <button onClick={() => setTier('premium')} className={'relative rounded-xl border-2 p-4 text-center ' + (tier === 'premium' ? 'border-emerald-700 bg-emerald-50' : 'border-border bg-white')}>
               <span className="absolute -top-3 right-3 rounded-full bg-red-700 text-white text-[10px] font-bold px-2 py-0.5">POPULAR</span>
               <p className="text-base font-extrabold text-dark">PREMIUM</p>
               <p className="text-xs text-muted mt-1">Certificate-style slip with seal &amp; QR</p>
-              <p className="text-lg font-extrabold text-red-700 mt-2">₦50</p>
+              <p className="text-lg font-extrabold text-red-700 mt-2">₦{prices.premium}</p>
             </button>
           </div>
         </section>
