@@ -2,6 +2,7 @@ import { AppShell } from '@/components/shell';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { AdminServices } from '@/components/admin-services';
+import { TaxIdPricingAdmin } from '@/components/taxid-pricing-admin';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,6 +17,7 @@ export default async function AdminPage() {
 
   const { data: services } = await supabase
     .from('verification_services').select('*').order('category').order('name');
+  const { data: taxIdPrices } = await supabase.from('taxid_pricing').select('tier, price');
   const { data: requests } = await supabase
     .from('verification_requests').select('status, selling_price');
   const { count: userCount } = await supabase
@@ -55,6 +57,11 @@ export default async function AdminPage() {
         <div>
           <h2 className="font-semibold text-dark mb-3">Services & Pricing</h2>
           <AdminServices services={(services ?? []) as any} />
+        </div>
+
+        <div>
+          <h2 className="font-semibold text-dark mb-3">TIN Slip Pricing</h2>
+          <TaxIdPricingAdmin prices={(taxIdPrices ?? []) as any} />
         </div>
       </div>
     </AppShell>
