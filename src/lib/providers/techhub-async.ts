@@ -1,4 +1,4 @@
-import { ProviderError } from './fastverify';
+import { ProviderError } from './techhub';
 
 const BASE_URL = 'https://techhubltd.co/api/verification';
 const API_KEY = process.env.TECHHUB_API_KEY!;

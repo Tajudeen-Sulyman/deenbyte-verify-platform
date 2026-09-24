@@ -1,7 +1,6 @@
 import { createHash } from 'crypto';
 import { createClient } from '@supabase/supabase-js';
-import { FastVerifyProvider, ProviderError } from '@/lib/providers/fastverify';
-import { AijalonProvider } from '@/lib/providers/aijalon';
+import { ProviderError } from '@/lib/providers/techhub';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -122,15 +121,6 @@ export async function runVerification(opts: {
     Object.assign(safeData, Object.fromEntries(Object.entries(canon(safeData)).filter(([, v]) => v)));
     const base = canon(safeData);
     const missingAny = !base.phone_number || !base.first_name || !base.photo || !base.address;
-    if (process.env.ENRICH_PHONE === 'on' && missingAny && /^\d{11}$/.test(String(identifier))) {
-      try {
-        const aj = await AijalonProvider.verifyNIN(String(identifier), 'basic');
-        const ac: any = canon(aj?.data ?? {});
-        for (const [k, v] of Object.entries(ac)) {
-          if (v && !(safeData as any)[k]) (safeData as any)[k] = v;
-        }
-      } catch {}
-    }
         
     await supabaseAdmin.from('verification_requests')
       .update({

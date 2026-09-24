@@ -1,4 +1,10 @@
-import { ProviderError } from './fastverify';
+export class ProviderError extends Error {
+  code: number;
+  constructor(code: number, message: string) {
+    super(message);
+    this.code = code;
+  }
+}
 
 const BASE_URL = 'https://techhubltd.co/api/verification';
 const API_KEY = process.env.TECHHUB_API_KEY!;

@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createClient as adminClient } from '@supabase/supabase-js';
-import { ProviderError } from '@/lib/providers/fastverify';
-import { AijalonAsync, pollState } from '@/lib/providers/aijalon-async';
+import { ProviderError } from '@/lib/providers/techhub';
 import { TechHubAsync } from '@/lib/providers/techhub-async';
 
 const supabaseAdmin = adminClient(
@@ -28,12 +27,6 @@ const FIELDS: Record<string, Field[]> = {
     { key: 'nin', label: 'NIN', required: true, kind: 'nin' },
     { key: 'email', label: 'Email', required: true, kind: 'email' },
   ],
-};
-
-const AIJALON_SUBMIT: Record<string, (n: string) => Promise<any>> = {
-  ipe_clearance: AijalonAsync.submitIPE,
-  personalization: AijalonAsync.submitPersonalization,
-  nin_validation: AijalonAsync.submitValidation,
 };
 
 export async function POST(req: Request, ctx: { params: Promise<{ service: string }> }) {
@@ -77,6 +70,10 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   }
   const provider = String(serviceRow.provider ?? 'techhub');
   const price = Number(serviceRow.selling_price);
+
+  if (provider !== 'techhub') {
+    return NextResponse.json({ error: 'Provider not configured for this service.' }, { status: 500 });
+  }
 
   const { data: wallet } = await supabaseAdmin
     .from('wallets').select('balance').eq('user_id', user.id).single();
@@ -123,17 +120,8 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   }
 
   try {
-    let ticket: string | null = null;
-    if (provider === 'techhub') {
-      const json = await TechHubAsync.post(TechHubAsync.paths[service], input);
-      ticket = json?.ticket_id ?? null;
-    } else {
-      const main = String(input.nin ?? input.tracking_id ?? display);
-      const submitFn = AIJALON_SUBMIT[service];
-      const json = await submitFn(main);
-      if (pollState(json) === 'failed') throw new ProviderError(400, json?.message ?? 'Submission failed.');
-      ticket = json?.reportID ?? null;
-    }
+    const json = await TechHubAsync.post(TechHubAsync.paths[service], input);
+    const ticket = json?.ticket_id ?? null;
     await supabaseAdmin.from('verification_requests')
       .update({ provider_reference: ticket })
       .eq('id', request.id);
