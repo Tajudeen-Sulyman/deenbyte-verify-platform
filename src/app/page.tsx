@@ -15,7 +15,6 @@ const CHIPS = [
   { t: 'BVN Verification', c: 'bg-indigo-200 text-indigo-900', r: '-rotate-1' },
   { t: 'NIN Modification', c: 'bg-emerald-200 text-emerald-900', r: 'rotate-2' },
   { t: 'IPE Clearance', c: 'bg-sky-200 text-sky-900', r: '-rotate-1' },
-  { t: 'CAC Registration', c: 'bg-emerald-200 text-emerald-900', r: 'rotate-1' },
 ];
 
 
@@ -73,18 +72,6 @@ export default async function HomePage() {
           </div>
         ))}
       </section>
-
-      <section className="max-w-4xl mx-auto px-4 pb-14">
-        <div className="rounded-3xl bg-gradient-to-br from-emerald-600 to-emerald-900 p-8 text-center">
-          <p className="text-[11px] font-extrabold uppercase tracking-widest text-emerald-200">New — Corporate Affairs Commission</p>
-          <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold">Register your business with CAC</h2>
-          <p className="mt-3 text-sm text-emerald-100 max-w-2xl mx-auto">Business Name ₦29,000 • Limited Liability ₦36,000 • Annual Returns from ₦8,000. Apply online, we process it on the official CAC portal, and your documents are delivered for download or email.</p>
-          <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
-            <Link href="/register" className="rounded-full bg-white px-6 py-3.5 text-sm font-extrabold text-emerald-800">Start CAC Registration →</Link>
-            <Link href="/login" className="rounded-full border border-white/40 px-6 py-3.5 text-sm font-extrabold text-white">Track an application</Link>
-          </div>
-        </div>
-      </section>
       
 
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
@@ -99,7 +86,6 @@ export default async function HomePage() {
             <p className="font-extrabold mb-3">Services</p>
             <ul className="space-y-2 text-slate-400">
               <li><Link href="/taxid">TIN Verification Slip</Link></li>
-              <li><Link href="/register">CAC Registration</Link></li>
               <li><Link href="/nin/modification">NIN Modification</Link></li>
               <li><Link href="/nin/validation">NIN Validation</Link></li>
               <li><Link href="/nin/ipe">IPE Clearance</Link></li>
