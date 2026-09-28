@@ -96,7 +96,10 @@ body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); }
 [data-theme='dark'] .card3d,
 [data-theme='dark'] [class*="rounded-2xl"],
 [data-theme='dark'] [class*="rounded-3xl"] { box-shadow: 0 8px 22px rgba(0,0,0,.35) !important; }
-.card3d { padding: 0.9rem 1rem !important; }
+.card3d.p-5 { padding: 1rem !important; }
+.card3d.p-6 { padding: 1.15rem !important; }
+.card3d.p-4 { padding: 0.8rem !important; }
+.card3d.p-2\.5 { padding: 0.625rem !important; }
 
 h1, h2, h3, h4, h5 { color: var(--ink) !important; letter-spacing: -0.02em; }
 [class*="text-dark"] { color: var(--ink) !important; }
