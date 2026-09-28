@@ -103,16 +103,13 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
     return NextResponse.json({ error: 'Could not create request.' }, { status: 500 });
   }
 
-  try {
-    await supabaseAdmin.rpc('deduct_wallet', {
-      p_user_id: user.id,
-      p_amount: price,
-      p_type: 'debit',
-      p_reference: requestRef,
-      p_description: 'Charge for ' + serviceRow.name,
-      p_verification_id: request.id,
-    });
-  } catch {
+  const { data: ok, error: dedErr } = await supabaseAdmin.rpc('deduct_wallet', {
+    p_user_id: user.id,
+    p_amount: price,
+    p_reference: requestRef,
+    p_verification_id: request.id,
+  });
+  if (dedErr || !ok) {
     await supabaseAdmin.from('verification_requests')
       .update({ status: 'failed', error_code: 'wallet_error', error_message: 'Wallet charge failed', completed_at: new Date().toISOString() })
       .eq('id', request.id);
