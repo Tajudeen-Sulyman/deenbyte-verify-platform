@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export function ProfileMenu({ email, avatarUrl }: { email: string; avatarUrl?: string }) {
   const [open, setOpen] = useState(false);
@@ -62,6 +63,10 @@ export function ProfileMenu({ email, avatarUrl }: { email: string; avatarUrl?: s
           </div>
           <div className="mt-3 border-t border-border pt-1">
             <button onClick={() => setEdit(!edit)} className="flex w-full items-center gap-3 px-1 py-3 text-sm font-bold text-dark">✏️ Edit Profile</button>
+            <div className="flex items-center justify-between border-t border-border px-1 py-3">
+              <span className="text-sm font-bold text-dark">Theme</span>
+              <ThemeToggle />
+            </div>
             <a href="mailto:deenbyte.technologies@gmail.com" className="flex w-full items-center gap-3 border-t border-border px-1 py-3 text-sm font-bold text-dark">🎧 Support</a>
             <button onClick={logout} className="flex w-full items-center gap-3 border-t border-border px-1 py-3 text-sm font-bold text-red-600">⎋ Log out</button>
           </div>
