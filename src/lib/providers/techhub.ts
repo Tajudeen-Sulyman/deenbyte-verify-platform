@@ -56,14 +56,14 @@ const PHONE_EP: Record<string, string> = {
   vnin: '/nin_by_phone_vnin.php',
 };
 const DEMO_EP: Record<string, string> = {
-  premium: '/nin_by_demo_premium.php',
-  standard: '/nin_by_demo_standard.php',
-  regular: '/nin_by_demo_regular.php',
-  vnin: '/nin_by_demo_vnin.php',
+  premium: '/nin_by_demo.php',
+  standard: '/nin_by_demo.php',
+  regular: '/nin_by_demo.php',
+  vnin: '/nin_by_demo.php',
 };
 const BVN_EP: Record<string, string> = {
   premium: '/bvn_premium_slip.php',
-  standard: '/bvn_standard_slip.php',
+  standard: '/bvn_full_details_slip.php',
 };
 const FALLBACK = {
   nin: '/nin_by_nin.php',
@@ -163,7 +163,7 @@ export const TechHubProvider = {
   async demographicSearch(input: { firstname: string; lastname: string; gender: string; dob: string }, slipType: string) {
     const tier = DEMO_EP[slipType] ? slipType : 'premium';
     const dob = input.dob.split('-').reverse().join('-');
-    const gender = input.gender === 'm' ? 'MALE' : 'FEMALE';
+    const gender = String(input.gender ?? '').trim().toLowerCase().startsWith('m') ? 'MALE' : 'FEMALE';
     const json = await callWithFallback(
       [DEMO_EP[tier], FALLBACK.demo],
       { firstname: input.firstname, lastname: input.lastname, dob, gender }
