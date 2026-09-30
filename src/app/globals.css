@@ -76,9 +76,10 @@ h1, h2, h3, h4, h5 { color: var(--ink) !important; letter-spacing: -0.02em; }
 [class*="text-"] { color: var(--ink) !important; }
 [class*="border-border"] { border-color: var(--line) !important; }
 
-[class*="bg-primary"] { background-color: var(--accb) !important; color: #ffffff !important; }
-[class*="text-primary"] { color: var(--acc) !important; }
-[class*="border-primary"], [class*="ring-"] { border-color: var(--accb) !important; }
+[class~="bg-primary"] { background-color: var(--accb) !important; color: #ffffff !important; }
+[class~="text-primary"] { color: var(--acc) !important; }
+[class~="border-primary"] { border-color: var(--accb) !important; }
+[class*="ring-"] { border-color: var(--accb) !important; }
 input[type="checkbox"] { accent-color: var(--accb); }
 
 nav a[class*="text-primary"], nav a[class*="text-primary"] svg { color: #7da2f0 !important; }
