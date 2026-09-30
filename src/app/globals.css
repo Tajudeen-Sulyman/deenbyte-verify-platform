@@ -218,3 +218,28 @@ button, a { transition: all .18s ease; }
 .db-wallet-row .db-wallet-label { color: var(--db-wallet-label); font-size: 12px; }
 .db-wallet-row .db-wallet-value { color: var(--db-wallet-value); font-size: 14px; font-weight: 500; }
 .db-action-btn { width: 100%; background: var(--db-action); border: none; color: var(--db-action-text); font-weight: 500; font-size: 13px; padding: 8px; border-radius: 8px; }
+
+/* Sidebar + mobile drawer: always dark, regardless of data-theme */
+.shell-sidebar,
+.shell-drawer {
+  background: #0B1728;
+  color: #E2E8F0;
+  color-scheme: dark;
+}
+.shell-sidebar .sb-surf,
+.shell-drawer .sb-surf {
+  background: transparent !important;
+  color: #E2E8F0 !important;
+}
+.shell-sidebar .text-white, .shell-drawer .text-white { color: #fff !important; }
+.shell-sidebar .text-slate-200, .shell-drawer .text-slate-200 { color: #E2E8F0 !important; }
+.shell-sidebar .text-slate-300, .shell-drawer .text-slate-300 { color: #CBD5E1 !important; }
+.shell-sidebar .text-slate-400, .shell-drawer .text-slate-400 { color: #94A3B8 !important; }
+.shell-sidebar .text-slate-500, .shell-drawer .text-slate-500 { color: #64748B !important; }
+.shell-sidebar .text-emerald-400, .shell-drawer .text-emerald-400 { color: #34D399 !important; }
+.shell-sidebar .border-white\/10, .shell-drawer .border-white\/10 { border-color: rgba(255,255,255,.10) !important; }
+.shell-sidebar a, .shell-drawer a {
+  background: transparent !important;
+  color: #CBD5E1 !important;
+}
+.shell-sidebar a:hover, .shell-drawer a:hover { background: rgba(255,255,255,.06) !important; }
