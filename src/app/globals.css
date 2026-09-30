@@ -107,9 +107,10 @@ h1, h2, h3, h4, h5 { color: var(--ink) !important; letter-spacing: -0.02em; }
 [class*="text-"] { color: var(--ink) !important; }
 [class*="border-border"] { border-color: var(--line) !important; }
 
-[class*="bg-primary"] { background-color: var(--accb) !important; color: #ffffff !important; }
-[class*="text-primary"] { color: var(--acc) !important; }
-[class*="border-primary"], [class*="ring-"] { border-color: var(--accb) !important; }
+[class~="bg-primary"] { background-color: var(--accb) !important; color: #ffffff !important; }
+[class~="text-primary"] { color: var(--acc) !important; }
+[class~="border-primary"] { border-color: var(--accb) !important; }
+[class*="ring-"] { border-color: var(--accb) !important; }
 input[type="checkbox"] { accent-color: var(--accb); }
 
 nav a[class*="text-primary"], nav a[class*="text-primary"] svg { color: var(--blue-soft) !important; }
@@ -126,7 +127,8 @@ input, select, textarea { background-color: var(--card) !important; color: var(-
 
 /* sidebar: always deep navy, both themes — unchanged decision */
 .shell-sidebar { background: #0A1220 !important; border-color: transparent !important; }
-.shell-sidebar a, .shell-sidebar button, .sb-surf, .shell-sidebar [class*="rounded"] { background-color: #12203A !important; border: 1px solid #1e3050 !important; border-radius: 0.75rem !important; }
+.shell-sidebar a, .shell-sidebar button, .shell-sidebar .sb-surf, .shell-sidebar [class*="rounded"] { background-color: #12203A !important; border: 1px solid #1e3050 !important; border-radius: 0.75rem !important; }
+.sb-surf { background-color: var(--bg) !important; }
 .shell-sidebar p, .shell-sidebar span { color: #e5eef6 !important; }
 .shell-sidebar [class*="text-muted"] { color: #9fb0c8 !important; }
 .shell-sidebar svg { color: #7da2f0 !important; }
