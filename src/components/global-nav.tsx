@@ -10,13 +10,13 @@ const ITEMS = [
   { href: '/history', label: 'History', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z' },
   { href: '/profile', label: 'Profile', d: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21v-1a7 7 0 0114 0v1' },
 ];
-const STANDALONE = ['/taxid', '/nin/', '/ipe', '/bvn'];
+const STANDALONE = ['/nin/', '/ipe', '/bvn'];
 
 export function GlobalNav() {
   const [ok, setOk] = useState(false);
   const path = usePathname() ?? '';
   useEffect(() => {
-    fetch('/api/v1/taxid/me').then((r) => r.json()).then((j) => setOk(!!j.loggedIn)).catch(() => {});
+    fetch('/api/v1/me').then((r) => r.json()).then((j) => setOk(!!j.loggedIn)).catch(() => {});
   }, []);
   if (!ok || !STANDALONE.some((p) => path.startsWith(p))) return null;
   return (

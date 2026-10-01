@@ -6,11 +6,10 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'DeenByte Verify — Instant Identity & Tax Document Platform',
-  description: 'Verify, register and manage identity and tax documents in one place: TIN slips, NIN & BVN verification, NIN modification, validation and IPE clearance. Wallet payments with automatic refunds.',
+  description: 'Verify, register and manage identity documents in one place: NIN & BVN verification, NIN modification, validation and IPE clearance. Wallet payments with automatic refunds.',
 };
 
 const CHIPS = [
-  { t: 'TIN Verification', c: 'bg-amber-100 text-amber-800', r: '-rotate-2' },
   { t: 'NIN Verification', c: 'bg-rose-600 text-white', r: 'rotate-1' },
   { t: 'BVN Verification', c: 'bg-indigo-200 text-indigo-900', r: '-rotate-1' },
   { t: 'NIN Modification', c: 'bg-emerald-200 text-emerald-900', r: 'rotate-2' },
@@ -85,7 +84,6 @@ export default async function HomePage() {
           <div>
             <p className="font-extrabold mb-3">Services</p>
             <ul className="space-y-2 text-slate-400">
-              <li><Link href="/taxid">TIN Verification Slip</Link></li>
               <li><Link href="/nin/modification">NIN Modification</Link></li>
               <li><Link href="/nin/validation">NIN Validation</Link></li>
               <li><Link href="/nin/ipe">IPE Clearance</Link></li>

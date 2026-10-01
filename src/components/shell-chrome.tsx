@@ -38,7 +38,6 @@ const BVN: Item[] = [
 const ADMIN: Item[] = [
   { href: '/admin', label: 'Admin', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-rose-500 to-red-600' },
   { href: '/admin/analytics', label: 'Analytics', d: 'M4 20V10M10 20V4M16 20v-8M22 20H2', g: 'from-blue-500 to-indigo-600' },
-  { href: '/admin/tin', label: 'TIN Queue', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z', g: 'from-pink-500 to-rose-600' },
 ];
 const ACCOUNT: Item[] = [
   { href: '/history', label: 'History', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z', g: 'from-blue-500 to-indigo-600' },
@@ -97,7 +96,6 @@ function SideNav({ email, balance, isAdmin, active, onNav }: {
         <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">Your identity, simplified</p>
         <NavGroup label="NIN Services" d="M4 6h16M4 12h16M4 18h16" g="from-emerald-500 to-emerald-600" items={NIN} active={active} onNav={onNav} defaultOpen />
         <NavGroup label="BVN Services" d="M12 3a9 9 0 019 9v9h-4v-9a5 5 0 00-10 0v9H3v-9a9 9 0 019-9z" g="from-emerald-500 to-emerald-600" items={BVN} active={active} onNav={onNav} />
-        <NavGroup label="TIN Services" d="M6 3h9l4 4v14H6zM9 3v5h5" g="from-amber-500 to-orange-600" items={[{ href: '/taxid', label: 'TIN Verification Slip', d: 'M6 3h9l4 4v14H6zM9 3v5h5', g: 'from-amber-500 to-orange-600' }, { href: '/tin', label: 'Generate TIN (Agency)', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-pink-500 to-rose-600' }, { href: '/tin/history', label: 'TIN History', d: 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z', g: 'from-blue-500 to-indigo-600' }]} active={active} onNav={onNav} />
         {isAdmin && (
           <NavGroup label="Admin" d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z" g="from-rose-500 to-red-600" items={ADMIN} active={active} onNav={onNav} />
         )}
