@@ -60,9 +60,6 @@ export default async function DashboardPage() {
     { href: '/verify?s=nin_regular', id: 'nin_regular', t: 'NIN Verification', d: 'Official NIMC slips with instant database lookup.', time: 'Instant', g: 'from-emerald-600 to-emerald-800' },
     { href: '/verify?s=nin_by_phone', id: 'nin_by_phone', t: 'NIN by Phone', d: 'Retrieve an NIN record using a phone number.', time: 'Instant', g: 'from-emerald-600 to-cyan-800' },
     { href: '/verify?s=nin_demographic', id: 'nin_demographic', t: 'Demographic Search', d: 'Search NIN records by demographics.', time: 'Instant', g: 'from-cyan-600 to-sky-800' },
-    { href: '/nin/validation', id: 'nin_validation', t: 'NIN Validation', d: 'Resolve No-Record, VNIN sync & modification issues.', time: '24–48 hrs', g: 'from-sky-700 to-blue-900' },
-    { href: '/nin/modification', id: null, t: 'NIN Modification', d: 'Change of Name, Phone, or Address. ₦5,800.', time: '1–48 hrs', g: 'from-emerald-700 to-cyan-900' },
-    { href: '/nin/ipe', id: 'ipe_clearance', t: 'IPE Clearance', d: 'Clear In-Processing Errors on your NIN.', time: '~24 hrs', g: 'from-rose-600 to-red-900' },
     { href: '/verify?s=bvn_basic', id: 'bvn_basic', t: 'BVN Verification', d: 'Official BVN slip in seconds.', time: 'Instant', g: 'from-emerald-600 to-emerald-900' },
     { href: '/verify?s=bvn_retrieval', id: 'bvn_retrieval', t: 'BVN Retrieval', d: 'Get BVN from phone or NIN.', time: 'Instant', g: 'from-emerald-600 to-[var(--tile)]900' },
   ];

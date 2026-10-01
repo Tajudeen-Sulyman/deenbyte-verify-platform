@@ -17,7 +17,7 @@ export default function TermsPage() {
         <div className="mt-4 space-y-4 text-sm text-dark card3d p-5">
           <section>
             <h2 className="font-semibold">1. The service</h2>
-            <p className="mt-1 text-muted">DeenByte Verify provides paid identity verification lookups (NIN, BVN, phone, demographic search) and async correction requests (IPE clearance, validation, personalization, BVN retrieval) sourced from licensed third-party providers.</p>
+            <p className="mt-1 text-muted">DeenByte Verify provides paid identity verification lookups (NIN, BVN, phone, demographic search) and async correction requests (personalization, BVN retrieval) sourced from licensed third-party providers.</p>
           </section>
           <section>
             <h2 className="font-semibold">2. Consent & lawful use</h2>
