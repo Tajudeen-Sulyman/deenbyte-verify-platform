@@ -8,6 +8,11 @@ async function notify(user_id: string, title: string, body: string) {
 }
 
 export async function POST(req: NextRequest) {
+  const secret = process.env.SEAMLESHUB_WEBHOOK_KEY;
+  const given = new URL(req.url).searchParams.get('k');
+  if (!secret || given !== secret) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   const body = await req.json().catch(() => null);
   const event = String(body?.event ?? '');
   const data = body?.data ?? {};
