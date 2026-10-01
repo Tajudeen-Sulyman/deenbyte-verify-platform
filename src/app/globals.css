@@ -232,3 +232,8 @@ button, a { transition: all .18s ease; }
   border: 1px solid rgba(255,255,255,.25) !important;
   color: #ffffff !important;
 }
+
+/* Hero cards: hide decorative overlay shapes (absolute children), keep buttons */
+section[class*="vibe-gradient"] > [class*="absolute"] {
+  display: none !important;
+}
