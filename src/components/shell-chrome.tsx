@@ -123,7 +123,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
 
   return (
     <div className="min-h-screen sb-surf">
-      <aside className="shell-sidebar hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col bg-dark border-r border-white/10">
+      <aside data-theme="dark" className="shell-sidebar hidden lg:flex fixed inset-y-0 left-0 w-64 flex-col bg-dark border-r border-white/10">
         <div className="px-5 py-5 border-b border-white/10">{brand}</div>
         <SideNav email={email ?? ''} balance={balance} isAdmin={isAdmin} active={path} onNav={onNav} />
         <div className="px-4 py-3 border-t border-white/10 space-y-2">{logoutSlot}</div>
@@ -132,7 +132,7 @@ export function ShellChrome({ isAdmin, title, email, avatarUrl, balance, logoutS
       {open && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div className="absolute inset-0 bg-dark/30" onClick={() => setOpen(false)} />
-          <div className="shell-drawer absolute inset-y-0 left-0 w-72 max-w-[85%] bg-dark shadow-card flex flex-col">
+          <div data-theme="dark" className="shell-drawer absolute inset-y-0 left-0 w-72 max-w-[85%] bg-dark shadow-card flex flex-col">
             <div className="px-5 py-5 border-b border-white/10 flex items-center justify-between">
               {brand}
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 rounded-lg text-slate-300 hover:sb-surf">✕</button>
