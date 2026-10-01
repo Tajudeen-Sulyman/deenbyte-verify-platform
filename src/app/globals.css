@@ -224,3 +224,11 @@ button, a { transition: all .18s ease; }
 .shell-drawer[data-theme='dark'] {
   color: var(--ink);
 }
+
+/* Hero gradient cards: keep translucent white overlays translucent in light theme */
+[class*="vibe-gradient"] [class*="bg-white/"],
+[class*="vibe-gradient"][class*="bg-white/"] {
+  background-color: rgba(255,255,255,.14) !important;
+  border: 1px solid rgba(255,255,255,.25) !important;
+  color: #ffffff !important;
+}
