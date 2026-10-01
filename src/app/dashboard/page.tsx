@@ -107,18 +107,14 @@ export default async function DashboardPage() {
             {hubs.map((h) => {
               const svc = h.id ? services.find((s: any) => s.service_id === h.id) : null;
               return (
-                <Link key={h.t} href={h.href} className="relative card3d p-2.5 flex flex-col items-center text-center gap-1.5 hover:border-primary hover:-translate-y-0.5">
+                <Link key={h.t} href={h.href} className="relative card3d p-2.5 flex flex-col items-center justify-center text-center gap-1.5 min-h-[104px] hover:border-primary hover:-translate-y-0.5">
                   <span className={'h-10 w-10 rounded-xl bg-gradient-to-br text-white flex items-center justify-center ' + tileCls(svc ? String(svc.category) : '', !!svc?.is_async)}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
                       <path d={(h.id && ICONS[h.id]) ?? FALLBACK} />
                     </svg>
                   </span>
                   <p className="text-[11px] font-semibold text-dark leading-tight">{h.t}</p>
-                  {svc ? (
-                    <p className="hidden">₦{Number(svc.selling_price).toLocaleString('en-NG')}</p>
-                  ) : (
-                    <p className="text-[10px] font-semibold text-muted">{h.time}</p>
-                  )}
+                  
                 </Link>
               );
             })}
