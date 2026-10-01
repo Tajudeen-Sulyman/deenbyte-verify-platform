@@ -31,6 +31,12 @@ function tileCls(cat: string, isAsync: boolean) {
   return 'from-emerald-500 to-emerald-600';
 }
 
+function badgeCls(cat: string, isAsync: boolean) {
+  if (isAsync) return 'bg-white/70 text-amber-700';
+  if (cat === 'BVN') return 'bg-white/70 text-blue-700';
+  return 'bg-white/70 text-primary';
+}
+
 export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -96,7 +102,12 @@ export default async function DashboardPage() {
             {hubs.map((h) => {
               const svc = h.id ? services.find((s: any) => s.service_id === h.id) : null;
               return (
-                <Link key={h.t} href={h.href} className="relative card3d p-2.5 flex flex-col items-center justify-center text-center gap-1.5 min-h-[104px] hover:border-primary hover:-translate-y-0.5">
+                <Link key={h.t} href={h.href} className="relative card3d flex flex-col items-center justify-center text-center gap-1.5 hover:border-primary hover:-translate-y-0.5 p-2.5 pt-5 min-h-[112px]">
+              {svc && (
+                <span className={'absolute top-1.5 right-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-bold ' + badgeCls(String(svc.category), !!svc.is_async)}>
+                  {svc.is_async ? 'ASYNC' : String(svc.category)}
+                </span>
+              )}
                   <span className={'h-10 w-10 rounded-xl bg-gradient-to-br text-white flex items-center justify-center ' + tileCls(svc ? String(svc.category) : '', !!svc?.is_async)}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
                       <path d={(h.id && ICONS[h.id]) ?? FALLBACK} />
