@@ -115,7 +115,7 @@ export default async function DashboardPage() {
                   </span>
                   <p className="text-[11px] font-semibold text-dark leading-tight">{h.t}</p>
                   {svc ? (
-                    <p className="text-[11px] font-bold text-primary">₦{Number(svc.selling_price).toLocaleString('en-NG')}</p>
+                    <p className="hidden">₦{Number(svc.selling_price).toLocaleString('en-NG')}</p>
                   ) : (
                     <p className="text-[10px] font-semibold text-muted">{h.time}</p>
                   )}
