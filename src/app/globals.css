@@ -218,3 +218,9 @@ button, a { transition: all .18s ease; }
 .db-wallet-row .db-wallet-label { color: var(--db-wallet-label); font-size: 12px; }
 .db-wallet-row .db-wallet-value { color: var(--db-wallet-value); font-size: 14px; font-weight: 500; }
 .db-action-btn { width: 100%; background: var(--db-action); border: none; color: var(--db-action-text); font-weight: 500; font-size: 13px; padding: 8px; border-radius: 8px; }
+
+/* Sidebar + drawer: re-resolve inherited text colour from the dark tokens */
+.shell-sidebar[data-theme='dark'],
+.shell-drawer[data-theme='dark'] {
+  color: var(--ink);
+}
