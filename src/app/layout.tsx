@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 
     export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
       return (
-          <html lang="en">
+          <html lang="en" suppressHydrationWarning>
+<head><script dangerouslySetInnerHTML={{ __html: "try{document.documentElement.setAttribute('data-theme',localStorage.getItem('db-theme')==='dark'?'dark':'light')}catch(e){}" }} /></head>
                 <body className={inter.className}>{children}      <GlobalNav />
     </body>
                     </html>

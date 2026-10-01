@@ -25,12 +25,6 @@ const ICONS: Record<string, string> = {
 };
 const FALLBACK = 'M12 8v4l3 3M21 12a9 9 0 11-9-9 9 9 0 019 9z';
 
-function badgeCls(cat: string, isAsync: boolean) {
-  if (isAsync) return 'bg-white/70 text-amber-700';
-  if (cat === 'BVN') return 'bg-white/70 text-blue-700';
-  return 'bg-white/70 text-primary';
-}
-
 function tileCls(cat: string, isAsync: boolean) {
   if (isAsync) return 'from-amber-500 to-orange-600';
   if (cat === 'BVN') return 'from-emerald-500 to-emerald-600';
@@ -75,63 +69,52 @@ export default async function DashboardPage() {
 
   return (
     <AppShell title="Dashboard">
-      <div className="space-y-5">
-        <section className="card3d p-5">
-          <h2 className="text-lg font-bold text-dark">Welcome back 👋</h2>
-          <p className="text-sm text-muted mt-1">Manage verifications, wallet and transactions from one place.</p>
-        </section>
-
-        <section className="relative overflow-hidden rounded-2xl p-5 text-white vibe-gradient from-emerald-600 to-emerald-700 shadow-card">
+      <div className="space-y-4">
+        <section className="relative overflow-hidden rounded-2xl p-4 text-white vibe-gradient from-emerald-600 to-emerald-700 shadow-card">
           <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-white/10" />
           <div className="absolute -right-2 -top-2 h-20 w-20 rounded-full bg-white/10" />
           <div className="relative flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs text-emerald-100">Wallet Balance</p>
-              <p className="text-2xl font-bold text-white">
+              <p className="text-xs text-emerald-100">Welcome back · Wallet balance</p>
+              <p className="text-xl font-bold text-white">
                 ₦{balance.toLocaleString('en-NG', { minimumFractionDigits: 2 })}
               </p>
             </div>
             <div className="flex gap-2">
-              <Link href="/wallet" className="rounded-lg bg-white px-4 py-2.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50">
+              <Link href="/wallet" className="rounded-lg bg-white px-3.5 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-50">
                 Fund Wallet
               </Link>
-              <Link href="/transactions" className="rounded-lg border border-white/40 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white hover:bg-white/20">
+              <Link href="/transactions" className="rounded-lg border border-white/40 bg-white/10 px-3.5 py-2 text-xs font-semibold text-white hover:bg-white/20">
                 Transactions
               </Link>
             </div>
           </div>
         </section>
 
-        <section className="relative overflow-hidden rounded-2xl p-5 text-white vibe-gradient from-emerald-800 to-emerald-950 shadow-card">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">New — no account needed</p>
-          <h3 className="mt-1 text-lg font-extrabold">TIN Verification Slip</h3>
-          <p className="mt-1 text-xs text-emerald-100">Pay once, get your slip in under 90 seconds. From ₦50.</p>
-          <Link href="/taxid" className="mt-3 inline-block rounded-lg bg-primary px-4 py-2 text-xs font-extrabold text-white">Get yours →</Link>
+        <section className="relative overflow-hidden rounded-2xl px-4 py-3 text-white vibe-gradient from-emerald-800 to-emerald-950 shadow-card">
+          <div className="relative flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <h3 className="text-sm font-extrabold">TIN Verification Slip</h3>
+              <p className="text-[11px] text-emerald-100">No account needed · ready in under 90 seconds</p>
+            </div>
+            <Link href="/taxid" className="shrink-0 rounded-lg bg-primary px-3.5 py-2 text-xs font-extrabold text-white">Get slip →</Link>
+          </div>
         </section>
 
         <section>
           <h3 className="text-sm font-bold text-dark mb-2">Service Hub</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
             {hubs.map((h) => {
               const svc = h.id ? services.find((s: any) => s.service_id === h.id) : null;
               return (
-                <Link key={h.t} href={h.href} className="relative card3d p-4 pt-6 flex flex-col items-center text-center gap-2 hover:border-primary hover:-translate-y-0.5">
-                  {svc && (
-                    <span className={'absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full ' + badgeCls(String(svc.category), !!svc.is_async)}>
-                      {svc.is_async ? 'ASYNC' : String(svc.category)}
-                    </span>
-                  )}
-                  <span className={'h-12 w-12 rounded-2xl bg-gradient-to-br text-white flex items-center justify-center shadow-md ' + tileCls(svc ? String(svc.category) : '', !!svc?.is_async)}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden="true">
+                <Link key={h.t} href={h.href} className="relative card3d p-2.5 flex flex-col items-center justify-center text-center gap-1.5 min-h-[104px] hover:border-primary hover:-translate-y-0.5">
+                  <span className={'h-10 w-10 rounded-xl bg-gradient-to-br text-white flex items-center justify-center ' + tileCls(svc ? String(svc.category) : '', !!svc?.is_async)}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
                       <path d={(h.id && ICONS[h.id]) ?? FALLBACK} />
                     </svg>
                   </span>
-                  <p className="text-sm font-semibold text-dark leading-tight">{h.t}</p>
-                  {svc ? (
-                    <p className="text-xs font-bold text-primary">₦{Number(svc.selling_price).toLocaleString('en-NG')}</p>
-                  ) : (
-                    <p className="text-xs font-semibold text-muted">{h.time}</p>
-                  )}
+                  <p className="text-[11px] font-semibold text-dark leading-tight">{h.t}</p>
+                  
                 </Link>
               );
             })}
@@ -139,7 +122,7 @@ export default async function DashboardPage() {
         </section>
 
 
-        <section className="card3d p-5">
+        <section className="card3d p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-dark">Recent activity</h3>
             <Link href="/history" className="text-xs font-semibold text-primary">View all</Link>
