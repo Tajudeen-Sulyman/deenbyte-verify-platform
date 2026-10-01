@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/tin/:path*", destination: "/", permanent: false },
       { source: "/taxid/:path*", destination: "/", permanent: false },
+      { source: "/nin/modification/:path*", destination: "/dashboard", permanent: false },
+      { source: "/nin/validation/:path*", destination: "/dashboard", permanent: false },
+      { source: "/nin/ipe/:path*", destination: "/dashboard", permanent: false },
     ];
   },
 };
