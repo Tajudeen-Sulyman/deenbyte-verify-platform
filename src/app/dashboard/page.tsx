@@ -91,15 +91,7 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        <section className="relative overflow-hidden rounded-2xl px-4 py-3 text-white vibe-gradient from-emerald-800 to-emerald-950 shadow-card">
-          <div className="relative flex items-center justify-between gap-3">
-            <div className="min-w-0">
-              <h3 className="text-sm font-extrabold">TIN Verification Slip</h3>
-              <p className="text-[11px] text-emerald-100">No account needed · ready in under 90 seconds</p>
-            </div>
-            <Link href="/taxid" className="shrink-0 rounded-lg bg-primary px-3.5 py-2 text-xs font-extrabold text-white">Get slip →</Link>
-          </div>
-        </section>
+        
 
         <section>
           <h3 className="text-sm font-bold text-dark mb-2">Service Hub</h3>

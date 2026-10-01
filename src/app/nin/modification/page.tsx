@@ -17,7 +17,7 @@ const [wallet, setWallet] = useState({ loggedIn: false, balance: 0 });
 const [err, setErr] = useState('');
 const [busy, setBusy] = useState(false);
 const t = MOD_TYPES.find((x) => x.key === type)!;
-useEffect(() => { fetch('/api/v1/taxid/me').then((r) => r.json()).then(setWallet).catch(() => {}); }, []);
+useEffect(() => { fetch('/api/v1/me').then((r) => r.json()).then(setWallet).catch(() => {}); }, []);
 function onFile(kind: 'support' | 'attest', e: any) {
 const f = e.target.files?.[0]; if (!f) return;
 if (f.size > 2000000) { setErr('Max 2MB per document.'); return; }

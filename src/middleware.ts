@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
                                                                                                                                       const path = request.nextUrl.pathname;
 
                                                                                                                                         // Not logged in → force /login
-                                                                                                                                          const isPublic = path === '/' || path.startsWith('/taxid') || path.startsWith('/tin') || path.startsWith('/nin/') || path === '/terms' || path === '/privacy';
+                                                                                                                                          const isPublic = path === '/' || path.startsWith('/nin/') || path === '/terms' || path === '/privacy';
     if (!user && !authPages.includes(path) && !isPublic) {
                                                                                                                                               return NextResponse.redirect(new URL('/login', request.url));
                                                                                                                                                 }

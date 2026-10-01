@@ -19,7 +19,7 @@ export default function IpePage() {
   const [err, setErr] = useState(''); const [busy, setBusy] = useState(false);
   const [rows, setRows] = useState<any[]>([]);
   const load = () => fetch('/api/v1/ipe/history').then((r) => r.json()).then((j) => setRows(j.rows ?? [])).catch(() => {});
-  useEffect(() => { fetch('/api/v1/taxid/me').then((r) => r.json()).then(setWallet).catch(() => {}); load(); }, []);
+  useEffect(() => { fetch('/api/v1/me').then((r) => r.json()).then(setWallet).catch(() => {}); load(); }, []);
   const set = (k: string) => (e: any) => setF({ ...f, [k]: e.target.value });
 
   async function submit(payMethod: 'wallet' | 'paystack') {
