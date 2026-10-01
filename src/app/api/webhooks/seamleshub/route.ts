@@ -11,7 +11,9 @@ export async function POST(req: NextRequest) {
   const secret = process.env.SEAMLESHUB_WEBHOOK_KEY;
   const given = new URL(req.url).searchParams.get('k');
   if (!secret || given !== secret) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { createHash } = await import('crypto');
+    const hs = (v?: string | null) => (v ? createHash('sha256').update(v).digest('hex').slice(0, 8) : null);
+    return NextResponse.json({ error: 'Unauthorized', dbg: { envLen: secret?.length ?? 0, envHash: hs(secret), gotLen: given?.length ?? 0, gotHash: hs(given) } }, { status: 401 });
   }
   const body = await req.json().catch(() => null);
   const event = String(body?.event ?? '');
