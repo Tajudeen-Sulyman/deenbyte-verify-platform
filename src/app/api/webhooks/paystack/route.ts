@@ -15,7 +15,12 @@ export async function POST(req: Request) {
 
   const event = JSON.parse(raw);
   if (event.event === 'charge.success' && event.data?.reference) {
-    await settlePayment(event.data.reference).catch(() => {});
+    try {
+      const r = await settlePayment(event.data.reference);
+      if (!r.credited && r.retry) return NextResponse.json({ error: 'Retry' }, { status: 500 });
+    } catch {
+      return NextResponse.json({ error: 'Retry' }, { status: 500 });
+    }
   }
 
   return NextResponse.json({ received: true });
