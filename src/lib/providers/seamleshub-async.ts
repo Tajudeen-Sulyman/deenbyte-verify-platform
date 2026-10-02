@@ -22,7 +22,10 @@ async function call(path: string, body: Record<string, unknown>): Promise<ShResu
     return { kind: 'unknown', message: 'No clear answer from provider.' };
   }
   if (json?.status === 'success') {
-    const d = json.data ?? {};
+    const top: any = { ...json };
+    delete top.status;
+    delete top.data;
+    const d: any = { ...top, ...(json.data ?? {}) };
     const ref = d.reference ?? d.transaction_ref ?? d.ticket_id ?? null;
     return {
       kind: 'accepted',
