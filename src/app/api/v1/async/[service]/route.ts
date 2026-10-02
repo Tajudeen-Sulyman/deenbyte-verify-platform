@@ -1,3 +1,4 @@
+import { ipeSubmit } from '@/lib/providers/seamleshub-async';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createClient as adminClient } from '@supabase/supabase-js';
@@ -71,7 +72,8 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   const provider = String(serviceRow.provider ?? 'techhub');
   const price = Number(serviceRow.selling_price);
 
-  if (provider !== 'techhub') {
+  const useSh = provider === 'seamleshub' && service === 'ipe_clearance';
+  if (provider !== 'techhub' && !useSh) {
     return NextResponse.json({ error: 'Provider not configured for this service.' }, { status: 500 });
   }
 
@@ -116,6 +118,41 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
     return NextResponse.json({ error: 'Wallet charge failed. Try again.' }, { status: 500 });
   }
 
+  if (useSh) {
+    const shr = await ipeSubmit(String((input as any).tracking_id ?? ''));
+    if (shr.kind === 'accepted') {
+      await supabaseAdmin.from('verification_requests')
+        .update({ provider_reference: shr.reference, safe_response_data: { accepted: true } })
+        .eq('id', request.id);
+      return NextResponse.json({
+        success: true, reference: requestRef, requestId: request.id, status: 'processing',
+        message: 'Request submitted. Processing takes 10 minutes to 24 hours. Use Check Status in History.',
+      });
+    }
+    if (shr.kind === 'rejected') {
+      const { error: refErr } = await supabaseAdmin.rpc('credit_wallet', {
+        p_user_id: user.id, p_amount: price, p_type: 'reversal',
+        p_reference: 'REV-' + requestRef,
+        p_description: 'Reversal for failed ' + serviceRow.name,
+        p_verification_id: request.id,
+      });
+      if (refErr && refErr.code !== '23505') {
+        return NextResponse.json({ error: 'Submission failed and your refund is pending. Contact support with ref ' + requestRef }, { status: 500 });
+      }
+      await supabaseAdmin.from('verification_requests').update({
+        status: 'failed', error_code: 'provider_rejected',
+        error_message: shr.message.slice(0, 300), completed_at: new Date().toISOString(),
+      }).eq('id', request.id);
+      return NextResponse.json({ error: shr.message }, { status: 400 });
+    }
+    // unclear answer: the provider may have accepted it, so do NOT refund. Keep it processing.
+    await supabaseAdmin.from('verification_requests')
+      .update({ error_code: 'provider_unclear', error_message: shr.message }).eq('id', request.id);
+    return NextResponse.json({
+      success: true, reference: requestRef, requestId: request.id, status: 'processing',
+      message: 'Request received. We are confirming it with the provider. Check Status in History.',
+    });
+  }
   try {
     const json = await TechHubAsync.post(TechHubAsync.paths[service], input);
     const ticket = json?.ticket_id ?? null;

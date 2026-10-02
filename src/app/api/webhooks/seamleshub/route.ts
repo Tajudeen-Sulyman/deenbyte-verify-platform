@@ -49,24 +49,48 @@ export async function POST(req: NextRequest) {
     }
   }
   if (event === 'ipe.completed' || event === 'ipe.failed') {
-    const trk = String(data.tracking_id ?? '');
     const completed = event === 'ipe.completed';
-    if (trk) {
-      const { data: rows } = await admin.from('ipe_requests').select('*').eq('tracking_id', trk)
-        .in('status', ['awaiting_payment', 'pending', 'processing']).order('created_at', { ascending: false }).limit(1);
-      const row = rows?.[0];
-      if (row) {
-        await admin.from('ipe_requests').update({
-          status: completed ? 'completed' : 'failed',
-          result_text: completed ? ('NIN: ' + String(data.nin ?? '') + ' • Name: ' + String(data.full_name ?? '')) : null,
-          error_message: completed ? null : ('IPE clearance failed. ' + (data.refunded ? 'Provider auto-refunded — wallet credited.' : 'Contact support.')),
-        }).eq('id', row.id);
-        await notify(row.user_id, completed ? 'IPE Clearance completed ✅' : 'IPE Clearance failed', completed ? ('Your NIN is now clear: ' + String(data.nin ?? '')) : (data.refunded ? 'Failed — your wallet has been refunded.' : 'Failed. Contact support.'));
-        if (!completed && data.refunded) {
-          const { data: wallet } = await admin.from('wallets').select('balance').eq('user_id', row.user_id).maybeSingle();
-          await admin.from('wallets').update({ balance: Number(wallet?.balance ?? 0) + Number(row.fee) }).eq('user_id', row.user_id);
-          await admin.from('wallet_transactions').insert({ user_id: row.user_id, amount: Number(row.fee), type: 'reversal', status: 'successful', description: 'IPE refund ' + row.reference });
+    const trk = String(data.tracking_id ?? '');
+    const prov = String(data.reference ?? data.transaction_ref ?? '');
+    const mask = (v: unknown) => {
+      const s = String(v ?? '');
+      return s.length > 5 ? s.slice(0, 3) + '*****' + s.slice(-2) : s;
+    };
+    const { data: svc } = await admin.from('verification_services').select('id').eq('service_id', 'ipe_clearance').maybeSingle();
+    const find = async (col: string, val: string) => {
+      if (!svc?.id || !val) return null;
+      const { data: rows } = await admin.from('verification_requests').select('*')
+        .eq('service_id', svc.id).eq('status', 'processing').eq(col, val)
+        .order('created_at', { ascending: false }).limit(1);
+      return rows?.[0] ?? null;
+    };
+    const row: any = (await find('provider_reference', prov)) ?? (await find('safe_request_data->fields->>tracking_id', trk));
+    if (row) {
+      if (completed) {
+        await admin.from('verification_requests').update({
+          status: 'successful',
+          safe_response_data: { message: 'IPE clearance completed', nin: mask(data.nin), full_name: data.full_name ?? null },
+          completed_at: new Date().toISOString(),
+        }).eq('id', row.id).eq('status', 'processing');
+        await notify(row.user_id, 'IPE Clearance completed ✅', 'Your NIN is now clear: ' + mask(data.nin));
+      } else {
+        // refund the customer first: credit_wallet is atomic and the reference is UNIQUE, so a repeat is a no-op
+        const { error: refErr } = await admin.rpc('credit_wallet', {
+          p_user_id: row.user_id, p_amount: row.selling_price, p_type: 'reversal',
+          p_reference: 'REV-' + row.request_reference,
+          p_description: 'Reversal for failed IPE Clearance',
+          p_verification_id: row.id,
+        });
+        if (refErr && refErr.code !== '23505') {
+          return NextResponse.json({ error: 'Retry' }, { status: 500 });
         }
+        await admin.from('verification_requests').update({
+          status: 'failed', error_code: 'provider_failed',
+          error_message: String(data.admin_note ?? data.message ?? 'IPE clearance failed.').slice(0, 300),
+          safe_response_data: { provider_refunded: !!data.refunded },
+          completed_at: new Date().toISOString(),
+        }).eq('id', row.id).eq('status', 'processing');
+        await notify(row.user_id, 'IPE Clearance failed', 'Your request could not be completed. Your wallet has been refunded.');
       }
     }
   }
