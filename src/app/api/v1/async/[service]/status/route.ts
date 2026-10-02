@@ -39,21 +39,26 @@ export async function POST(req: Request) {
     if (!trk) return NextResponse.json({ error: 'Missing tracking ID for this request.' }, { status: 500 });
     const st = await ipeStatus(trk);
     if (st.kind !== 'accepted') {
+      await supabaseAdmin.from('verification_requests').update({
+        safe_response_data: { ...((row.safe_response_data as any) ?? {}), last_check: { at: new Date().toISOString(), kind: st.kind, msg: String((st as any).message ?? '').replace(/\d{6,}/g, '***').slice(0, 120) } },
+      }).eq('id', row.id);
       // unclear or rejected status call: never change the order from here
       return NextResponse.json({ status: 'processing', message: 'Still processing. Check again later.' });
     }
     const d: any = st.data ?? {};
     const raw = String(d.request_status ?? d.status ?? d.state ?? '').toLowerCase().trim();
-    const done = /^(completed|complete|successful|success|done|cleared|approved)$/.test(raw) && !!d.nin;
-    const bad = /^(failed|failure|rejected|declined|cancelled|canceled|refunded)$/.test(raw);
+    const shMsg = String(d.message ?? '');
+    const msgOk = /\b(completed|successful|successfully|cleared)\b/i.test(shMsg) && !/\b(not|fail|failed|failure|reject|rejected|declined|error|unable|invalid)\b/i.test(shMsg);
+    const done = !!d.nin && (/^(completed|complete|successful|success|done|cleared|approved)$/.test(raw) || msgOk);
+    const bad = /^(failed|failure|rejected|declined|cancelled|canceled|refunded)$/.test(raw) || (!d.nin && /\b(failed|failure|rejected|declined|cancelled|canceled|refunded)\b/i.test(shMsg));
     const mask = (v: unknown) => { const x = String(v ?? ''); return x.length > 5 ? x.slice(0, 3) + '*****' + x.slice(-2) : x; };
     if (done) {
       await supabaseAdmin.from('verification_requests').update({
         status: 'successful',
-        safe_response_data: { message: 'IPE clearance completed', nin: mask(d.nin), full_name: d.full_name ?? null },
+        safe_response_data: { message: 'IPE clearance completed', nin: mask(d.nin), full_name: d.full_name ?? null, tracking_id: d.tracking_id ?? null, old_tracking_id: d.old_tracking_id ?? null },
         completed_at: new Date().toISOString(),
       }).eq('id', row.id).eq('status', 'processing');
-      return NextResponse.json({ status: 'successful', reference: row.request_reference, data: { nin: mask(d.nin), full_name: d.full_name ?? null } });
+      return NextResponse.json({ status: 'successful', reference: row.request_reference, data: { nin: mask(d.nin), full_name: d.full_name ?? null, tracking_id: d.tracking_id ?? null, old_tracking_id: d.old_tracking_id ?? null } });
     }
     if (bad) {
       const { error: refErr } = await supabaseAdmin.rpc('credit_wallet', {
