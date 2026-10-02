@@ -74,7 +74,7 @@ export async function POST(req: Request) {
     }
     // still processing, or an answer we do not recognise yet: record its shape, change nothing else
     await supabaseAdmin.from('verification_requests').update({
-      safe_response_data: { ...((row.safe_response_data as any) ?? {}), last_check: { at: new Date().toISOString(), status: raw.slice(0, 40), keys: Object.keys(d).slice(0, 20) } },
+      safe_response_data: { ...((row.safe_response_data as any) ?? {}), last_check: { at: new Date().toISOString(), status: raw.slice(0, 40), keys: Object.keys(d).slice(0, 20), msg: String(d.message ?? '').replace(/\d{6,}/g, '***').slice(0, 120) } },
     }).eq('id', row.id);
     return NextResponse.json({ status: 'processing', message: 'Still processing. Check again later.' });
   }
