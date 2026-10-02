@@ -64,7 +64,13 @@ export async function POST(req: NextRequest) {
         .order('created_at', { ascending: false }).limit(1);
       return rows?.[0] ?? null;
     };
-    const row: any = (await find('provider_reference', prov)) ?? (await find('safe_request_data->fields->>tracking_id', trk));
+    const row: any = (await find('provider_reference', prov)) ?? (await (async () => {
+      if (!svc?.id || !trk) return null;
+      const { data: open } = await admin.from('verification_requests').select('*')
+        .eq('service_id', svc.id).eq('status', 'processing')
+        .order('created_at', { ascending: false }).limit(100);
+      return (open ?? []).find((x: any) => String(x.safe_request_data?.fields?.tracking_id ?? '').trim().toUpperCase() === trk.trim().toUpperCase()) ?? null;
+    })());
     if (row) {
       if (completed) {
         await admin.from('verification_requests').update({

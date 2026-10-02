@@ -1,3 +1,4 @@
+import { ipeStatus } from '@/lib/providers/seamleshub-async';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createClient as adminClient } from '@supabase/supabase-js';
@@ -33,6 +34,50 @@ export async function POST(req: Request) {
   const provider = String(row.verification_services?.provider ?? 'techhub');
   const service = String(row.verification_services?.service_id ?? '');
 
+  if (provider === 'seamleshub' && service === 'ipe_clearance') {
+    const trk = String((row.safe_request_data as any)?.fields?.tracking_id ?? '');
+    if (!trk) return NextResponse.json({ error: 'Missing tracking ID for this request.' }, { status: 500 });
+    const st = await ipeStatus(trk);
+    if (st.kind !== 'accepted') {
+      // unclear or rejected status call: never change the order from here
+      return NextResponse.json({ status: 'processing', message: 'Still processing. Check again later.' });
+    }
+    const d: any = st.data ?? {};
+    const raw = String(d.request_status ?? d.status ?? d.state ?? '').toLowerCase().trim();
+    const done = /^(completed|complete|successful|success|done|cleared|approved)$/.test(raw) && !!d.nin;
+    const bad = /^(failed|failure|rejected|declined|cancelled|canceled|refunded)$/.test(raw);
+    const mask = (v: unknown) => { const x = String(v ?? ''); return x.length > 5 ? x.slice(0, 3) + '*****' + x.slice(-2) : x; };
+    if (done) {
+      await supabaseAdmin.from('verification_requests').update({
+        status: 'successful',
+        safe_response_data: { message: 'IPE clearance completed', nin: mask(d.nin), full_name: d.full_name ?? null },
+        completed_at: new Date().toISOString(),
+      }).eq('id', row.id).eq('status', 'processing');
+      return NextResponse.json({ status: 'successful', reference: row.request_reference, data: { nin: mask(d.nin), full_name: d.full_name ?? null } });
+    }
+    if (bad) {
+      const { error: refErr } = await supabaseAdmin.rpc('credit_wallet', {
+        p_user_id: user.id, p_amount: Number(row.selling_price), p_type: 'reversal',
+        p_reference: 'REV-' + row.request_reference,
+        p_description: 'Reversal for failed IPE Clearance',
+        p_verification_id: row.id,
+      });
+      if (refErr && refErr.code !== '23505') {
+        return NextResponse.json({ error: 'Refund pending. Contact support with ref ' + row.request_reference }, { status: 500 });
+      }
+      await supabaseAdmin.from('verification_requests').update({
+        status: 'failed', error_code: 'provider_failed',
+        error_message: String(d.admin_note ?? d.message ?? 'IPE clearance failed.').slice(0, 300),
+        completed_at: new Date().toISOString(),
+      }).eq('id', row.id).eq('status', 'processing');
+      return NextResponse.json({ status: 'failed', refunded: true, message: 'Request failed. Your wallet has been refunded.' });
+    }
+    // still processing, or an answer we do not recognise yet: record its shape, change nothing else
+    await supabaseAdmin.from('verification_requests').update({
+      safe_response_data: { ...((row.safe_response_data as any) ?? {}), last_check: { at: new Date().toISOString(), status: raw.slice(0, 40), keys: Object.keys(d).slice(0, 20) } },
+    }).eq('id', row.id);
+    return NextResponse.json({ status: 'processing', message: 'Still processing. Check again later.' });
+  }
   if (provider !== 'techhub') {
     return NextResponse.json({ error: 'Provider not configured for this service.' }, { status: 500 });
   }

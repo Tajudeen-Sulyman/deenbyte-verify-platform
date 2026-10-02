@@ -7,7 +7,7 @@ export type ShResult =
 
 async function call(path: string, body: Record<string, unknown>): Promise<ShResult> {
   const key = process.env.SEAMLESHUB_API_KEY?.trim();
-  if (!key) return { kind: 'rejected', message: 'Provider not configured.' };
+  if (!key) return { kind: 'rejected', message: 'Service temporarily unavailable. Please try again shortly.' };
   let json: any = null;
   try {
     const res = await fetch(BASE + path, {
