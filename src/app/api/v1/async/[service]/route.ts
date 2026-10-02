@@ -77,6 +77,16 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
     return NextResponse.json({ error: 'Provider not configured for this service.' }, { status: 500 });
   }
 
+  if (useSh) {
+    const trkNew = String((input as any).tracking_id ?? '').trim().toUpperCase();
+    const { data: open } = await supabaseAdmin.from('verification_requests')
+      .select('request_reference, safe_request_data')
+      .eq('user_id', user.id).eq('service_id', serviceRow.id).eq('status', 'processing');
+    const dup = (open ?? []).find((x: any) => String(x.safe_request_data?.fields?.tracking_id ?? '').trim().toUpperCase() === trkNew);
+    if (trkNew && dup) {
+      return NextResponse.json({ error: 'This tracking ID is already being processed (ref ' + dup.request_reference + '). Please wait for it to complete.' }, { status: 409 });
+    }
+  }
   const { data: wallet } = await supabaseAdmin
     .from('wallets').select('balance').eq('user_id', user.id).single();
   if (Number(wallet?.balance ?? 0) < price) {
@@ -122,7 +132,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
     const shr = await ipeSubmit(String((input as any).tracking_id ?? ''));
     if (shr.kind === 'accepted') {
       await supabaseAdmin.from('verification_requests')
-        .update({ provider_reference: shr.reference, safe_response_data: { accepted: true } })
+        .update({ provider_reference: shr.reference, safe_response_data: { accepted: true, keys: Object.keys(shr.data ?? {}).slice(0, 20) } })
         .eq('id', request.id);
       return NextResponse.json({
         success: true, reference: requestRef, requestId: request.id, status: 'processing',
