@@ -154,9 +154,9 @@ button, a { transition: all .18s ease; }
 .vibe-landing .text-violet-400, .vibe-login .text-violet-400,
 .vibe-landing .text-violet-300, .vibe-login .text-violet-300,
 .vibe-landing .text-emerald-400 { color: var(--accb) !important; }
-.vibe-landing .bg-\[#0b1120\], .vibe-landing .bg-\[#151f38\],
-.vibe-login .bg-\[#0b1120\], .vibe-login .bg-\[#151f38\] { background: var(--card) !important; }
-.vibe-landing .bg-\[#0d1526\], .vibe-login .bg-\[#0d1526\] { background: var(--card) !important; }
+.vibe-landing .bg-\[\#0b1120\], .vibe-landing .bg-\[\#151f38\],
+.vibe-login .bg-\[\#0b1120\], .vibe-login .bg-\[\#151f38\] { background: var(--card) !important; }
+.vibe-landing .bg-\[\#0d1526\], .vibe-login .bg-\[\#0d1526\] { background: var(--card) !important; }
 .vibe-landing .bg-white\/5, .vibe-landing .bg-white\/10 { background: var(--surf) !important; }
 .vibe-landing .border-white\/10, .vibe-login .border-white\/10 { border-color: var(--line) !important; }
 .vibe-login input, .vibe-login select { color: var(--ink) !important; background: var(--card) !important; border-color: var(--line) !important; }
