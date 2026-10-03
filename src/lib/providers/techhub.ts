@@ -187,3 +187,27 @@ export const TechHubProvider = {
     };
   },
 };
+
+// ---- IPE Clearance (async) ----
+const IPE_URL = "https://techhubltd.co/api/verification/ipe_clearance.php";
+
+export async function submitIpe(trackingId: string) {
+  if (!/^[A-Za-z0-9]{1,20}$/.test(trackingId)) throw new Error("Invalid tracking ID");
+  const res = await fetch(IPE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ api_key: process.env.TECHHUB_API_KEY, tracking_id: trackingId }),
+    signal: AbortSignal.timeout(20000),
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message ?? "IPE submit failed");
+  return { ticketId: data.ticket_id as string, status: data.status as string, cost: data.amount_charged as number };
+}
+
+export async function checkIpe(ticketId: string) {
+  const url = `${IPE_URL}?api_key=${encodeURIComponent(process.env.TECHHUB_API_KEY!)}&ticket_id=${encodeURIComponent(ticketId)}`;
+  const res = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(15000) });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message ?? "IPE status check failed");
+  return { status: data.status, note: data.note, newTrackingId: data.new_tracking_id, newNin: data.new_nin };
+}
