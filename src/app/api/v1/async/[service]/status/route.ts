@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   const provider = String(row.verification_services?.provider ?? 'techhub');
   const service = String(row.verification_services?.service_id ?? '');
 
-  if (provider === 'seamleshub' && service === 'ipe_clearance') {
+  if ((provider === 'seamleshub' || (row.safe_response_data as any)?.accepted === true) && service === 'ipe_clearance') {
     const trk = String((row.safe_request_data as any)?.fields?.tracking_id ?? '');
     if (!trk) return NextResponse.json({ error: 'Missing tracking ID for this request.' }, { status: 500 });
     const st = await ipeStatus(trk);
