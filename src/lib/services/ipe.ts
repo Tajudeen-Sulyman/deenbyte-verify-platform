@@ -91,7 +91,8 @@ export async function submitIpeRequest(userId: string, trackingIdRaw: string) {
         error_message: (err as Error).message,
         completed_at: new Date().toISOString(),
       }).eq('id', request.id);
-      throw err;
+      const m = (err as Error).message ?? '';
+      throw new Error(/balance|insufficient|fund|credit/i.test(m) ? 'This service is temporarily unavailable. You have not been charged.' : m);
     }
     await admin.from('verification_requests')
       .update({ error_message: 'Submit unconfirmed - needs manual review' })
