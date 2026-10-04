@@ -211,3 +211,26 @@ export async function checkIpe(ticketId: string) {
   if (!res.ok || !data.success) throw new Error(data.message ?? "IPE status check failed");
   return { status: data.status, note: data.note, newTrackingId: data.new_tracking_id, newNin: data.new_nin };
 }
+
+// ---- BVN Retrieval (async) ----
+const BVN_RET_URL = "https://techhubltd.co/api/verification/bvn_retrieval.php";
+
+export async function submitBvnRetrieval(i: { firstName: string; lastName: string; phone: string }) {
+  const res = await fetch(BVN_RET_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ api_key: process.env.TECHHUB_API_KEY, first_name: i.firstName, last_name: i.lastName, phone_number: i.phone }),
+    signal: AbortSignal.timeout(20000),
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message ?? "BVN retrieval submit failed");
+  return { ticketId: data.ticket_id as string, status: data.status as string };
+}
+
+export async function checkBvnRetrieval(ticketId: string) {
+  const url = `${BVN_RET_URL}?api_key=${encodeURIComponent(process.env.TECHHUB_API_KEY!)}&ticket_id=${encodeURIComponent(ticketId)}`;
+  const res = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(15000) });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message ?? "BVN retrieval status check failed");
+  return { status: data.status, bvn: (data.bvn ?? null) as string | null, response: data.response ?? null };
+}
