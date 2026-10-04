@@ -31,6 +31,7 @@ const NIN: Item[] = [
 const BVN: Item[] = [
   { href: '/verify?s=bvn_basic', label: 'BVN Verification', d: 'M12 3a9 9 0 019 9v9h-4v-9a5 5 0 00-10 0v9H3v-9a9 9 0 019-9z', g: 'from-emerald-500 to-emerald-600' },
   { href: '/verify?s=bvn_retrieval', label: 'BVN Retrieval', d: 'M12 3v12m0 0l-4-4m4 4l4-4M4 21h16', g: 'from-emerald-500 to-emerald-600' },
+  { href: '/ipe', label: 'IPE Clearance', d: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3zM9 12l2 2 4-4', g: 'from-emerald-500 to-emerald-600' },
 ];
 const ADMIN: Item[] = [
   { href: '/admin', label: 'Admin', d: 'M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z', g: 'from-rose-500 to-red-600' },

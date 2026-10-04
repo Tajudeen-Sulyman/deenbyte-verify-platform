@@ -10,7 +10,7 @@ const STATUS_STYLES: Record<string, string> = {
   pending: 'bg-amber-50 text-amber-700 border-amber-200',
 };
 
-const ASYNC_SERVICES = ['ipe_clearance', 'personalization', 'nin_validation'];
+const ASYNC_SERVICES = ['personalization', 'nin_validation'];
 
 export function HistoryList({ initialRows }: { initialRows: any[] }) {
   const [rows, setRows] = useState(initialRows);
