@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { BrandLogo } from '@/components/brand';
+import IpeStatusCard from '@/components/ipe-status-card';
 
 export const dynamic = 'force-dynamic';
 
@@ -53,6 +54,17 @@ export default async function HistoryDetailPage({ params }: { params: Promise<{ 
           <p className="text-lg font-bold text-dark mt-1">{row.request_reference}</p>
           <p className="text-xs text-muted mt-1">{new Date(row.created_at).toLocaleString()} · {row.status}</p>
         </div>
+
+        {(data.ticket_id || data.provider_status) && (
+          <IpeStatusCard
+            reference={row.request_reference}
+            status={String(data.provider_status ?? row.status)}
+            note={data.note ?? null}
+            newNin={data.new_nin ?? null}
+            newTrackingId={data.new_tracking_id ?? null}
+            errorMessage={row.error_message ?? null}
+          />
+        )}
 
         {row.status === 'successful' && entries.length > 0 && (
           <div className="card3d p-5">
