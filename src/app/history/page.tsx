@@ -18,6 +18,7 @@ const FILTERS = [
   { key: 'successful', label: 'Successful' },
   { key: 'failed', label: 'Failed' },
   { key: 'processing', label: 'Processing' },
+  { key: 'pending', label: 'Pending' },
 ];
 
 export default async function HistoryPage(props: { searchParams: Promise<Record<string, string>> }) {

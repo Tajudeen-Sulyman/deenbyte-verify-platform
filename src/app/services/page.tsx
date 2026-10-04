@@ -49,7 +49,7 @@ export default async function ServicesPage() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {(services ?? []).map((s: any) => (
-            <Link key={s.service_id} href={'/verify?s=' + s.service_id}
+            <Link key={s.service_id} href={s.service_id === 'ipe_clearance' ? '/ipe' : '/verify?s=' + s.service_id}
               className="relative card3d p-3 pt-5 flex flex-col items-center justify-center text-center gap-1.5 min-h-[104px] hover:border-primary hover:-translate-y-0.5">
               <span className={'absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full ' + badgeCls(String(s.category), !!s.is_async)}>
                 {s.is_async ? 'ASYNC' : String(s.category)}
