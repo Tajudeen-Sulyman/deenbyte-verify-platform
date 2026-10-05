@@ -38,12 +38,12 @@ export default async function AdminRequestsPage(props: { searchParams: Promise<R
   const refunded = new Set<string>();
   if (list.length) {
     const { data: txs } = await admin
-      .from('transactions').select('verification_id, type')
-      .in('verification_id', list.map((r) => r.id))
+      .from('wallet_transactions').select('related_verification_id, type')
+      .in('related_verification_id', list.map((r) => r.id))
       .in('type', ['verification_charge', 'reversal', 'refund']);
     for (const t of (txs ?? []) as any[]) {
-      if (t.type === 'verification_charge') charged.add(t.verification_id);
-      else refunded.add(t.verification_id);
+      if (t.type === 'verification_charge') charged.add(t.related_verification_id);
+      else refunded.add(t.related_verification_id);
     }
   }
 

@@ -32,8 +32,8 @@ export async function POST(req: Request) {
 
   // Ledger check: must have been charged, and must not already be refunded
   const { data: txs, error: txErr } = await admin
-    .from('transactions').select('type, amount')
-    .eq('verification_id', row.id)
+    .from('wallet_transactions').select('type, amount')
+    .eq('related_verification_id', row.id)
     .in('type', ['verification_charge', 'reversal', 'refund']);
   if (txErr) {
     return NextResponse.json({ error: 'Could not read the wallet ledger. Nothing was refunded.' }, { status: 500 });
