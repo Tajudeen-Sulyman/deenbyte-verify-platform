@@ -69,7 +69,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ service: strin
   if (!serviceRow || serviceRow.status !== 'active' || !serviceRow.enabled) {
     return NextResponse.json({ error: 'Service is not available right now.' }, { status: 400 });
   }
-  if (service === 'ipe_clearance' || service === 'bvn_retrieval') {
+  if (service === 'ipe_clearance' || service === 'bvn_retrieval' || service === 'nin_validation') {
     return NextResponse.json({ error: 'This service has moved. Please use its new page.' }, { status: 410 });
   }
   const provider = String(serviceRow.provider ?? 'techhub');

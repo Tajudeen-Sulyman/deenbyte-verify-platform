@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as adminClient } from '@supabase/supabase-js';
+import { handleNinValidationWebhook } from '@/lib/services/nin-validation';
 
 const admin = adminClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
@@ -30,6 +31,9 @@ export async function POST(req: NextRequest) {
       }).eq('provider_ref', ref);
       if (mrow) await notify(mrow.user_id, status === 'completed' ? 'NIN Modification completed ✅' : 'NIN Modification update', status === 'completed' ? 'Your result document is ready to download in Modification History.' : String(data.admin_note ?? 'Your request needs attention — check History.'));
     }
+  }
+  if (event === 'nin_validation.completed' || event === 'nin_validation.failed') {
+    if (await handleNinValidationWebhook(data)) return NextResponse.json({ received: true });
   }
   if (event === 'nin_validation.completed' || event === 'nin_validation.failed') {
     const nin = String(data.nin ?? '');

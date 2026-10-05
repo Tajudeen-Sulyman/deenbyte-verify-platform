@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { syncIpeRequest } from '@/lib/services/ipe';
 import { syncBvnRequest } from '@/lib/services/bvn-retrieval';
+import { syncNinValidationRequest } from '@/lib/services/nin-validation';
 
 const admin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -11,6 +12,7 @@ const admin = createClient(
 const SERVICES: { id: string; sync: (row: any) => Promise<unknown> }[] = [
   { id: 'ipe_clearance', sync: syncIpeRequest },
   { id: 'bvn_retrieval', sync: syncBvnRequest },
+  { id: 'nin_validation', sync: syncNinValidationRequest },
 ];
 
 export async function GET(req: Request) {

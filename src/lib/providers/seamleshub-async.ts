@@ -45,3 +45,12 @@ export const ipeSubmit = (trackingId: string) =>
 
 export const ipeStatus = (trackingId: string) =>
   call('/api/v1/ipe/clearance.php', { action: 'check_status', tracking_id: trackingId });
+
+// ---- NIN Validation (async, webhook + poll) ----
+const shKey = () => process.env.SEAMLESHUB_API_KEY?.trim() ?? '';
+
+export const ninValidateSubmit = (nin: string) =>
+  call('/api/v1/nin/validate.php', { api_key: shKey(), nin });
+
+export const ninValidateStatus = (reference: string) =>
+  call('/api/v1/nin/validate.php', { api_key: shKey(), action: 'check_status', reference });
