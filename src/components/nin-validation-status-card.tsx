@@ -9,11 +9,13 @@ export default function ValidationStatusCard(p: Props) {
   const [s, setS] = useState(p);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState('');
+  const [info, setInfo] = useState('');
   const done = s.status === 'successful' || s.status === 'completed' || s.status === 'failed';
 
   async function refresh() {
     setBusy(true);
     setMsg('');
+    setInfo('');
     try {
       const res = await fetch('/api/v1/nin-validation?reference=' + encodeURIComponent(p.reference));
       const j = await res.json();
@@ -21,6 +23,7 @@ export default function ValidationStatusCard(p: Props) {
       else {
         setS((prev) => ({ ...prev, status: String(j.status ?? prev.status), result: j.result ?? prev.result }));
         router.refresh();
+        if (!['successful', 'completed', 'failed'].includes(String(j.status))) setInfo('Still being processed. Last checked ' + new Date().toLocaleTimeString() + '.');
       }
     } catch {
       setMsg('Network error. Try again.');
@@ -37,6 +40,7 @@ export default function ValidationStatusCard(p: Props) {
         {s.result && <p className="whitespace-pre-wrap"><span className="text-muted">Result: </span>{s.result}</p>}
         {p.errorMessage && s.status === 'failed' && <p className="text-red-600">{p.errorMessage}</p>}
         {msg && <p className="text-red-600">{msg}</p>}
+        {info && <p className="text-muted">{info}</p>}
       </div>
       {!done && (
         <button
