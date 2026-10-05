@@ -138,10 +138,18 @@ export async function applyNinValidationResult(row: any, outcome: Outcome, resul
 
 export async function syncNinValidationRequest(row: any) {
   const r = await ninValidateStatus(row.provider_reference);
-  if (r.kind !== 'accepted') return { status: 'pending', result: null as string | null };
+  const log = (txt: string) =>
+    admin.from('verification_requests').update({
+      safe_response_data: { ...(row.safe_response_data ?? {}), val_last_check: txt.slice(0, 200), val_checked_at: new Date().toISOString() },
+    }).eq('id', row.id).eq('status', 'pending');
+  if (r.kind !== 'accepted') {
+    await log(r.kind + ': ' + r.message);
+    return { status: 'pending', result: null as string | null };
+  }
   const d = r.data ?? {};
   const vs = String(d.verification_status ?? '').toLowerCase();
   const outcome: Outcome = vs === 'completed' ? 'completed' : vs === 'failed' ? 'failed' : 'processing';
+  if (outcome === 'processing') await log('accepted: ' + (vs || 'no verification_status') + ' code ' + String(d.response_code ?? '?'));
   return applyNinValidationResult(row, outcome, String(d.result ?? d.message ?? '') || null);
 }
 
