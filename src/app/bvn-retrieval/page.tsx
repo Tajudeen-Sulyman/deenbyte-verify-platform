@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { AppShell } from '@/components/shell';
+import ServiceHistory from '@/components/service-history';
 import BvnRetrievalForm from '@/components/bvn-retrieval-form';
 
 export const dynamic = 'force-dynamic';
@@ -36,6 +37,7 @@ export default async function BvnRetrievalPage() {
             This service is currently unavailable.
           </p>
         )}
+        <ServiceHistory serviceId="bvn_retrieval" />
       </div>
     </AppShell>
   );

@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { AppShell } from '@/components/shell';
+import ServiceHistory from '@/components/service-history';
 import IpeForm from '@/components/ipe-form';
 
 export const dynamic = 'force-dynamic';
@@ -38,6 +39,7 @@ export default async function IpePage() {
             This service is currently unavailable.
           </p>
         )}
+        <ServiceHistory serviceId="ipe_clearance" />
       </div>
     </AppShell>
   );
