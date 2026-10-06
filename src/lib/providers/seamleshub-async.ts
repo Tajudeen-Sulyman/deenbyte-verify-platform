@@ -9,6 +9,7 @@ async function call(path: string, body: Record<string, unknown>): Promise<ShResu
   const key = process.env.SEAMLESHUB_API_KEY?.trim();
   if (!key) return { kind: 'rejected', message: 'Service temporarily unavailable. Please try again shortly.' };
   let json: any = null;
+  let httpStatus = 0;
   try {
     const res = await fetch(BASE + path, {
       method: 'POST',
@@ -17,9 +18,18 @@ async function call(path: string, body: Record<string, unknown>): Promise<ShResu
       signal: AbortSignal.timeout(20000),
       cache: 'no-store',
     });
+    httpStatus = res.status;
     json = await res.json().catch(() => null);
   } catch {
     return { kind: 'unknown', message: 'No clear answer from provider.' };
+  }
+  if ((httpStatus === 403 || httpStatus === 429) && json?.status !== 'success') {
+    return {
+      kind: 'rejected',
+      message: httpStatus === 429
+        ? 'Provider rate limit reached (HTTP 429)'
+        : 'Provider blocked this server (HTTP 403)',
+    };
   }
   if (json?.status === 'success') {
     const top: any = { ...json };

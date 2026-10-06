@@ -90,11 +90,8 @@ export async function submitNinValidationRequest(userId: string, input: any) {
     await admin.from('verification_requests').update({
       status: 'failed', error_message: r.message, completed_at: new Date().toISOString(),
     }).eq('id', request.id);
-    throw new Error(
-      /balance|insufficient|fund|credit|priced|unavailable/i.test(r.message)
-        ? 'This service is temporarily unavailable. You have not been charged.'
-        : r.message
-    );
+    const safe = /\bnin\b/i.test(r.message) && !/api|key|auth|balance|fund|credit|price|wallet/i.test(r.message);
+    throw new Error(safe ? r.message : 'This service is temporarily unavailable. You have not been charged.');
   }
 
   // unknown outcome (timeout / unreadable / accepted without a reference): no refund, no retry
