@@ -85,6 +85,10 @@ export default async function AdminRequestsPage(props: { searchParams: Promise<R
                     {r.safe_request_data?.identifier ?? ''} · {new Date(r.created_at).toLocaleString()} · ₦{Number(r.selling_price).toLocaleString()}
                   </p>
                   {r.error_message && <p className="mt-1 text-xs text-red-600">{r.error_message}</p>}
+                  {(r.status === 'pending' || r.status === 'processing') && (() => {
+                    const h = Math.floor((Date.now() - new Date(r.created_at).getTime()) / 3600000);
+                    return <p className={'mt-1 text-xs font-semibold ' + (h >= 24 ? 'text-red-600' : 'text-amber-700')}>{h >= 24 ? 'Stuck: ' : 'Open: '}{h}h since submitted</p>;
+                  })()}
                 </div>
                 <span className="shrink-0 rounded-full border px-3 py-1 text-xs font-semibold">{r.status}</span>
               </div>

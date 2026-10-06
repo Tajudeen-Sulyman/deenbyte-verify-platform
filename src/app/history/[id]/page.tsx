@@ -5,6 +5,7 @@ import { BrandLogo } from '@/components/brand';
 import IpeStatusCard from '@/components/ipe-status-card';
 import BvnStatusCard from '@/components/bvn-status-card';
 import ValidationStatusCard from '@/components/nin-validation-status-card';
+import StuckNotice from '@/components/stuck-notice';
 
 export const dynamic = 'force-dynamic';
 
@@ -56,6 +57,8 @@ export default async function HistoryDetailPage({ params }: { params: Promise<{ 
           <p className="text-lg font-bold text-dark mt-1">{row.request_reference}</p>
           <p className="text-xs text-muted mt-1">{new Date(row.created_at).toLocaleString()} · {row.status}</p>
         </div>
+
+        <StuckNotice createdAt={row.created_at} status={row.status} reference={row.request_reference} />
 
         {data.val_reference && (
           <ValidationStatusCard
