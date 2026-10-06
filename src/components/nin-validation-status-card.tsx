@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 type Props = { reference: string; status: string; result: string | null; errorMessage: string | null };
@@ -30,6 +30,13 @@ export default function ValidationStatusCard(p: Props) {
     }
     setBusy(false);
   }
+
+  useEffect(() => {
+    if (done) return;
+    const t = setInterval(() => { refresh(); }, 30000);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done]);
 
   return (
     <div className="card3d p-5">
