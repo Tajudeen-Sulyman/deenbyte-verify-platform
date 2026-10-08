@@ -10,12 +10,24 @@ type Service = {
   category: string;
   reference_price: number | null;
   provider_cost: number | null;
+  provider: string;
   selling_price: number;
   enabled: boolean;
   status: string;
 };
 
 const TIER_LABELS: Record<string, string> = { premium: 'Premium', standard: 'Standard', regular: 'Regular', vnin: 'Vnin' };
+
+const PROVIDER_OPTIONS: Record<string, { value: string; label: string }[]> = {
+  nin_verify: [{ value: 'techhub', label: 'TechHub' }],
+  nin_regular: [{ value: 'techhub', label: 'TechHub' }],
+  bvn_basic: [{ value: 'techhub', label: 'TechHub' }],
+  nin_by_phone: [{ value: 'techhub', label: 'TechHub' }],
+  nin_demographic: [{ value: 'techhub', label: 'TechHub' }],
+  ipe_clearance: [{ value: 'techhub', label: 'TechHub' }],
+  bvn_retrieval: [{ value: 'techhub', label: 'TechHub' }],
+  nin_validation: [{ value: 'seamlesshub', label: 'SeamlessHub' }],
+};
 
 export function AdminServices({ services }: { services: Service[] }) {
   const supabase = createClient();
@@ -50,7 +62,12 @@ export function AdminServices({ services }: { services: Service[] }) {
     setMsg('');
     const { error } = await supabase
       .from('verification_services')
-      .update({ selling_price: row.selling_price, enabled: row.enabled, status: row.status })
+      .update({
+        selling_price: row.selling_price,
+        enabled: row.enabled,
+        status: row.status,
+        provider: row.provider,
+      })
       .eq('id', row.id);
 
     const rowTiers = tiers[row.service_id];
@@ -96,6 +113,37 @@ export function AdminServices({ services }: { services: Service[] }) {
                 Enabled
               </label>
             </div>
+
+            {(() => {
+              const options = PROVIDER_OPTIONS[s.service_id] ?? [];
+              const currentKnown = options.some((o) => o.value === s.provider);
+              return (
+                <div className="mt-4 rounded-xl border border-border p-3">
+                  <p className="text-xs text-muted mb-1">Provider / platform</p>
+                  {options.length > 0 ? (
+                    <>
+                      <select
+                        value={currentKnown ? s.provider : ''}
+                        onChange={(e) => update(s.id, { provider: e.target.value })}
+                        className="w-full rounded-lg border border-border px-2 py-1.5 text-sm bg-white outline-none focus:border-primary"
+                      >
+                        {!currentKnown && <option value="">Select provider</option>}
+                        {options.map((o) => (
+                          <option key={o.value} value={o.value}>{o.label}</option>
+                        ))}
+                      </select>
+                      <p className="mt-1 text-[11px] text-muted">
+                        Applies to new requests only. Existing requests keep their provider.
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-xs text-amber-700">
+                      No configured provider adapter for this service.
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
 
             <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
               <div>

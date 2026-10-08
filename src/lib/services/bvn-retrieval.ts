@@ -55,6 +55,7 @@ export async function submitBvnRetrievalRequest(userId: string, input: any) {
       status: 'processing',
       selling_price: svc.selling_price,
       provider_cost: svc.provider_cost,
+      provider: svc.provider ?? 'techhub',
       safe_request_data: { identifier: phone.slice(0, 3) + '*****' + phone.slice(-2) },
     })
     .select().single();

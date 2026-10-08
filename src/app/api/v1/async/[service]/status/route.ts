@@ -25,13 +25,13 @@ export async function POST(req: Request) {
 
   const { data: row } = await supabaseAdmin
     .from('verification_requests')
-    .select('*, verification_services(provider, service_id)')
+    .select('*')
     .eq('id', String(body.request_id ?? '')).eq('user_id', user.id).single();
   if (!row) return NextResponse.json({ error: 'Request not found.' }, { status: 404 });
   if (row.status !== 'processing') {
     return NextResponse.json({ status: row.status, data: row.safe_response_data ?? null, reference: row.request_reference });
   }
-  const provider = String(row.verification_services?.provider ?? 'techhub');
+  const provider = String(row.provider ?? 'techhub');
   const service = String(row.verification_services?.service_id ?? '');
 
   if ((provider === 'seamleshub' || (row.safe_response_data as any)?.accepted === true) && service === 'ipe_clearance') {

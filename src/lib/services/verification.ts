@@ -82,6 +82,7 @@ export async function runVerification(opts: {
       status: 'processing',
       selling_price: service.selling_price,
       provider_cost: service.provider_cost,
+      provider: service.provider ?? 'techhub',
       safe_request_data: { identifier: maskNumber(identifier), slip_type: slipType },
     })
     .select()

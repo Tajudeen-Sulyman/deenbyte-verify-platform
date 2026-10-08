@@ -81,6 +81,11 @@ export default async function AdminRequestsPage(props: { searchParams: Promise<R
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-dark">{svc?.name ?? 'Verification'} · {r.request_reference}</p>
                   <p className="mt-0.5 truncate text-xs text-muted">{emails[r.user_id]}</p>
+                  <div className="mt-1">
+                    <span className="inline-flex rounded-full border px-2 py-0.5 text-[11px] font-semibold text-dark">
+                      Provider: {r.provider ?? 'techhub'}
+                    </span>
+                  </div>
                   <p className="mt-0.5 text-xs text-muted">
                     {r.safe_request_data?.identifier ?? ''} · {new Date(r.created_at).toLocaleString()} · ₦{Number(r.selling_price).toLocaleString()}
                   </p>

@@ -47,6 +47,7 @@ export async function submitIpeRequest(userId: string, trackingIdRaw: string) {
       status: 'processing',
       selling_price: svc.selling_price,
       provider_cost: svc.provider_cost,
+      provider: svc.provider ?? 'techhub',
       safe_request_data: { identifier: tid.slice(0, 3) + '*****' },
     })
     .select().single();

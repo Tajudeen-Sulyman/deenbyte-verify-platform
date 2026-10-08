@@ -56,6 +56,7 @@ export async function submitNinValidationRequest(userId: string, input: any) {
       status: 'processing',
       selling_price: svc.selling_price,
       provider_cost: svc.provider_cost,
+      provider: svc.provider ?? 'seamlesshub',
       safe_request_data: { identifier: nin.slice(0, 3) + '*****' + nin.slice(-2) },
     })
     .select().single();
