@@ -93,7 +93,7 @@ export function AdminServices({ services }: { services: Service[] }) {
         <div className="bg-green-50 border border-green-100 rounded-lg px-3 py-2 text-sm text-green-700">{msg}</div>
       )}
 
-      {rows.map((s) => {
+      {rows.filter((s) => s.status === 'active' && s.enabled).map((s) => {
         const margin = Number(s.selling_price) - Number(s.provider_cost ?? 0);
         const rowTiers = tiers[s.service_id];
         return (
