@@ -11,7 +11,7 @@ export async function GET() {
   const raw = process.env.LORABIZ_API_KEY ?? '';
   const key = raw.trim();
   const probe = key
-    ? await fetch('https://api.lorabiz.com/api/v1/nin/ipe/status?client_reference=probe_' + Date.now(), {
+    ? await fetch('https://lorabiz.com/api/v1/nin/ipe/status?client_reference=probe_' + Date.now(), {
         headers: { Authorization: 'Bearer ' + key },
         cache: 'no-store',
       }).then((r) => r.status).catch(() => 'network error')
