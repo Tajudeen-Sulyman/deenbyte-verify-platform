@@ -22,7 +22,6 @@ export async function GET() {
     key_present: raw.length > 0,
     key_length: raw.length,
     key_has_stray_space: raw !== key,
-    key_prefix: key.slice(0, 9),
     lorabiz_probe_http: probe,
   });
 }
