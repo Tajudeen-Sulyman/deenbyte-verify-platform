@@ -101,7 +101,7 @@ export function AdminServices({ services }: { services: Service[] }) {
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="font-semibold text-dark">{s.name}</p>
-                <p className="text-xs text-muted">{s.category} · {s.service_id}</p>
+                <p className="text-xs text-muted">{s.category} · {s.service_id} · {s.provider}</p>
               </div>
               <label className="flex items-center gap-2 text-sm text-muted">
                 <input

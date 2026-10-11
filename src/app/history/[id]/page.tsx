@@ -5,6 +5,7 @@ import { BrandLogo } from '@/components/brand';
 import IpeStatusCard from '@/components/ipe-status-card';
 import BvnStatusCard from '@/components/bvn-status-card';
 import ValidationStatusCard from '@/components/nin-validation-status-card';
+import LorabizStatusCard from '@/components/lorabiz-status-card';
 import StuckNotice from '@/components/stuck-notice';
 
 export const dynamic = 'force-dynamic';
@@ -59,6 +60,21 @@ export default async function HistoryDetailPage({ params }: { params: Promise<{ 
         </div>
 
         <StuckNotice createdAt={row.created_at} status={row.status} reference={row.request_reference} />
+
+        {row.provider === 'lorabiz' && (
+          <LorabizStatusCard
+            endpoint={data.lb_kind === 'personalization' ? '/api/v1/lorabiz-personalization' : '/api/v1/lorabiz-ipe'}
+            kind={data.lb_kind === 'personalization' ? 'personalization' : 'ipe'}
+            reference={row.request_reference}
+            status={String(row.status)}
+            lbStatus={data.lb_status ?? null}
+            newTrackingId={data.lb_new_tracking_id ?? null}
+            resolvedNin={data.lb_resolved_nin ?? null}
+            person={data.lb_person ?? null}
+            pdfReady={!!data.lb_pdf_path}
+            errorMessage={row.error_message ?? null}
+          />
+        )}
 
         {data.val_reference && (
           <ValidationStatusCard
