@@ -125,6 +125,7 @@ export async function runVerification(opts: {
     const base = canon(safeData);
     const missingAny = !base.phone_number || !base.first_name || !base.photo || !base.address;
         
+    const __t1 = Date.now();
     await supabaseAdmin.from('verification_requests')
       .update({
         status: 'successful',
@@ -134,6 +135,7 @@ export async function runVerification(opts: {
         completed_at: new Date().toISOString(),
       })
       .eq('id', request.id);
+    console.log('[timing] save', Date.now() - __t1, 'ms');
 
     return {
       reference: requestRef,
