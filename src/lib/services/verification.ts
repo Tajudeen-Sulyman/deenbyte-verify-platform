@@ -105,7 +105,9 @@ export async function runVerification(opts: {
   }
 
   try {
+    const __t0 = Date.now();
     const result = await callProvider(identifier, slipType);
+    console.log('[timing] provider', serviceId, Date.now() - __t0, 'ms');
     const rawData = result.data ?? {};
     const safeData = { ...rawData };
     const canon = (d: any) => ({
