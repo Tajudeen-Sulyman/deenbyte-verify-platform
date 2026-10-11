@@ -10,11 +10,23 @@ export async function GET() {
 
   const raw = process.env.LORABIZ_API_KEY ?? '';
   const key = raw.trim();
-  const probe = key
-    ? await fetch('https://lorabiz.com/api/v1/nin/ipe/status?client_reference=probe_' + Date.now(), {
-        headers: { Authorization: 'Bearer ' + key },
-        cache: 'no-store',
-      }).then((r) => r.status).catch(() => 'network error')
+  const url = 'https://lorabiz.com/api/v1/nin/ipe/status?client_reference=probe_' + Date.now();
+
+  const probe = async (headers: Record<string, string>) => {
+    try {
+      const response = await fetch(url, { headers, cache: 'no-store' });
+      return response.status;
+    } catch {
+      return 'network error';
+    }
+  };
+
+  const auth_results = key
+    ? {
+        bearer: await probe({ Authorization: 'Bearer ' + key }),
+        direct: await probe({ Authorization: key }),
+        x_api_key: await probe({ 'x-api-key': key }),
+      }
     : 'no key';
 
   return NextResponse.json({
@@ -22,6 +34,6 @@ export async function GET() {
     key_present: raw.length > 0,
     key_length: raw.length,
     key_has_stray_space: raw !== key,
-    lorabiz_probe_http: probe,
+    lorabiz_auth_results: auth_results,
   });
 }
