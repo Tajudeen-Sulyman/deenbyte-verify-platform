@@ -15,7 +15,14 @@ export async function GET() {
   const probe = async (headers: Record<string, string>) => {
     try {
       const response = await fetch(url, { headers, cache: 'no-store' });
-      return response.status;
+      const body = (await response.text()).slice(0, 500);
+      return {
+        status: response.status,
+        body: body
+          .replace(/lora_(?:test|live)_[A-Za-z0-9_-]+/gi, '[REDACTED]')
+          .replace(/Bearer\s+\S+/gi, 'Bearer [REDACTED]')
+          .replace(/\b\d{11}\b/g, '[REDACTED_NIN]')
+      };
     } catch {
       return 'network error';
     }
