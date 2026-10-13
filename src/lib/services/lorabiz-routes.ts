@@ -50,8 +50,6 @@ export async function handleStatus(cfg: LbCfg, req: Request) {
     status: fresh?.status ?? row.status,
     lb_status: d.lb_status ?? null,
     new_tracking_id: d.lb_new_tracking_id ?? null,
-    resolved_nin: d.lb_resolved_nin ?? null,
-    person: d.lb_person ?? null,
     pdf_ready: !!d.lb_pdf_path,
     error: fresh?.error_message ?? undefined,
   });

@@ -36,16 +36,73 @@ function userMessage(code: string, message: string) {
     : 'This service is temporarily unavailable. You have not been charged.';
 }
 
-async function refund(userId: string, amount: number, ref: string, label: string, requestId: string) {
+async function refund(
+  userId: string,
+  amount: number,
+  ref: string,
+  label: string,
+  requestId: string
+) {
+  const ledgerRef = 'REV-' + ref;
+
+  const { data: existing, error: lookupError } = await admin
+    .from('wallet_transactions')
+    .select('id, user_id, amount, type, status, related_verification_id')
+    .eq('reference', ledgerRef)
+    .maybeSingle();
+
+  if (lookupError) {
+    throw new Error(
+      'Could not verify refund ledger: ' + lookupError.message
+    );
+  }
+
+  const matchesExpectedRefund = (entry: any) =>
+    entry &&
+    entry.user_id === userId &&
+    entry.related_verification_id === requestId &&
+    Number(entry.amount) === Number(amount) &&
+    entry.type === 'reversal' &&
+    entry.status === 'successful';
+
+  if (existing) {
+    if (!matchesExpectedRefund(existing)) {
+      throw new Error(
+        'Refund ledger mismatch; manual review required.'
+      );
+    }
+
+    return;
+  }
+
   const { error } = await admin.rpc('credit_wallet', {
     p_user_id: userId,
     p_amount: amount,
     p_type: 'reversal',
-    p_reference: 'REV-' + ref,
+    p_reference: ledgerRef,
     p_description: 'Reversal for failed ' + label,
     p_verification_id: requestId,
   });
-  if (error) throw new Error('Refund failed: ' + error.message);
+
+  if (!error) return;
+
+  // The RPC may have succeeded even if its response failed.
+  // Check the unique ledger reference before allowing a retry.
+  const { data: confirmed, error: confirmError } = await admin
+    .from('wallet_transactions')
+    .select('id, user_id, amount, type, status, related_verification_id')
+    .eq('reference', ledgerRef)
+    .maybeSingle();
+
+  if (confirmError) {
+    throw new Error(
+      'Refund outcome is uncertain; reconciliation required.'
+    );
+  }
+
+  if (matchesExpectedRefund(confirmed)) return;
+
+  throw new Error('Refund failed: ' + error.message);
 }
 
 export async function submitLbRequest(cfg: LbCfg, userId: string, input: any) {
@@ -116,10 +173,49 @@ export async function submitLbRequest(cfg: LbCfg, userId: string, input: any) {
   }
 
   if (r.kind === 'rejected') {
-    await refund(userId, svc.selling_price, ref, cfg.label, request.id);
-    await admin.from('verification_requests').update({
-      status: 'failed', error_message: r.message, completed_at: new Date().toISOString(),
-    }).eq('id', request.id);
+    let refundNeedsReview = false;
+
+    try {
+      await refund(userId, svc.selling_price, ref, cfg.label, request.id);
+
+      const { error: metadataError } = await admin
+        .from('verification_requests')
+        .update({
+          refunded_at: new Date().toISOString(),
+          refund_note: 'Automatic Lorabiz refund confirmed by successful wallet reversal ledger.',
+        })
+        .eq('id', request.id);
+
+      if (metadataError) {
+        throw new Error('Refund confirmed but refund metadata could not be saved.');
+      }
+    } catch {
+      refundNeedsReview = true;
+    }
+
+    const { error: updateError } = await admin
+      .from('verification_requests')
+      .update({
+        status: 'failed',
+        error_message: refundNeedsReview
+          ? `Provider rejected request; refund requires manual reconciliation. Reference: ${ref}`
+          : r.message,
+        completed_at: new Date().toISOString(),
+      })
+      .eq('id', request.id);
+
+    if (updateError) {
+      throw new Error(
+        `Could not finalize rejected request. Contact support with reference ${ref}.`
+      );
+    }
+
+    if (refundNeedsReview) {
+      throw new Error(
+        `Your request was rejected, but your refund needs review. Contact support with reference ${ref}. Do not resubmit yet.`
+      );
+    }
+
     throw new Error(userMessage(r.code, r.message));
   }
 
@@ -133,24 +229,37 @@ export async function submitLbRequest(cfg: LbCfg, userId: string, input: any) {
 
 async function resultFields(cfg: LbCfg, row: any, d: any) {
   if (cfg.kind === 'ipe') {
-    return { lb_new_tracking_id: d.new_tracking_id ?? null, lb_resolved_nin: d.resolved_nin ?? null };
+    return {
+      lb_new_tracking_id: d.new_tracking_id ?? null,
+    };
   }
-  // Personalization: the PDF goes to private storage, not the database row. The photo is left out (it is in the PDF).
-  const { photo, ...person } = d.data ?? {};
+
+  // Keep the PDF in private storage; do not persist personal details or the resolved NIN.
   let path: string | null = null;
+
   if (d.pdf_base64) {
     path = `${row.user_id}/${row.request_reference}.pdf`;
+
     const { error } = await admin.storage.from(cfg.bucket!).upload(
-      path, Buffer.from(String(d.pdf_base64), 'base64'),
+      path,
+      Buffer.from(String(d.pdf_base64), 'base64'),
       { contentType: 'application/pdf', upsert: true }
     );
-    if (error) throw new Error('Could not store the slip: ' + error.message);
+
+    if (error) {
+      throw new Error('Could not store the slip: ' + error.message);
+    }
   }
-  return { lb_resolved_nin: d.resolved_nin ?? null, lb_person: person, lb_pdf_path: path };
+
+  return { lb_pdf_path: path };
 }
 
 export async function syncLbRequest(cfg: LbCfg, row: any) {
-  const s = await statusLorabiz(cfg.kind, row.request_reference);
+  // Prefer Lorabiz's own transaction reference; fall back to our client reference.
+  const hasProviderRef = Boolean(String(row.provider_reference ?? '').trim());
+  const lookupRef = hasProviderRef ? row.provider_reference : row.request_reference;
+  const lookupType = hasProviderRef ? 'reference' : 'client_reference';
+  const s = await statusLorabiz(cfg.kind, lookupRef, lookupType);
   if (!s.ok) return { status: 'pending' };
   const d: any = s.data;
   const st = String(d.request_status ?? '').toLowerCase();
@@ -166,16 +275,56 @@ export async function syncLbRequest(cfg: LbCfg, row: any) {
   }
 
   if (st === 'failed') {
-    const { data: flipped } = await admin.from('verification_requests').update({
-      status: 'failed', completed_at: now,
-      error_message: String(d.error_detail ?? 'Failed at provider').slice(0, 300),
-      safe_response_data: base,
-    }).eq('id', row.id).eq('status', 'pending').select('id');
-    // Only the call that flips pending to failed refunds, so repeated checks cannot pay out twice
-    if (flipped?.length && cfg.refundOnFail) {
-      await refund(row.user_id, row.selling_price, row.request_reference, cfg.label, row.id);
+    // Refund before finalizing. If refund fails, keep the request pending
+    // so cron can retry and the refund ledger can be reconciled safely.
+    if (cfg.refundOnFail) {
+      await refund(
+        row.user_id,
+        row.selling_price,
+        row.request_reference,
+        cfg.label,
+        row.id
+      );
+
+      const { error: metadataError } = await admin
+        .from('verification_requests')
+        .update({
+          refunded_at: row.refunded_at ?? now,
+          refund_note: row.refund_note ??
+            'Automatic Lorabiz refund confirmed by successful wallet reversal ledger.',
+        })
+        .eq('id', row.id);
+
+      if (metadataError) {
+        throw new Error(
+          'Refund confirmed but refund metadata could not be saved: ' +
+          metadataError.message
+        );
+      }
     }
-    return { status: 'failed' };
+
+    const { data: flipped, error: updateError } = await admin
+      .from('verification_requests')
+      .update({
+        status: 'failed',
+        completed_at: now,
+        error_message: String(
+          d.error_detail ?? 'Failed at provider'
+        ).slice(0, 300),
+        safe_response_data: base,
+      })
+      .eq('id', row.id)
+      .eq('status', 'pending')
+      .select('id');
+
+    if (updateError) {
+      throw new Error(
+        'Refund confirmed, but request finalization failed: ' +
+        updateError.message
+      );
+    }
+
+    return { status: flipped?.length ? 'failed' : 'pending' };
   }
 
   // submitted / processing

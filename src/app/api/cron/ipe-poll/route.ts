@@ -28,10 +28,17 @@ export async function GET(req: Request) {
     const { data: svc } = await admin
       .from('verification_services').select('id').eq('service_id', s.id).single();
     if (!svc) continue;
-    const { data: rows } = await admin
+    let rowsQuery = admin
       .from('verification_requests').select('*')
-      .eq('service_id', svc.id).eq('status', 'pending')
-      .not('provider_reference', 'is', null).limit(50);
+      .eq('service_id', svc.id).eq('status', 'pending');
+
+    // Legacy providers require a provider reference. Lorabiz can look up
+    // requests by our client reference when its provider reference is absent.
+    if (!s.id.startsWith('lorabiz_')) {
+      rowsQuery = rowsQuery.not('provider_reference', 'is', null);
+    }
+
+    const { data: rows } = await rowsQuery.limit(50);
     for (const row of rows ?? []) {
       try { await s.sync(row); checked++; } catch { /* retry next run */ }
     }

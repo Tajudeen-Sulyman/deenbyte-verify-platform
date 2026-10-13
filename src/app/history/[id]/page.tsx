@@ -69,8 +69,6 @@ export default async function HistoryDetailPage({ params }: { params: Promise<{ 
             status={String(row.status)}
             lbStatus={data.lb_status ?? null}
             newTrackingId={data.lb_new_tracking_id ?? null}
-            resolvedNin={data.lb_resolved_nin ?? null}
-            person={data.lb_person ?? null}
             pdfReady={!!data.lb_pdf_path}
             errorMessage={row.error_message ?? null}
           />

@@ -9,8 +9,6 @@ type Props = {
   status: string;
   lbStatus?: string | null;
   newTrackingId?: string | null;
-  resolvedNin?: string | null;
-  person?: Record<string, unknown> | null;
   pdfReady?: boolean;
   errorMessage?: string | null;
 };
@@ -20,8 +18,6 @@ export default function LorabizStatusCard(p: Props) {
   const [s, setS] = useState({
     status: p.status,
     newTrackingId: p.newTrackingId ?? null,
-    resolvedNin: p.resolvedNin ?? null,
-    person: p.person ?? null,
     pdfReady: !!p.pdfReady,
     error: p.errorMessage ?? null,
   });
@@ -40,8 +36,6 @@ export default function LorabizStatusCard(p: Props) {
         setS({
           status: String(j.status),
           newTrackingId: j.new_tracking_id ?? null,
-          resolvedNin: j.resolved_nin ?? null,
-          person: j.person ?? null,
           pdfReady: !!j.pdf_ready,
           error: j.error ?? null,
         });
@@ -69,10 +63,6 @@ export default function LorabizStatusCard(p: Props) {
         <p><span className="text-muted">Reference: </span>{p.reference}</p>
         <p><span className="text-muted">Status: </span><b className="text-dark">{s.status}</b></p>
         {s.newTrackingId && <p><span className="text-muted">New tracking ID: </span><b>{s.newTrackingId}</b></p>}
-        {s.resolvedNin && <p><span className="text-muted">NIN: </span><b className="font-mono">{s.resolvedNin}</b></p>}
-        {s.person && Object.entries(s.person).filter(([, v]) => v).map(([k, v]) => (
-          <p key={k}><span className="text-muted">{k.replace(/_/g, ' ')}: </span>{String(v)}</p>
-        ))}
         {s.status === 'successful' && p.kind === 'personalization' && s.pdfReady && (
           <a href={pdfUrl} className="inline-block font-semibold text-primary underline">Download slip (PDF)</a>
         )}

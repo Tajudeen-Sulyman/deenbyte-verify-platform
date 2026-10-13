@@ -42,10 +42,14 @@ export async function submitLorabiz(kind: LbKind, trackingId: string, clientRef:
   return { kind: 'unknown', message: `Unexpected provider response (HTTP ${http}).` };
 }
 
-export async function statusLorabiz(kind: LbKind, clientRef: string) {
+export async function statusLorabiz(
+  kind: LbKind,
+  ref: string,
+  refType: 'reference' | 'client_reference' = 'client_reference'
+) {
   try {
     const { http, json } = await call(
-      `/api/v1/nin/${kind}/status?client_reference=${encodeURIComponent(clientRef)}`,
+      `/api/v1/nin/${kind}/status?${refType}=${encodeURIComponent(ref)}`,
       'GET'
     );
     if (http === 200 && json?.request_status) return { ok: true as const, data: json };
