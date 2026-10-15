@@ -1,5 +1,5 @@
 // Lorabiz: NIN personalisation and IPE clearance (submit, then poll by OUR reference)
-const BASE = 'https://api.lorabiz.com';
+const BASE = 'https://lorabiz.com';
 
 export type LbKind = 'ipe' | 'personalization';
 
