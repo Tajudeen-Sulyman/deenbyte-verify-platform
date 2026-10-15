@@ -1,0 +1,306 @@
+import { createHash } from 'crypto';
+import { createClient } from '@supabase/supabase-js';
+import { submitLorabiz, statusLorabiz, type LbKind, type LbSubmit } from '@/lib/providers/lorabiz';
+
+export type LbCfg = {
+  serviceId: string;
+  kind: LbKind;
+  label: string;
+  refundOnFail: boolean;
+  bucket?: string;
+};
+
+// refundOnFail: when Lorabiz reports a failure, WE refund the user.
+// Lorabiz refunds IPE failures itself but keeps the fee on personalization failures,
+// so by default we absorb that cost. Set false to make personalization non-refundable.
+export const LB = {
+  ipe: {
+    serviceId: 'lorabiz_ipe', kind: 'ipe', label: 'IPE Clearance', refundOnFail: true,
+  } as LbCfg,
+  personalization: {
+    serviceId: 'lorabiz_personalization', kind: 'personalization', label: 'NIN Personalization',
+    refundOnFail: true, bucket: 'personalization-slips',
+  } as LbCfg,
+};
+
+const admin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+const SHOW_CODES = ['VALIDATION_ERROR', 'INVALID_QUERY', 'INVALID_SANDBOX_INPUT', 'DUPLICATE_REQUEST'];
+
+function userMessage(code: string, message: string) {
+  return SHOW_CODES.includes(code)
+    ? message
+    : 'This service is temporarily unavailable. You have not been charged.';
+}
+
+async function refund(
+  userId: string,
+  amount: number,
+  ref: string,
+  label: string,
+  requestId: string
+) {
+  const ledgerRef = 'REV-' + ref;
+
+  const { data: existing, error: lookupError } = await admin
+    .from('wallet_transactions')
+    .select('id, user_id, amount, type, status, related_verification_id')
+    .eq('reference', ledgerRef)
+    .maybeSingle();
+
+  if (lookupError) {
+    throw new Error(
+      'Could not verify refund ledger: ' + lookupError.message
+    );
+  }
+
+  const matchesExpectedRefund = (entry: any) =>
+    entry &&
+    entry.user_id === userId &&
+    entry.related_verification_id === requestId &&
+    Number(entry.amount) === Number(amount) &&
+    entry.type === 'reversal' &&
+    entry.status === 'successful';
+
+  if (existing) {
+    if (!matchesExpectedRefund(existing)) {
+      throw new Error(
+        'Refund ledger mismatch; manual review required.'
+      );
+    }
+
+    return;
+  }
+
+  const { error } = await admin.rpc('credit_wallet', {
+    p_user_id: userId,
+    p_amount: amount,
+    p_type: 'reversal',
+    p_reference: ledgerRef,
+    p_description: 'Reversal for failed ' + label,
+    p_verification_id: requestId,
+  });
+
+  if (!error) return;
+
+  // The RPC may have succeeded even if its response failed.
+  // Check the unique ledger reference before allowing a retry.
+  const { data: confirmed, error: confirmError } = await admin
+    .from('wallet_transactions')
+    .select('id, user_id, amount, type, status, related_verification_id')
+    .eq('reference', ledgerRef)
+    .maybeSingle();
+
+  if (confirmError) {
+    throw new Error(
+      'Refund outcome is uncertain; reconciliation required.'
+    );
+  }
+
+  if (matchesExpectedRefund(confirmed)) return;
+
+  throw new Error('Refund failed: ' + error.message);
+}
+
+export async function submitLbRequest(cfg: LbCfg, userId: string, input: any) {
+  const tid = String(input?.tracking_id ?? '').trim();
+  if (!/^[A-Za-z0-9]{8,32}$/.test(tid)) {
+    throw new Error('Tracking ID must be 8 to 32 letters or numbers.');
+  }
+
+  const { data: svc } = await admin
+    .from('verification_services').select('*').eq('service_id', cfg.serviceId).maybeSingle();
+  if (!svc || svc.status !== 'active' || !svc.enabled) {
+    throw new Error('This service is currently unavailable.');
+  }
+
+  const hash = createHash('sha256')
+    .update(`${userId}:${cfg.serviceId}:${tid.toLowerCase()}`)
+    .digest('hex');
+  const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { data: dup } = await admin
+    .from('verification_requests').select('id')
+    .eq('request_hash', hash).in('status', ['pending', 'processing'])
+    .gte('created_at', dayAgo).limit(1);
+  if (dup && dup.length > 0) throw new Error('A request for this tracking ID is already in progress.');
+
+  const ref = 'DBV-' + Date.now().toString().slice(-8);
+  const { data: request, error: reqErr } = await admin
+    .from('verification_requests')
+    .insert({
+      user_id: userId,
+      service_id: svc.id,
+      request_reference: ref,
+      request_hash: hash,
+      status: 'processing',
+      selling_price: svc.selling_price,
+      provider_cost: svc.provider_cost,
+      provider: 'lorabiz',
+      safe_request_data: { identifier: tid.slice(0, 3) + '*****' + tid.slice(-2) },
+    })
+    .select().single();
+  if (reqErr || !request) throw new Error('Could not create request.');
+
+  const { data: ok, error: dedErr } = await admin.rpc('deduct_wallet', {
+    p_user_id: userId,
+    p_amount: svc.selling_price,
+    p_reference: ref,
+    p_verification_id: request.id,
+  });
+  if (dedErr || !ok) {
+    await admin.from('verification_requests')
+      .update({ status: 'failed', error_message: 'Insufficient wallet balance' })
+      .eq('id', request.id);
+    throw new Error('Insufficient wallet balance. Fund your wallet and try again.');
+  }
+
+  let r: LbSubmit = await submitLorabiz(cfg.kind, tid, ref);
+
+  if (r.kind === 'unknown') {
+    // No clear answer, but Lorabiz may have accepted it. Ask by OUR reference, which only this request has.
+    const s = await statusLorabiz(cfg.kind, ref);
+    if (s.ok) {
+      r = { kind: 'accepted', reference: String(s.data.reference ?? ref), status: String(s.data.request_status) };
+    } else {
+      await admin.from('verification_requests')
+        .update({ error_message: 'Submit unconfirmed - needs manual review' })
+        .eq('id', request.id);
+      throw new Error(`We could not confirm your request. Do not resubmit. Contact support with reference ${ref}.`);
+    }
+  }
+
+  if (r.kind === 'rejected') {
+    let refundNeedsReview = false;
+
+    try {
+      await refund(userId, svc.selling_price, ref, cfg.label, request.id);
+    } catch {
+      refundNeedsReview = true;
+    }
+
+    const { error: updateError } = await admin
+      .from('verification_requests')
+      .update({
+        status: 'failed',
+        error_message: refundNeedsReview
+          ? `Provider rejected request; refund requires manual reconciliation. Reference: ${ref}`
+          : r.message,
+        completed_at: new Date().toISOString(),
+      })
+      .eq('id', request.id);
+
+    if (updateError) {
+      throw new Error(
+        `Could not finalize rejected request. Contact support with reference ${ref}.`
+      );
+    }
+
+    if (refundNeedsReview) {
+      throw new Error(
+        `Your request was rejected, but your refund needs review. Contact support with reference ${ref}. Do not resubmit yet.`
+      );
+    }
+
+    throw new Error(userMessage(r.code, r.message));
+  }
+
+  await admin.from('verification_requests').update({
+    status: 'pending',
+    provider_reference: r.reference,
+    safe_response_data: { lb_status: r.status, lb_kind: cfg.kind },
+  }).eq('id', request.id);
+  return { reference: ref, requestId: request.id, status: 'pending' };
+}
+
+async function resultFields(cfg: LbCfg, row: any, d: any) {
+  if (cfg.kind === 'ipe') {
+    return {
+      lb_new_tracking_id: d.new_tracking_id ?? null,
+    };
+  }
+
+  // Keep the PDF in private storage; do not persist personal details or the resolved NIN.
+  let path: string | null = null;
+
+  if (d.pdf_base64) {
+    path = `${row.user_id}/${row.request_reference}.pdf`;
+
+    const { error } = await admin.storage.from(cfg.bucket!).upload(
+      path,
+      Buffer.from(String(d.pdf_base64), 'base64'),
+      { contentType: 'application/pdf', upsert: true }
+    );
+
+    if (error) {
+      throw new Error('Could not store the slip: ' + error.message);
+    }
+  }
+
+  return { lb_pdf_path: path };
+}
+
+export async function syncLbRequest(cfg: LbCfg, row: any) {
+  // Prefer Lorabiz's own transaction reference; fall back to our client reference.
+  const hasProviderRef = Boolean(String(row.provider_reference ?? '').trim());
+  const lookupRef = hasProviderRef ? row.provider_reference : row.request_reference;
+  const lookupType = hasProviderRef ? 'reference' : 'client_reference';
+  const s = await statusLorabiz(cfg.kind, lookupRef, lookupType);
+  if (!s.ok) return { status: 'pending' };
+  const d: any = s.data;
+  const st = String(d.request_status ?? '').toLowerCase();
+  const now = new Date().toISOString();
+  const base = { ...(row.safe_response_data ?? {}), lb_status: st, lb_kind: cfg.kind };
+
+  if (st === 'completed') {
+    const extra = await resultFields(cfg, row, d);
+    await admin.from('verification_requests').update({
+      status: 'successful', completed_at: now, safe_response_data: { ...base, ...extra },
+    }).eq('id', row.id).eq('status', 'pending');
+    return { status: 'successful' };
+  }
+
+  if (st === 'failed') {
+    // Refund before finalizing. If refund fails, keep the request pending
+    // so cron can retry and the refund ledger can be reconciled safely.
+    if (cfg.refundOnFail) {
+      await refund(
+        row.user_id,
+        row.selling_price,
+        row.request_reference,
+        cfg.label,
+        row.id
+      );
+    }
+
+    const { data: flipped, error: updateError } = await admin
+      .from('verification_requests')
+      .update({
+        status: 'failed',
+        completed_at: now,
+        error_message: String(
+          d.error_detail ?? 'Failed at provider'
+        ).slice(0, 300),
+        safe_response_data: base,
+      })
+      .eq('id', row.id)
+      .eq('status', 'pending')
+      .select('id');
+
+    if (updateError) {
+      throw new Error(
+        'Refund confirmed, but request finalization failed: ' +
+        updateError.message
+      );
+    }
+
+    return { status: flipped?.length ? 'failed' : 'pending' };
+  }
+
+  // submitted / processing
+  await admin.from('verification_requests').update({ safe_response_data: base })
+    .eq('id', row.id).eq('status', 'pending');
+  return { status: 'pending' };
+}
