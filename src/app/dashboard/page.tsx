@@ -70,8 +70,6 @@ export default async function DashboardPage() {
     { href: '/verify?s=bvn_basic', id: 'bvn_basic', t: 'BVN Verification', d: 'Official BVN slip in seconds.', time: 'Instant', g: 'from-emerald-600 to-emerald-900' },
     { href: '/bvn-retrieval', id: 'bvn_retrieval', t: 'BVN Retrieval', d: 'Get BVN from phone or NIN.', time: 'Instant', g: 'from-emerald-600 to-[var(--tile)]900' },
     { href: '/ipe', id: 'ipe_clearance', t: 'IPE Clearance', d: 'Clear In-Processing errors on your NIN.' },
-    { href: '/ipe-lorabiz', id: 'lorabiz_ipe', t: 'IPE Clearance (Lorabiz)', d: 'Clear In-Processing errors via the NIMC IPE gateway.', time: '24-48 hrs', g: 'from-blue-600 to-blue-800' },
-    { href: '/nin-personalization', id: 'lorabiz_personalization', t: 'NIN Personalization', d: 'Resolve an NIN from a tracking ID and download the slip.', time: '1-48 hrs', g: 'from-blue-600 to-blue-800' },
   ];
 
   return (
