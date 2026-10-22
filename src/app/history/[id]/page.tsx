@@ -110,7 +110,7 @@ export default async function HistoryDetailPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {row.status === 'successful' && (
+        {row.status === 'successful' && !data.val_reference && !data.bvn_ticket_id && !data.ticket_id && !data.provider_status && (
           <a
             href={'/api/v1/slip/' + row.id}
             target="_blank"
