@@ -110,7 +110,13 @@ export default async function HistoryDetailPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {row.status === 'successful' && !data.val_reference && !data.bvn_ticket_id && !data.ticket_id && !data.provider_status && (
+        {data.pers_pdf_path && (
+          <a href={'/api/v1/personalization/pdf?reference=' + encodeURIComponent(row.request_reference)} target="_blank" rel="noopener" className="block bg-primary text-white text-center rounded-xl py-3 text-sm font-semibold">
+            Download slip (PDF)
+          </a>
+        )}
+
+        {row.status === 'successful' && !data.val_reference && !data.bvn_ticket_id && !data.ticket_id && !data.provider_status && !data.pers_status && (
           <a
             href={'/api/v1/slip/' + row.id}
             target="_blank"

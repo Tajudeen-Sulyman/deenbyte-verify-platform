@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { syncIpeRequest } from '@/lib/services/ipe';
 import { syncBvnRequest } from '@/lib/services/bvn-retrieval';
 import { syncNinValidationRequest } from '@/lib/services/nin-validation';
+import { syncPersonalizationRequest } from '@/lib/services/personalization';
 
 const admin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -13,6 +14,7 @@ const SERVICES: { id: string; sync: (row: any) => Promise<unknown> }[] = [
   { id: 'ipe_clearance', sync: syncIpeRequest },
   { id: 'bvn_retrieval', sync: syncBvnRequest },
   { id: 'nin_validation', sync: syncNinValidationRequest },
+  { id: 'seamleshub_personalization', sync: syncPersonalizationRequest },
 ];
 
 export async function GET(req: Request) {
